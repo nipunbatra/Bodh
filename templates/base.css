@@ -355,12 +355,17 @@ td {
     transform: scale(1.2);
 }
 
-/* Hide all slides by default */
-.slide {
+/* Slide navigation - only hide slides when navigation is present */
+.has-navigation .slide {
     display: none;
 }
 
-.slide.active {
+.has-navigation .slide.active {
+    display: flex;
+}
+
+/* Default: show all slides for PDF or when no navigation */
+.slide {
     display: flex;
 }
 

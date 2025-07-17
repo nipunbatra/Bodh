@@ -180,7 +180,8 @@ class MarkdownToPDF:
             css=self.css,
             font_family=self.font_family,
             logo_data=logo_data,
-            logo_position=self.logo_position
+            logo_position=self.logo_position,
+            enable_navigation=False
         )
         
         # Generate PDF

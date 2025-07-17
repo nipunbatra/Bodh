@@ -62,14 +62,15 @@ def preview_slides():
             # Parse slides
             slides = converter.parse_markdown_slides(markdown_content)
             
-            # Generate HTML preview
+            # Generate HTML preview with navigation
             html_content = converter.template.render(
                 title="Preview",
                 slides=slides,
                 css=converter.css,
                 font_family=font_family,
                 logo_data=None,
-                logo_position='top-right'
+                logo_position='top-right',
+                enable_navigation=True
             )
             
             return jsonify({
