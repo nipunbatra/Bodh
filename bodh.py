@@ -332,16 +332,25 @@ class MarkdownToPDF:
             with sync_playwright() as p:
                 browser = p.chromium.launch()
                 page = browser.new_page()
+                
+                # Set viewport to match A4 landscape dimensions for consistent rendering
+                page.set_viewport_size({"width": 1122, "height": 794})  # A4 landscape at 96 DPI
+                
+                # Load content and wait for fonts/images
                 page.set_content(html_content, wait_until='networkidle')
+                
+                # Wait for fonts to load
+                page.wait_for_timeout(1000)
                 
                 # PDF options for presentation format
                 page.pdf(
                     path=output_file,
                     format='A4',
                     landscape=True,
-                    margin={'top': '1cm', 'bottom': '1cm', 'left': '1cm', 'right': '1cm'},
+                    margin={'top': '1.5cm', 'bottom': '1.5cm', 'left': '1.5cm', 'right': '1.5cm'},
                     print_background=True,
-                    prefer_css_page_size=True
+                    prefer_css_page_size=True,
+                    display_header_footer=False
                 )
                 browser.close()
         elif PDF_BACKEND == 'weasyprint':

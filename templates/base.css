@@ -4,6 +4,9 @@
     -webkit-print-color-adjust: exact;
     color-adjust: exact;
     background: {{ theme.colors.background }};
+    /* Prevent content from being cut off */
+    orphans: 1;
+    widows: 1;
 }
 
 @media print {
@@ -49,6 +52,12 @@ body {
     background: {{ theme.colors.background }};
     position: relative;
     overflow: hidden;
+    /* Better PDF rendering */
+    page-break-inside: avoid;
+    break-inside: avoid;
+    /* Ensure content fits */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .slide-content {
@@ -56,10 +65,53 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    /* Prevent content overflow */
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 .page-break {
     page-break-after: always;
+}
+
+/* Better content handling for PDF */
+h1, h2, h3, h4, h5, h6 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    line-height: 1.2;
+}
+
+p, li {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Table responsiveness */
+table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: fixed;
+    word-wrap: break-word;
+    font-size: 0.9em;
+}
+
+th, td {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    padding: 0.5rem;
+}
+
+/* Code blocks */
+pre, code {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    max-width: 100%;
+    font-size: 0.85em;
 }
 
 /* Logo positioning */
