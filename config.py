@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Configuration management for MarkPresent
+Configuration management for Bodh
 """
 
 import yaml
@@ -10,7 +10,7 @@ from typing import Dict, Any, Optional
 
 
 class PresentationConfig:
-    """Configuration handler for MarkPresent presentations"""
+    """Configuration handler for Bodh presentations"""
     
     def __init__(self, config_file: Optional[str] = None):
         self.config = self._load_default_config()
@@ -192,13 +192,13 @@ def load_config(config_file: Optional[str] = None) -> PresentationConfig:
     return PresentationConfig(config_file)
 
 
-def create_sample_config(output_file: str = 'markpresent.yml') -> None:
+def create_sample_config(output_file: str = 'bodh.yml') -> None:
     """Create a sample configuration file"""
     config = PresentationConfig()
     
     # Add comments to the sample config
     sample_config = {
-        '# MarkPresent Configuration File': None,
+        '# Bodh Configuration File': None,
         '# Theme selection': None,
         'theme': 'modern',  # Options: default, modern, minimal, gradient, dark, sky, solarized, moon
         
@@ -260,8 +260,8 @@ def create_sample_config(output_file: str = 'markpresent.yml') -> None:
     clean_config = {k: v for k, v in sample_config.items() if not k.startswith('#')}
     
     with open(output_file, 'w') as f:
-        f.write("# MarkPresent Configuration File\n")
-        f.write("# https://github.com/nipunbatra/MarkPresent\n\n")
+        f.write("# Bodh Configuration File\n")
+        f.write("# https://github.com/nipunbatra/Bodh\n\n")
         yaml.dump(clean_config, f, default_flow_style=False, indent=2)
     
     print(f"Sample configuration created: {output_file}")

@@ -1,4 +1,4 @@
-# 🚀 MarkPresent - Beautiful Markdown to PDF Presentations
+# 🚀 Bodh - Beautiful Markdown to PDF Presentations
 
 Transform your markdown into stunning professional presentations with just a few clicks.
 
@@ -58,37 +58,37 @@ http://localhost:5000
 ### Basic Usage
 ```bash
 # Basic usage
-python markpresent.py presentation.md
+python bodh.py presentation.md
 
 # With custom theme and font
-python markpresent.py slides.md -t modern -f "Inter" -s 22
+python bodh.py slides.md -t modern -f "Inter" -s 22
 
 # With logo
-python markpresent.py slides.md -t gradient -l logo.png -p top-right
+python bodh.py slides.md -t gradient -l logo.png -p top-right
 ```
 
 ### Configuration Files
 ```bash
 # Create sample configuration
-python markpresent.py --create-config
+python bodh.py --create-config
 
 # Use specific configuration
-python markpresent.py slides.md -c configs/minimal.yml
+python bodh.py slides.md -c configs/minimal.yml
 
 # Override config with CLI arguments
-python markpresent.py slides.md -c config.yml -t dark -f "Roboto"
+python bodh.py slides.md -c config.yml -t dark -f "Roboto"
 
-# Auto-detect default config (markpresent.yml)
-python markpresent.py slides.md -v
+# Auto-detect default config (bodh.yml)
+python bodh.py slides.md -v
 ```
 
 ### Available Options
 ```bash
 # See all options
-python markpresent.py --help
+python bodh.py --help
 
 # List available themes
-python markpresent.py --list-themes
+python bodh.py --list-themes
 ```
 
 ## 📋 Markdown Format
@@ -120,7 +120,7 @@ Questions?
 
 ### Configuration System
 - **YAML Configuration**: Full support for configuration files
-- **Auto-detection**: Automatically finds `markpresent.yml` in current directory
+- **Auto-detection**: Automatically finds `bodh.yml` in current directory
 - **CLI Overrides**: Command line arguments override config values
 - **Example Configs**: Minimal, presentation, and academic styles included
 
@@ -149,9 +149,9 @@ Questions?
 
 ### Project Structure
 ```
-MarkPresent/
+Bodh/
 ├── app.py              # Web UI server
-├── markpresent.py      # Core presentation generator
+├── bodh.py             # Core presentation generator
 ├── themes/             # JSON theme configurations
 ├── templates/          # HTML templates
 ├── static/             # CSS and JavaScript
@@ -174,7 +174,7 @@ MarkPresent/
 --no-reload     Disable auto-reload
 ```
 
-### CLI Tool (`markpresent.py`)
+### CLI Tool (`bodh.py`)
 ```bash
 -t, --theme     Theme name (default: default)
 -f, --font      Font family (default: Inter)

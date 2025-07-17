@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MarkPresent Web UI - Beautiful web interface for markdown to PDF presentations
+Bodh Web UI - Beautiful web interface for markdown to PDF presentations
 """
 
 from flask import Flask, render_template, request, jsonify, send_file, flash, redirect, url_for
@@ -11,7 +11,7 @@ from pathlib import Path
 import json
 import argparse
 from werkzeug.utils import secure_filename
-from markpresent import MarkdownToPDF, ThemeLoader
+from bodh import MarkdownToPDF, ThemeLoader
 import traceback
 
 app = Flask(__name__)
@@ -156,7 +156,7 @@ def upload_file():
         return jsonify({'error': str(e)}), 500
 
 def main():
-    parser = argparse.ArgumentParser(description='MarkPresent Web UI - Beautiful presentation generator')
+    parser = argparse.ArgumentParser(description='Bodh Web UI - Beautiful presentation generator')
     parser.add_argument('-p', '--port', type=int, default=5000, help='Port to run the server on (default: 5000)')
     parser.add_argument('--host', default='0.0.0.0', help='Host to bind to (default: 0.0.0.0)')
     parser.add_argument('-d', '--debug', action='store_true', help='Enable debug mode')
@@ -164,7 +164,7 @@ def main():
     
     args = parser.parse_args()
     
-    print(f"🚀 Starting MarkPresent Web UI...")
+    print(f"🚀 Starting Bodh Web UI...")
     print(f"📍 Server: http://localhost:{args.port}")
     print(f"🎨 Themes: {len(theme_loader.list_themes())} available")
     print(f"📝 Ready to create beautiful presentations!")
@@ -178,7 +178,7 @@ def main():
             use_reloader=not args.no_reload if args.debug else False
         )
     except KeyboardInterrupt:
-        print("\n👋 Thanks for using MarkPresent!")
+        print("\n👋 Thanks for using Bodh!")
     except Exception as e:
         print(f"❌ Error starting server: {e}")
 

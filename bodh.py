@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-MarkPresent - Modular Markdown to PDF Presentation Tool
+Bodh - Modular Markdown to PDF Presentation Tool
 """
 
 import argparse
@@ -361,7 +361,7 @@ Examples:
     args = parser.parse_args()
     
     if args.create_config:
-        config_file = args.config or 'markpresent.yml'
+        config_file = args.config or 'bodh.yml'
         create_sample_config(config_file)
         return
     
@@ -372,7 +372,7 @@ Examples:
         print("-" * 50)
         for theme in themes:
             print(f"  {theme['name']:12} - {theme['description']}")
-        print("\nUsage: python markpresent.py input.md -t THEME_NAME")
+        print("\nUsage: python bodh.py input.md -t THEME_NAME")
         return
     
     if not args.input:
@@ -384,10 +384,10 @@ Examples:
         
         # Check for default config files
         default_configs = [
-            'markpresent.yml',
-            'markpresent.yaml',
-            '.markpresent.yml',
-            '.markpresent.yaml'
+            'bodh.yml',
+            'bodh.yaml',
+            '.bodh.yml',
+            '.bodh.yaml'
         ]
         
         config_file = args.config
