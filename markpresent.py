@@ -134,9 +134,15 @@ class MarkdownToPDF:
         {{ css }}
     </style>
 </head>
-<body>
+<body{% if enable_navigation %} class="has-navigation"{% endif %}>
+    {% if enable_navigation %}
+    <div class="keyboard-hint">
+        Use ← → keys or navigation buttons
+    </div>
+    {% endif %}
+    
     {% for slide in slides %}
-    <div class="slide">
+    <div class="slide{% if enable_navigation and loop.first %} active{% endif %}">
         {% if logo_data %}
         <div class="logo logo-{{ logo_position }}">
             <img src="data:image/png;base64,{{ logo_data }}" alt="Logo">
@@ -148,6 +154,83 @@ class MarkdownToPDF:
     </div>
     {% if not loop.last %}<div class="page-break"></div>{% endif %}
     {% endfor %}
+    
+    {% if enable_navigation %}
+    <div class="slide-nav">
+        <button class="nav-btn" id="prev-btn" onclick="previousSlide()">←</button>
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">{{ slides|length }}</span>
+        </div>
+        <div class="slide-dots" id="slide-dots">
+            {% for slide in slides %}
+            <div class="dot{% if loop.first %} active{% endif %}" onclick="goToSlide({{ loop.index0 }})"></div>
+            {% endfor %}
+        </div>
+        <button class="nav-btn" id="next-btn" onclick="nextSlide()">→</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = {{ slides|length }};
+        
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            
+            if (n >= totalSlides) currentSlide = 0;
+            if (n < 0) currentSlide = totalSlides - 1;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            document.getElementById('prev-btn').disabled = currentSlide === 0;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
+        }
+        
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+        
+        function previousSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+        
+        function goToSlide(n) {
+            currentSlide = n;
+            showSlide(currentSlide);
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                goToSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                goToSlide(totalSlides - 1);
+            }
+        });
+        
+        // Initialize
+        showSlide(0);
+    </script>
+    {% endif %}
 </body>
 </html>
         """)
