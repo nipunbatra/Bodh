@@ -31,68 +31,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        playwright install-deps chromium
         playwright install chromium
     
-    - name: Create docs directory
+    - name: Generate examples
       run: |
-        mkdir -p docs/examples
-        mkdir -p docs/pdfs
-    
-    - name: Generate HTML examples
-      run: |
-        # Generate HTML previews for different themes
-        themes=("modern" "minimal" "gradient" "dark" "default" "sky" "solarized" "moon")
-        
-        for theme in "${themes[@]}"; do
-          echo "Generating HTML for theme: $theme"
-          
-          # Create HTML preview
-          python -c "
-from bodh import MarkdownToPDF
-import os
-
-# Read showcase content
-with open('examples/showcase.md', 'r') as f:
-    content = f.read()
-
-# Create converter
-converter = MarkdownToPDF(theme='$theme', font_family='Inter', font_size=20)
-
-# Parse slides
-slides = converter.parse_markdown_slides(content)
-
-# Generate HTML with navigation
-html_content = converter.template.render(
-    title='Bodh Showcase - $theme Theme',
-    slides=slides,
-    css=converter.css,
-    font_family='Inter',
-    logo_data=None,
-    logo_position='top-right',
-    enable_navigation=True,
-    show_arrows=True,
-    show_dots=True,
-    show_slide_numbers=True,
-    slide_number_format='{current}/{total}'
-)
-
-# Write HTML file
-with open('docs/examples/showcase-$theme.html', 'w') as f:
-    f.write(html_content)
-
-print('Generated HTML for $theme theme')
-"
-        done
-    
-    - name: Generate PDF examples
-      run: |
-        # Generate PDFs for different themes
-        themes=("modern" "minimal" "gradient" "dark")
-        
-        for theme in "${themes[@]}"; do
-          echo "Generating PDF for theme: $theme"
-          python bodh.py examples/showcase.md -t $theme -o docs/pdfs/showcase-$theme.pdf
-        done
+        python generate_examples.py
     
     - name: Create index page
       run: |
