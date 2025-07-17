@@ -12,6 +12,8 @@ from jinja2 import Template
 from xhtml2pdf import pisa
 import json
 import base64
+import yaml
+from config import PresentationConfig, load_config, create_sample_config
 
 
 class ThemeLoader:
@@ -75,24 +77,35 @@ class StyleGenerator:
 
 class MarkdownToPDF:
     def __init__(self, theme='default', font_family='Inter', font_size=20, 
-                 logo_path=None, logo_position='top-right'):
-        self.theme_name = theme
-        self.font_family = font_family
-        self.font_size = font_size
-        self.logo_path = logo_path
-        self.logo_position = logo_position
-        self.slide_separator = "---"
+                 logo_path=None, logo_position='top-right', config=None):
+        # Use config if provided, otherwise use individual parameters
+        if config:
+            self.config = config
+            self.theme_name = config.get('theme', 'default')
+            self.font_family = config.get('font.family', 'Inter')
+            self.font_size = config.get('font.size', 20)
+            self.logo_path = config.get('logo.source')
+            self.logo_position = config.get('logo.location', 'top-right')
+            self.slide_separator = config.get('content.slide_separator', '---')
+        else:
+            self.config = PresentationConfig()
+            self.theme_name = theme
+            self.font_family = font_family
+            self.font_size = font_size
+            self.logo_path = logo_path
+            self.logo_position = logo_position
+            self.slide_separator = "---"
         
         # Initialize components
         self.theme_loader = ThemeLoader()
         self.style_generator = StyleGenerator()
         
         # Load theme
-        self.theme_data = self.theme_loader.load_theme(theme)
+        self.theme_data = self.theme_loader.load_theme(self.theme_name)
         
         # Generate styles
         self.css = self.style_generator.generate_css(
-            self.theme_data, font_family, font_size
+            self.theme_data, self.font_family, self.font_size
         )
         
         self.template = self._get_html_template()
@@ -157,16 +170,27 @@ class MarkdownToPDF:
     
     {% if enable_navigation %}
     <div class="slide-nav">
+        {% if show_arrows %}
         <button class="nav-btn" id="prev-btn" onclick="previousSlide()">←</button>
+        {% endif %}
+        
+        {% if show_slide_numbers %}
         <div class="slide-counter">
-            <span id="current-slide">1</span> / <span id="total-slides">{{ slides|length }}</span>
+            <span id="slide-display">{{ slide_number_format }}</span>
         </div>
+        {% endif %}
+        
+        {% if show_dots %}
         <div class="slide-dots" id="slide-dots">
             {% for slide in slides %}
             <div class="dot{% if loop.first %} active{% endif %}" onclick="goToSlide({{ loop.index0 }})"></div>
             {% endfor %}
         </div>
+        {% endif %}
+        
+        {% if show_arrows %}
         <button class="nav-btn" id="next-btn" onclick="nextSlide()">→</button>
+        {% endif %}
     </div>
 
     <script>
@@ -186,9 +210,28 @@ class MarkdownToPDF:
             slides[currentSlide].classList.add('active');
             dots[currentSlide].classList.add('active');
             
-            document.getElementById('current-slide').textContent = currentSlide + 1;
-            document.getElementById('prev-btn').disabled = currentSlide === 0;
-            document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
+            // Update slide number display
+            const slideDisplay = document.getElementById('slide-display');
+            if (slideDisplay) {
+                const current = currentSlide + 1;
+                const total = totalSlides;
+                const percent = Math.round((current / total) * 100);
+                
+                const format = '{{ slide_number_format }}';
+                const displayText = format
+                    .replace('{current}', current)
+                    .replace('{total}', total)
+                    .replace('{percent}', percent);
+                
+                slideDisplay.textContent = displayText;
+            }
+            
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (prevBtn) prevBtn.disabled = currentSlide === 0;
+            if (nextBtn) nextBtn.disabled = currentSlide === totalSlides - 1;
         }
         
         function nextSlide() {
@@ -264,7 +307,11 @@ class MarkdownToPDF:
             font_family=self.font_family,
             logo_data=logo_data,
             logo_position=self.logo_position,
-            enable_navigation=False
+            enable_navigation=False,
+            show_arrows=False,
+            show_dots=False,
+            show_slide_numbers=False,
+            slide_number_format='{current}/{total}'
         )
         
         # Generate PDF
@@ -288,12 +335,14 @@ def main():
 Examples:
   %(prog)s presentation.md                    # Basic usage
   %(prog)s slides.md -t dark -f "Roboto"     # Dark theme with custom font
-  %(prog)s demo.md -l logo.png -p bottom-left # With logo
+  %(prog)s demo.md -c config.yml             # Using configuration file
+  %(prog)s --create-config                   # Create sample config
   %(prog)s --list-themes                      # Show available themes
         """
     )
     
     parser.add_argument('input', nargs='?', help='Input markdown file')
+    parser.add_argument('-c', '--config', help='Configuration file (YAML)')
     parser.add_argument('-o', '--output', help='Output PDF file (optional)')
     parser.add_argument('-t', '--theme', default='default', 
                        help='Theme name (default: default)')
@@ -307,8 +356,14 @@ Examples:
                        default='top-right', help='Logo position (default: top-right)')
     parser.add_argument('-v', '--verbose', action='store_true', help='Verbose output')
     parser.add_argument('--list-themes', action='store_true', help='List available themes')
+    parser.add_argument('--create-config', action='store_true', help='Create sample configuration file')
     
     args = parser.parse_args()
+    
+    if args.create_config:
+        config_file = args.config or 'markpresent.yml'
+        create_sample_config(config_file)
+        return
     
     if args.list_themes:
         theme_loader = ThemeLoader()
@@ -321,25 +376,65 @@ Examples:
         return
     
     if not args.input:
-        parser.error("Input markdown file is required (unless using --list-themes)")
+        parser.error("Input markdown file is required (unless using --list-themes or --create-config)")
     
     try:
-        converter = MarkdownToPDF(
-            theme=args.theme,
-            font_family=args.font,
-            font_size=args.size,
-            logo_path=args.logo,
-            logo_position=args.position
-        )
+        # Load configuration
+        config = None
+        
+        # Check for default config files
+        default_configs = [
+            'markpresent.yml',
+            'markpresent.yaml',
+            '.markpresent.yml',
+            '.markpresent.yaml'
+        ]
+        
+        config_file = args.config
+        if not config_file:
+            # Look for default config files
+            for default_file in default_configs:
+                if os.path.exists(default_file):
+                    config_file = default_file
+                    break
+        
+        if config_file:
+            config = load_config(config_file)
+            # Override config with command line arguments
+            if args.theme != 'default':
+                config.set('theme', args.theme)
+            if args.font != 'Inter':
+                config.set('font.family', args.font)
+            if args.size != 20:
+                config.set('font.size', args.size)
+            if args.logo:
+                config.set('logo.source', args.logo)
+            if args.position != 'top-right':
+                config.set('logo.location', args.position)
+            
+            converter = MarkdownToPDF(config=config)
+        else:
+            converter = MarkdownToPDF(
+                theme=args.theme,
+                font_family=args.font,
+                font_size=args.size,
+                logo_path=args.logo,
+                logo_position=args.position
+            )
         
         output_file = converter.convert_to_pdf(args.input, args.output)
         
         if args.verbose:
             print(f"Successfully converted {args.input} to {output_file}")
-            print(f"Theme: {args.theme} ({converter.theme_data['name']})")
-            print(f"Font: {args.font} ({args.size}px)")
-            if args.logo:
-                print(f"Logo: {args.logo} ({args.position})")
+            print(f"Theme: {converter.theme_name} ({converter.theme_data['name']})")
+            print(f"Font: {converter.font_family} ({converter.font_size}px)")
+            if converter.logo_path:
+                print(f"Logo: {converter.logo_path} ({converter.logo_position})")
+            if config_file:
+                print(f"Configuration: {config_file}")
+            if config:
+                slide_format = config.get('slide_number.format', 'current/total')
+                print(f"Slide numbering: {slide_format}")
         else:
             print(f"Generated: {output_file}")
             

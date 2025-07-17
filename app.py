@@ -70,7 +70,11 @@ def preview_slides():
                 font_family=font_family,
                 logo_data=None,
                 logo_position='top-right',
-                enable_navigation=True
+                enable_navigation=True,
+                show_arrows=True,
+                show_dots=True,
+                show_slide_numbers=True,
+                slide_number_format='{current}/{total}'
             )
             
             return jsonify({

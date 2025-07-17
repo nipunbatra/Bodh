@@ -1,0 +1,29 @@
+# MarkPresent Configuration - Minimal Style
+# Ultra-clean presentation with minimal navigation
+
+theme: minimal
+font:
+  family: Inter
+  size: 24
+
+slide_number:
+  enabled: true
+  format: current  # Just show current slide number
+  position: bottom-right
+
+navigation:
+  enabled: true
+  show_arrows: false     # No arrow buttons
+  show_dots: true        # Only dots for navigation
+  show_progress: false   # No progress bar
+  keyboard_shortcuts: true
+
+style:
+  shadows: false
+  rounded_corners: false
+  animations: false      # No animations for minimal feel
+  slide_padding: 5rem    # Extra padding for minimal look
+
+logo:
+  location: top-left
+  size: 80

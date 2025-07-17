@@ -1,0 +1,36 @@
+# MarkPresent Configuration File
+# https://github.com/nipunbatra/MarkPresent
+
+content:
+  slide_separator: '---'
+  thank_you_slide: false
+  title_slide: true
+font:
+  family: Inter
+  size: 20
+logo:
+  location: top-right
+  size: 100
+  source: null
+navigation:
+  enabled: true
+  keyboard_shortcuts: true
+  show_arrows: true
+  show_dots: true
+  show_progress: true
+output:
+  filename: null
+  format: pdf
+  orientation: landscape
+  page_size: A4
+slide_number:
+  enabled: true
+  format: current/total
+  position: bottom-right
+style:
+  animations: true
+  element_margin: 1.5rem
+  rounded_corners: false
+  shadows: false
+  slide_padding: 3rem
+theme: modern
