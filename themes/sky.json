@@ -1,0 +1,28 @@
+{
+  "name": "Sky",
+  "description": "Light blue modern theme",
+  "colors": {
+    "background": "#f0f8ff",
+    "text": "#2c3e50",
+    "heading": "#1e3a8a",
+    "accent": "#3b82f6",
+    "secondary": "#64748b",
+    "code_bg": "#e0f2fe",
+    "quote_bg": "#dbeafe",
+    "border": "#bfdbfe"
+  },
+  "typography": {
+    "body_weight": "400",
+    "heading_weight": "600",
+    "line_height": "1.7"
+  },
+  "spacing": {
+    "slide_padding": "3rem",
+    "element_margin": "1.5rem"
+  },
+  "effects": {
+    "shadows": false,
+    "rounded_corners": false,
+    "gradients": false
+  }
+}

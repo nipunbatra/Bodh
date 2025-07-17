@@ -1,0 +1,28 @@
+{
+  "name": "Modern",
+  "description": "Slides.com inspired clean design with Inter font",
+  "colors": {
+    "background": "#ffffff",
+    "text": "#2d3748",
+    "heading": "#1a202c",
+    "accent": "#1baee1",
+    "secondary": "#718096",
+    "code_bg": "#f8fafc",
+    "quote_bg": "#f7fafc",
+    "border": "#e2e8f0"
+  },
+  "typography": {
+    "body_weight": "400",
+    "heading_weight": "500",
+    "line_height": "1.6"
+  },
+  "spacing": {
+    "slide_padding": "4rem",
+    "element_margin": "2rem"
+  },
+  "effects": {
+    "shadows": false,
+    "rounded_corners": false,
+    "gradients": false
+  }
+}

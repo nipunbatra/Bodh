@@ -1,0 +1,28 @@
+{
+  "name": "Solarized",
+  "description": "Warm, eye-friendly colors inspired by Solarized",
+  "colors": {
+    "background": "#fdf6e3",
+    "text": "#657b83",
+    "heading": "#b58900",
+    "accent": "#d33682",
+    "secondary": "#93a1a1",
+    "code_bg": "#eee8d5",
+    "quote_bg": "#eee8d5",
+    "border": "#e3d7bf"
+  },
+  "typography": {
+    "body_weight": "400",
+    "heading_weight": "600",
+    "line_height": "1.6"
+  },
+  "spacing": {
+    "slide_padding": "3rem",
+    "element_margin": "1.5rem"
+  },
+  "effects": {
+    "shadows": false,
+    "rounded_corners": false,
+    "gradients": false
+  }
+}

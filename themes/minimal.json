@@ -1,0 +1,28 @@
+{
+  "name": "Minimal",
+  "description": "Ultra-clean minimal design with generous spacing",
+  "colors": {
+    "background": "#fafafa",
+    "text": "#333333",
+    "heading": "#1a1a1a",
+    "accent": "#ff6b6b",
+    "secondary": "#666666",
+    "code_bg": "#f5f5f5",
+    "quote_bg": "#f0f0f0",
+    "border": "#e0e0e0"
+  },
+  "typography": {
+    "body_weight": "300",
+    "heading_weight": "300",
+    "line_height": "1.8"
+  },
+  "spacing": {
+    "slide_padding": "5rem",
+    "element_margin": "3rem"
+  },
+  "effects": {
+    "shadows": false,
+    "rounded_corners": false,
+    "gradients": false
+  }
+}

@@ -1,0 +1,390 @@
+@page {
+    size: A4 landscape;
+    margin: 1.5cm;
+}
+
+@media print {
+    .slide {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+}
+
+body {
+    font-family: '{{ font_family }}', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: {{ theme.typography.line_height }};
+    color: {{ theme.colors.text }};
+    background: {{ theme.colors.background }};
+    margin: 0;
+    padding: 0;
+    font-size: {{ font_size }}px;
+    font-weight: {{ theme.typography.body_weight }};
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.slide {
+    min-height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: {{ theme.spacing.slide_padding }};
+    box-sizing: border-box;
+    background: {{ theme.colors.background }};
+    position: relative;
+    overflow: hidden;
+}
+
+.slide-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+/* Logo positioning */
+.logo {
+    position: absolute;
+    z-index: 100;
+}
+
+.logo img {
+    max-width: 100px;
+    max-height: 60px;
+    opacity: 0.8;
+}
+
+.logo-top-left {
+    top: 2rem;
+    left: 2rem;
+}
+
+.logo-top-right {
+    top: 2rem;
+    right: 2rem;
+}
+
+.logo-bottom-left {
+    bottom: 2rem;
+    left: 2rem;
+}
+
+.logo-bottom-right {
+    bottom: 2rem;
+    right: 2rem;
+}
+
+/* Typography - Reveal.js inspired */
+h1 {
+    color: {{ theme.colors.heading }};
+    font-size: 3.5em;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-weight: {{ theme.typography.heading_weight }};
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    {% if theme.effects.shadows %}
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    {% endif %}
+}
+
+h2 {
+    color: {{ theme.colors.heading }};
+    font-size: 2.6em;
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+    font-weight: {{ theme.typography.heading_weight }};
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    {% if theme.effects.shadows %}
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    {% endif %}
+}
+
+h3 {
+    color: {{ theme.colors.heading }};
+    font-size: 1.8em;
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    font-weight: {{ theme.typography.heading_weight }};
+    line-height: 1.4;
+}
+
+h4 {
+    color: {{ theme.colors.heading }};
+    font-size: 1.4em;
+    margin-bottom: 0.8rem;
+    margin-top: 1.2rem;
+    font-weight: {{ theme.typography.heading_weight }};
+    line-height: 1.4;
+}
+
+p {
+    font-size: 1.2em;
+    margin-bottom: {{ theme.spacing.element_margin }};
+    text-align: justify;
+}
+
+/* Lists */
+ul, ol {
+    font-size: 1.1em;
+    margin-bottom: {{ theme.spacing.element_margin }};
+    padding-left: 2.5rem;
+}
+
+li {
+    margin-bottom: 0.8rem;
+    line-height: 1.8;
+}
+
+li::marker {
+    color: {{ theme.colors.accent }};
+    font-weight: 600;
+}
+
+/* Blockquotes - Slides.com inspired */
+blockquote {
+    background: {{ theme.colors.quote_bg }};
+    margin: 3rem 0;
+    padding: 3rem;
+    font-style: italic;
+    font-size: 1.5em;
+    {% if theme.effects.rounded_corners %}
+    border-radius: 16px;
+    {% endif %}
+    text-align: center;
+    position: relative;
+    {% if theme.effects.shadows %}
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    {% endif %}
+}
+
+blockquote::before {
+    content: '"';
+    font-size: 5em;
+    color: {{ theme.colors.accent }};
+    position: absolute;
+    top: -1rem;
+    left: 1.5rem;
+    font-family: 'Times New Roman', serif;
+    opacity: 0.3;
+    font-weight: 700;
+}
+
+blockquote p {
+    margin-bottom: 0;
+    font-weight: 300;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+}
+
+/* Code */
+code {
+    background: {{ theme.colors.code_bg }};
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    font-size: 0.9em;
+    color: {{ theme.colors.accent }};
+    font-weight: 500;
+}
+
+pre {
+    background: {{ theme.colors.code_bg }};
+    padding: 2rem;
+    {% if theme.effects.rounded_corners %}
+    border-radius: 16px;
+    {% endif %}
+    overflow-x: auto;
+    font-size: 0.95em;
+    margin: 2rem 0;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+    {% if theme.effects.shadows %}
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    {% endif %}
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    color: {{ theme.colors.text }};
+    font-weight: 400;
+}
+
+/* Text formatting */
+strong {
+    color: {{ theme.colors.accent }};
+    font-weight: 700;
+}
+
+em {
+    color: {{ theme.colors.accent }};
+    font-style: italic;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 2rem auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Tables - Modern design */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2.5rem 0;
+    font-size: 1em;
+    {% if theme.effects.rounded_corners %}
+    border-radius: 16px;
+    {% endif %}
+    overflow: hidden;
+    {% if theme.effects.shadows %}
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    {% endif %}
+}
+
+th, td {
+    padding: 1.2rem;
+    text-align: left;
+    border: none;
+}
+
+th {
+    background-color: {{ theme.colors.accent }};
+    color: {{ theme.colors.background }};
+    font-weight: 600;
+    font-size: 1.1em;
+}
+
+tr:nth-child(even) {
+    background-color: {{ theme.colors.quote_bg }};
+}
+
+td {
+    border-bottom: 1px solid {{ theme.colors.border }};
+}
+
+/* Utility classes */
+.center {
+    text-align: center;
+}
+
+.large {
+    font-size: 1.5em;
+}
+
+.highlight {
+    background-color: {{ theme.colors.accent }};
+    color: {{ theme.colors.background }};
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+/* Slide Navigation */
+.slide-nav {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.nav-btn {
+    background: {{ theme.colors.accent }};
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.nav-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.slide-counter {
+    color: white;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.slide-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dot.active {
+    background: {{ theme.colors.accent }};
+    transform: scale(1.2);
+}
+
+/* Hide all slides by default */
+.slide {
+    display: none;
+}
+
+.slide.active {
+    display: flex;
+}
+
+/* Keyboard navigation hint */
+.keyboard-hint {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 12px;
+    z-index: 1000;
+    opacity: 0.8;
+}
+
+@media print {
+    .slide-nav,
+    .keyboard-hint {
+        display: none;
+    }
+    
+    .slide {
+        display: flex !important;
+    }
+}

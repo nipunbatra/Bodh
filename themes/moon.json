@@ -1,0 +1,28 @@
+{
+  "name": "Moon",
+  "description": "Dark blue space-inspired theme",
+  "colors": {
+    "background": "#1a202c",
+    "text": "#e2e8f0",
+    "heading": "#63b3ed",
+    "accent": "#ed8936",
+    "secondary": "#a0aec0",
+    "code_bg": "#2d3748",
+    "quote_bg": "#2d3748",
+    "border": "#4a5568"
+  },
+  "typography": {
+    "body_weight": "300",
+    "heading_weight": "600",
+    "line_height": "1.7"
+  },
+  "spacing": {
+    "slide_padding": "3rem",
+    "element_margin": "1.8rem"
+  },
+  "effects": {
+    "shadows": false,
+    "rounded_corners": false,
+    "gradients": false
+  }
+}

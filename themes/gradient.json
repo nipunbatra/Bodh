@@ -1,0 +1,28 @@
+{
+  "name": "Gradient",
+  "description": "Reveal.js inspired gradient background theme",
+  "colors": {
+    "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    "text": "#ffffff",
+    "heading": "#ffffff",
+    "accent": "#ffd700",
+    "secondary": "#e2e8f0",
+    "code_bg": "rgba(255, 255, 255, 0.1)",
+    "quote_bg": "rgba(255, 255, 255, 0.05)",
+    "border": "rgba(255, 255, 255, 0.2)"
+  },
+  "typography": {
+    "body_weight": "300",
+    "heading_weight": "600",
+    "line_height": "1.7"
+  },
+  "spacing": {
+    "slide_padding": "4rem",
+    "element_margin": "2rem"
+  },
+  "effects": {
+    "shadows": true,
+    "rounded_corners": true,
+    "gradients": true
+  }
+}

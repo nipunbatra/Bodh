@@ -1,0 +1,28 @@
+{
+  "name": "Default",
+  "description": "Clean white background with subtle blue accents",
+  "colors": {
+    "background": "#ffffff",
+    "text": "#2d3748",
+    "heading": "#1a365d",
+    "accent": "#2b6cb0",
+    "secondary": "#718096",
+    "code_bg": "#f7fafc",
+    "quote_bg": "#edf2f7",
+    "border": "#e2e8f0"
+  },
+  "typography": {
+    "body_weight": "400",
+    "heading_weight": "600",
+    "line_height": "1.6"
+  },
+  "spacing": {
+    "slide_padding": "3rem",
+    "element_margin": "1.5rem"
+  },
+  "effects": {
+    "shadows": false,
+    "rounded_corners": false,
+    "gradients": false
+  }
+}
