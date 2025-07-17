@@ -348,11 +348,14 @@ def create_presentation():
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 
-                // Show PDF in iframe
-                this.previewIframe.src = url;
-                this.slideCount.textContent = 'PDF Preview';
-                this.previewSection.classList.add('active');
-                this.showNotification('PDF preview generated!', 'success');
+                // Open PDF in new tab instead of iframe
+                window.open(url, '_blank');
+                this.showNotification('PDF preview opened in new tab!', 'success');
+                
+                // Clean up the blob URL after a delay
+                setTimeout(() => {
+                    window.URL.revokeObjectURL(url);
+                }, 1000);
             } else {
                 const error = await response.json();
                 this.showNotification(error.error || 'PDF preview failed', 'error');

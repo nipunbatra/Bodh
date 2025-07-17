@@ -9,11 +9,20 @@ import sys
 from pathlib import Path
 import markdown
 from jinja2 import Template
-from xhtml2pdf import pisa
 import json
 import base64
 import yaml
 from config import PresentationConfig, load_config, create_sample_config
+try:
+    from playwright.sync_api import sync_playwright
+    PDF_BACKEND = 'playwright'
+except ImportError:
+    try:
+        from weasyprint import HTML, CSS
+        PDF_BACKEND = 'weasyprint'
+    except ImportError:
+        from xhtml2pdf import pisa
+        PDF_BACKEND = 'xhtml2pdf'
 
 
 class ThemeLoader:
@@ -318,11 +327,40 @@ class MarkdownToPDF:
         if output_file is None:
             output_file = f"{title}.pdf"
         
-        with open(output_file, 'wb') as pdf_file:
-            pisa_status = pisa.CreatePDF(html_content, dest=pdf_file)
-            
-        if pisa_status.err:
-            raise Exception("PDF generation failed")
+        if PDF_BACKEND == 'playwright':
+            # Use Playwright (Chrome) for best PDF quality - identical to HTML preview
+            with sync_playwright() as p:
+                browser = p.chromium.launch()
+                page = browser.new_page()
+                page.set_content(html_content, wait_until='networkidle')
+                
+                # PDF options for presentation format
+                page.pdf(
+                    path=output_file,
+                    format='A4',
+                    landscape=True,
+                    margin={'top': '1cm', 'bottom': '1cm', 'left': '1cm', 'right': '1cm'},
+                    print_background=True,
+                    prefer_css_page_size=True
+                )
+                browser.close()
+        elif PDF_BACKEND == 'weasyprint':
+            # Use WeasyPrint for better CSS support and quality
+            html_doc = HTML(string=html_content, base_url='.')
+            html_doc.write_pdf(output_file, optimize_size=('fonts', 'images'))
+        else:
+            # Fallback to xhtml2pdf
+            with open(output_file, 'wb') as pdf_file:
+                pisa_status = pisa.CreatePDF(
+                    html_content, 
+                    dest=pdf_file,
+                    encoding='utf-8',
+                    show_error_as_pdf=True,
+                    default_css_media_type='print'
+                )
+                
+            if pisa_status.err:
+                raise Exception("PDF generation failed")
         
         return output_file
 
@@ -426,6 +464,7 @@ Examples:
         
         if args.verbose:
             print(f"Successfully converted {args.input} to {output_file}")
+            print(f"PDF Backend: {PDF_BACKEND}")
             print(f"Theme: {converter.theme_name} ({converter.theme_data['name']})")
             print(f"Font: {converter.font_family} ({converter.font_size}px)")
             if converter.logo_path:
@@ -436,7 +475,7 @@ Examples:
                 slide_format = config.get('slide_number.format', 'current/total')
                 print(f"Slide numbering: {slide_format}")
         else:
-            print(f"Generated: {output_file}")
+            print(f"Generated: {output_file} (using {PDF_BACKEND})")
             
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)

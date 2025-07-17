@@ -1,12 +1,27 @@
 @page {
     size: A4 landscape;
     margin: 1.5cm;
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    background: {{ theme.colors.background }};
 }
 
 @media print {
+    * {
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+    
     .slide {
         page-break-inside: avoid;
         break-inside: avoid;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+    }
+    
+    body {
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
     }
 }
 

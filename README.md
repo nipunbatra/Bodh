@@ -143,10 +143,12 @@ Questions?
 - Images
 
 ### PDF Generation
-- High-quality PDF output
+- **High-quality PDF output** using Chrome's PDF engine (Playwright)
+- **Identical quality to HTML preview** - full CSS support, gradients, shadows, animations
 - Landscape A4 format
 - Print-ready quality
 - Consistent typography
+- **Fallback support** for WeasyPrint and xhtml2pdf if Playwright unavailable
 
 ## 🛠️ Development
 
