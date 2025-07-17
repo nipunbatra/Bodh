@@ -55,6 +55,7 @@ http://localhost:5000
 
 ## 📝 Command Line Usage
 
+### Basic Usage
 ```bash
 # Basic usage
 python markpresent.py presentation.md
@@ -64,9 +65,30 @@ python markpresent.py slides.md -t modern -f "Inter" -s 22
 
 # With logo
 python markpresent.py slides.md -t gradient -l logo.png -p top-right
+```
 
+### Configuration Files
+```bash
+# Create sample configuration
+python markpresent.py --create-config
+
+# Use specific configuration
+python markpresent.py slides.md -c configs/minimal.yml
+
+# Override config with CLI arguments
+python markpresent.py slides.md -c config.yml -t dark -f "Roboto"
+
+# Auto-detect default config (markpresent.yml)
+python markpresent.py slides.md -v
+```
+
+### Available Options
+```bash
 # See all options
 python markpresent.py --help
+
+# List available themes
+python markpresent.py --list-themes
 ```
 
 ## 📋 Markdown Format
@@ -96,10 +118,17 @@ Questions?
 
 ## 🎯 Features in Detail
 
+### Configuration System
+- **YAML Configuration**: Full support for configuration files
+- **Auto-detection**: Automatically finds `markpresent.yml` in current directory
+- **CLI Overrides**: Command line arguments override config values
+- **Example Configs**: Minimal, presentation, and academic styles included
+
 ### Slide Navigation
 - **Keyboard**: Arrow keys, Space, Home, End
 - **Mouse**: Click navigation buttons or dots
 - **Touch**: Swipe on mobile devices
+- **Slide Numbers**: Multiple formats (1, 1/10, 10, 10%)
 
 ### Supported Markdown
 - Headers (H1-H6)
