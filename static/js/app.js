@@ -69,7 +69,7 @@ class PresentationApp {
     }
 
     async loadExample() {
-        const exampleContent = `# 🚀 Welcome to MarkPresent!
+        const exampleContent = `# 🚀 Welcome to Bodh!
 ## Beautiful Presentations Made Easy
 
 Transform your markdown into stunning PDFs
@@ -126,7 +126,7 @@ Click the generate button to download your presentation
 ### Code Blocks
 \`\`\`python
 def create_presentation():
-    return "Beautiful slides with mkpred!"
+    return "Beautiful slides with Bodh!"
 \`\`\`
 
 ---
@@ -135,7 +135,7 @@ def create_presentation():
 
 **Edit this content** and click Preview to see your presentation come to life!
 
-*Happy presenting with MarkPresent!*`;
+*Happy presenting with Bodh!*`;
 
         this.editor.value = exampleContent;
     }

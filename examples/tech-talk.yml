@@ -1,0 +1,35 @@
+# Tech Talk Config - Perfect for developer presentations
+# Dark theme with full navigation and progress
+
+theme: dark
+font:
+  family: "Fira Code"
+  size: 18
+
+slide_number:
+  enabled: true
+  format: current/total   # Show "1/25" format
+  position: bottom-right
+
+navigation:
+  enabled: true
+  show_arrows: true
+  show_dots: true
+  show_progress: true     # Show progress bar
+  keyboard_shortcuts: true
+
+style:
+  shadows: true
+  rounded_corners: true
+  animations: true
+  slide_padding: 2rem
+
+logo:
+  source: company_logo.png
+  location: top-left
+  size: 100
+
+content:
+  slide_separator: "---"
+  title_slide: true
+  thank_you_slide: true

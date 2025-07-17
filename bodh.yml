@@ -1,0 +1,30 @@
+# Bodh Configuration File
+# https://github.com/nipunbatra/Bodh
+
+theme: modern
+font:
+  family: Inter
+  size: 20
+
+slide_number:
+  enabled: true
+  format: current/total
+  position: bottom-right
+
+navigation:
+  enabled: true
+  show_arrows: true
+  show_dots: true
+  show_progress: true
+  keyboard_shortcuts: true
+
+style:
+  shadows: true
+  rounded_corners: true
+  animations: true
+  slide_padding: 2rem
+
+content:
+  slide_separator: "---"
+  title_slide: true
+  thank_you_slide: true
