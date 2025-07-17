@@ -4,6 +4,19 @@
 
 Transform your markdown into stunning professional presentations with just a few clicks.
 
+## 🎯 **[Live Examples & Demo](https://nipunbatra.github.io/Bodh/)**
+
+See Bodh in action with live HTML previews and downloadable PDFs showcasing all themes:
+
+| Theme | HTML Preview | PDF Download |
+|-------|-------------|--------------|
+| **Modern** | [View HTML](https://nipunbatra.github.io/Bodh/examples/showcase-modern.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/showcase-modern.pdf) |
+| **Minimal** | [View HTML](https://nipunbatra.github.io/Bodh/examples/showcase-minimal.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/showcase-minimal.pdf) |
+| **Gradient** | [View HTML](https://nipunbatra.github.io/Bodh/examples/showcase-gradient.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/showcase-gradient.pdf) |
+| **Dark** | [View HTML](https://nipunbatra.github.io/Bodh/examples/showcase-dark.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/showcase-dark.pdf) |
+
+*Examples are automatically updated with each release*
+
 ## ✨ Features
 
 - **8 Beautiful Themes** - Modern, minimal, gradient, dark, and more
