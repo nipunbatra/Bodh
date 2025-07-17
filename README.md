@@ -1,10 +1,13 @@
 # 🚀 Bodh - Beautiful Markdown to PDF Presentations
 
+**Bodh** (बोध) means "knowledge" or "understanding" in Hindi - the perfect name for a tool that helps you share your insights through beautiful presentations.
+
 Transform your markdown into stunning professional presentations with just a few clicks.
 
 ## ✨ Features
 
 - **8 Beautiful Themes** - Modern, minimal, gradient, dark, and more
+- **Configuration Presets** - Quick setup with predefined styles (Simple, Tech Talk, Academic, etc.)
 - **Live Preview** - See your slides as you type
 - **Slide Navigation** - Next/previous buttons and keyboard controls
 - **PDF Preview** - View your PDF before downloading

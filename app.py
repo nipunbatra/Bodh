@@ -33,6 +33,77 @@ def get_themes():
     themes = theme_loader.list_themes()
     return jsonify(themes)
 
+@app.route('/api/configs')
+def get_configs():
+    """Get available configuration presets"""
+    configs = []
+    
+    # Built-in configs
+    config_dirs = ['configs', 'examples']
+    config_info = {
+        'minimal.yml': {'name': 'Minimal', 'description': 'Clean and simple'},
+        'presentation.yml': {'name': 'Corporate', 'description': 'Professional business style'},
+        'academic.yml': {'name': 'Academic', 'description': 'Educational presentations'},
+        'simple-presentation.yml': {'name': 'Simple', 'description': 'Beginner-friendly'},
+        'tech-talk.yml': {'name': 'Tech Talk', 'description': 'Developer presentations'},
+        'lecture.yml': {'name': 'Lecture', 'description': 'Academic lectures'}
+    }
+    
+    for config_dir in config_dirs:
+        config_path = Path(config_dir)
+        if config_path.exists():
+            for config_file in config_path.glob('*.yml'):
+                filename = config_file.name
+                info = config_info.get(filename, {})
+                configs.append({
+                    'id': f"{config_dir}/{filename}",
+                    'name': info.get('name', filename.replace('.yml', '').title()),
+                    'description': info.get('description', 'Custom configuration'),
+                    'path': str(config_file)
+                })
+    
+    return jsonify(configs)
+
+@app.route('/api/configs/<path:config_id>')
+def get_config(config_id):
+    """Get specific configuration file"""
+    try:
+        config_path = Path(config_id)
+        if not config_path.exists():
+            return jsonify({'error': 'Configuration not found'}), 404
+        
+        from config import load_config
+        config = load_config(str(config_path))
+        
+        # Convert to dict for JSON response
+        config_dict = {
+            'theme': config.get('theme', 'default'),
+            'font': {
+                'family': config.get('font.family', 'Inter'),
+                'size': config.get('font.size', 20)
+            },
+            'slide_number': {
+                'enabled': config.get('slide_number.enabled', True),
+                'format': config.get('slide_number.format', 'current/total'),
+                'position': config.get('slide_number.position', 'bottom-right')
+            },
+            'navigation': {
+                'enabled': config.get('navigation.enabled', True),
+                'show_arrows': config.get('navigation.show_arrows', True),
+                'show_dots': config.get('navigation.show_dots', True),
+                'show_progress': config.get('navigation.show_progress', True)
+            },
+            'logo': {
+                'source': config.get('logo.source'),
+                'location': config.get('logo.location', 'top-right'),
+                'size': config.get('logo.size', 100)
+            }
+        }
+        
+        return jsonify(config_dict)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/preview', methods=['POST'])
 def preview_slides():
     """Generate HTML preview of slides"""

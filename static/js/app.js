@@ -7,6 +7,7 @@ class PresentationApp {
 
     initializeElements() {
         this.editor = document.getElementById('markdown-editor');
+        this.configSelect = document.getElementById('config-select');
         this.themeSelect = document.getElementById('theme-select');
         this.fontSelect = document.getElementById('font-select');
         this.fontSizeSlider = document.getElementById('font-size');
@@ -22,6 +23,9 @@ class PresentationApp {
         this.closePreview = document.getElementById('close-preview');
         this.slideCount = document.getElementById('slide-count');
         this.loadingOverlay = document.getElementById('loading-overlay');
+        
+        // Load available configs
+        this.loadConfigs();
     }
 
     setupEventListeners() {
@@ -29,6 +33,7 @@ class PresentationApp {
             this.fontSizeValue.textContent = e.target.value + 'px';
         });
 
+        this.configSelect.addEventListener('change', () => this.loadConfigPreset());
         this.previewBtn.addEventListener('click', () => this.generatePreview());
         this.generateBtn.addEventListener('click', () => this.generatePDF());
         this.previewPdfBtn.addEventListener('click', () => this.previewPDF());
@@ -138,6 +143,65 @@ def create_presentation():
 *Happy presenting with Bodh!*`;
 
         this.editor.value = exampleContent;
+    }
+
+    async loadConfigs() {
+        try {
+            const response = await fetch('/api/configs');
+            if (response.ok) {
+                const configs = await response.json();
+                
+                // Clear existing options (except default)
+                this.configSelect.innerHTML = '<option value="">Custom (Manual Settings)</option>';
+                
+                // Add config options
+                configs.forEach(config => {
+                    const option = document.createElement('option');
+                    option.value = config.id;
+                    option.textContent = `${config.name} - ${config.description}`;
+                    this.configSelect.appendChild(option);
+                });
+            }
+        } catch (error) {
+            console.error('Failed to load configs:', error);
+        }
+    }
+
+    async loadConfigPreset() {
+        const configId = this.configSelect.value;
+        
+        if (!configId) {
+            // Reset to default values for custom mode
+            this.themeSelect.value = 'modern';
+            this.fontSelect.value = 'Inter';
+            this.fontSizeSlider.value = '20';
+            this.fontSizeValue.textContent = '20px';
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/configs/${configId}`);
+            if (response.ok) {
+                const config = await response.json();
+                
+                // Apply config to UI controls
+                this.themeSelect.value = config.theme || 'modern';
+                this.fontSelect.value = config.font.family || 'Inter';
+                this.fontSizeSlider.value = config.font.size || 20;
+                this.fontSizeValue.textContent = `${config.font.size || 20}px`;
+                
+                // Auto-preview if preview is active
+                if (this.previewSection.classList.contains('active')) {
+                    this.generatePreview();
+                }
+                
+                this.showNotification(`Applied ${this.configSelect.options[this.configSelect.selectedIndex].text.split(' - ')[0]} configuration`, 'success');
+            } else {
+                this.showNotification('Failed to load configuration', 'error');
+            }
+        } catch (error) {
+            this.showNotification('Failed to load configuration: ' + error.message, 'error');
+        }
     }
 
     async handleFileUpload(event) {
