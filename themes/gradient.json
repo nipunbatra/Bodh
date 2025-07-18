@@ -24,5 +24,12 @@
     "shadows": true,
     "rounded_corners": true,
     "gradients": true
+  },
+  "special_features": {
+    "title_hrule": false,
+    "section_hrule": false,
+    "minimal_navigation": false,
+    "clean_bullets": false,
+    "monospace_emphasis": false
   }
 }

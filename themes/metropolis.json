@@ -28,8 +28,11 @@
     "animations": false,
     "transparency": false
   },
-  "layout": {
+  "spacing": {
     "slide_padding": "4rem 5rem",
+    "element_margin": "1.5rem"
+  },
+  "layout": {
     "content_max_width": "100%",
     "heading_spacing": "2rem",
     "element_spacing": "1.5rem"

@@ -87,6 +87,7 @@ def generate_examples():
                 logo_position='top-right',
                 enable_navigation=True,
                 show_arrows=True,
+                config=converter.config,
                 show_dots=True,
                 show_slide_numbers=True,
                 slide_number_format='{current}/{total}'
@@ -171,6 +172,7 @@ def generate_examples():
                 show_arrows=config.get('navigation.show_arrows', True),
                 show_dots=config.get('navigation.show_dots', True),
                 show_slide_numbers=config.get('slide_number.enabled', True),
+                config=config,
                 slide_number_format=_get_slide_number_format(config.get('slide_number.format', 'current/total'))
             )
             
