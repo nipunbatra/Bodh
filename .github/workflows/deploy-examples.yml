@@ -91,8 +91,22 @@ jobs:
     - name: Build Quarto site
       run: |
         echo "📚 Building Quarto documentation site..."
+        echo "💾 Backing up generated examples..."
+        cp -r docs/examples/ examples_backup/ || echo "⚠️ No examples to backup"
+        cp -r docs/pdfs/ pdfs_backup/ || echo "⚠️ No PDFs to backup"
+        
+        echo "🏗️ Building Quarto site..."
         quarto render
-        echo "✅ Quarto site built successfully!"
+        
+        echo "📂 Restoring generated examples..."
+        mkdir -p docs/examples docs/pdfs
+        cp -r examples_backup/* docs/examples/ 2>/dev/null || echo "⚠️ No examples to restore"
+        cp -r pdfs_backup/* docs/pdfs/ 2>/dev/null || echo "⚠️ No PDFs to restore"
+        
+        echo "✅ Quarto site built with examples restored!"
+        echo "📊 Final verification:"
+        ls -la docs/examples/ || echo "❌ No examples directory"
+        ls -la docs/pdfs/ || echo "❌ No pdfs directory"
 
     - name: Setup Pages
       uses: actions/configure-pages@v4

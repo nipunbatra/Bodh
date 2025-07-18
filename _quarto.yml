@@ -1,9 +1,6 @@
 project:
   type: website
   output-dir: docs
-  resources:
-    - docs/examples/
-    - docs/pdfs/
 
 website:
   title: "Bodh - Beautiful Presentations"

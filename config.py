@@ -81,6 +81,12 @@ class PresentationConfig:
                 'enabled': False,
                 'transition': 'fade',  # fade, slide, none
                 'duration': '0.3s'
+            },
+            'math': {
+                'enabled': True,
+                'engine': 'mathjax',  # mathjax, katex
+                'inline_delimiters': [['$', '$'], ['\\(', '\\)']],
+                'display_delimiters': [['$$', '$$'], ['\\[', '\\]']]
             }
         }
     

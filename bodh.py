@@ -151,7 +151,7 @@ class MarkdownToPDF:
                 
                 html_content = markdown.markdown(
                     slide_content.strip(), 
-                    extensions=['fenced_code', 'tables', 'codehilite']
+                    extensions=['fenced_code', 'tables', 'codehilite', 'extra']
                 )
                 slides.append(html_content)
         
@@ -216,6 +216,23 @@ class MarkdownToPDF:
     <meta charset="UTF-8">
     <title>{{ title }}</title>
     <link href="https://fonts.googleapis.com/css2?family={{ font_family.replace(' ', '+') }}:wght@300;400;600;700&display=swap" rel="stylesheet">
+    {% if config.get('math.enabled', True) %}
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    {% endif %}
     <style>
         {{ css }}
     </style>

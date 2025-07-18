@@ -120,6 +120,11 @@ See how different configurations change the presentation experience.
 [View HTML](examples/advanced-features.html){.btn .btn-primary}
 [Download PDF](pdfs/advanced-features.pdf){.btn .btn-secondary}
 
+### LaTeX Mathematics
+**Features:** MathJax support, inline and display math, scientific formulas  
+[View HTML](examples/math-demo.html){.btn .btn-primary}
+[Download PDF](pdfs/math-demo.pdf){.btn .btn-secondary}
+
 ## 🎯 How to Use These Examples
 
 1. **Click "View HTML"** to see the interactive presentation with navigation

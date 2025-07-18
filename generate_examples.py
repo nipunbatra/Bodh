@@ -55,7 +55,8 @@ def generate_examples():
         ('multi-column-demo', 'configs/multi-column-demo.yml'),
         ('overlay-demo', 'configs/overlay-demo.yml'),
         ('metropolis-demo', 'configs/metropolis-demo.yml'),
-        ('advanced-features', 'configs/advanced-demo.yml')
+        ('advanced-features', 'configs/advanced-demo.yml'),
+        ('math-demo', 'configs/math-demo.yml')
     ]
     print(f"⚙️ Will generate {len(config_examples)} configuration examples")
     
@@ -153,6 +154,10 @@ def generate_examples():
                 with open('examples/advanced-features.md', 'r') as f:
                     showcase_content = f.read()
                 print(f"  📖 Using advanced-features.md content")
+            elif example_name == 'math-demo' and os.path.exists('examples/math-demo.md'):
+                with open('examples/math-demo.md', 'r') as f:
+                    showcase_content = f.read()
+                print(f"  📖 Using math-demo.md content")
             
             # Parse slides
             print(f"  📝 Parsing slides...")
