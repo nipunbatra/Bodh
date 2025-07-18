@@ -125,6 +125,11 @@ See how different configurations change the presentation experience.
 [View HTML](examples/math-demo.html){.btn .btn-primary}
 [Download PDF](pdfs/math-demo.pdf){.btn .btn-secondary}
 
+### HR Rule Title Underlines
+**Features:** 80% width horizontal rules under titles, clean styling  
+[View HTML](examples/hrule-demo.html){.btn .btn-primary}
+[Download PDF](pdfs/hrule-demo.pdf){.btn .btn-secondary}
+
 ## 🎯 How to Use These Examples
 
 1. **Click "View HTML"** to see the interactive presentation with navigation

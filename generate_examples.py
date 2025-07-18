@@ -56,7 +56,8 @@ def generate_examples():
         ('overlay-demo', 'configs/overlay-demo.yml'),
         ('metropolis-demo', 'configs/metropolis-demo.yml'),
         ('advanced-features', 'configs/advanced-demo.yml'),
-        ('math-demo', 'configs/math-demo.yml')
+        ('math-demo', 'configs/math-demo.yml'),
+        ('hrule-demo', 'configs/hrule-demo.yml')
     ]
     print(f"⚙️ Will generate {len(config_examples)} configuration examples")
     
@@ -91,7 +92,8 @@ def generate_examples():
                 config=converter.config,
                 show_dots=True,
                 show_slide_numbers=True,
-                slide_number_format='{current}/{total}'
+                slide_number_format='{current}/{total}',
+                initial_slide_number='1'
             )
             print(f"  ✅ Generated {len(html_content)} characters of HTML")
             
@@ -103,19 +105,18 @@ def generate_examples():
             print(f"  ✅ HTML saved: {html_path}")
             html_generated += 1
             
-            # Generate PDF (only for main themes to avoid timeout, and only if Playwright is available)
-            if theme in ['modern', 'minimal', 'gradient', 'dark']:
-                try:
-                    pdf_path = f'docs/pdfs/showcase-{theme}.pdf'
-                    print(f"  📄 Generating PDF: {pdf_path}...")
-                    converter.convert_to_pdf('examples/showcase.md', pdf_path)
-                    print(f"  ✅ PDF generated: {pdf_path}")
-                    pdf_generated += 1
-                except Exception as pdf_error:
-                    print(f"  ⚠️  Warning: Could not generate PDF for {theme}: {pdf_error}")
-                    # Continue without PDF generation
-            else:
-                print(f"  ⏭️  Skipping PDF generation for {theme} (not in main themes)")
+            # Generate PDF for all themes
+            try:
+                pdf_path = f'docs/pdfs/showcase-{theme}.pdf'
+                print(f"  📄 Generating PDF: {pdf_path}...")
+                converter.convert_to_pdf('examples/showcase.md', pdf_path)
+                print(f"  ✅ PDF generated: {pdf_path}")
+                pdf_generated += 1
+            except Exception as pdf_error:
+                print(f"  ⚠️  Warning: Could not generate PDF for {theme}: {pdf_error}")
+                import traceback
+                print(f"  📋 PDF error trace: {traceback.format_exc()}")
+                # Continue without PDF generation
                 
         except Exception as e:
             print(f"  ❌ Error generating {theme}: {e}")
@@ -158,6 +159,10 @@ def generate_examples():
                 with open('examples/math-demo.md', 'r') as f:
                     showcase_content = f.read()
                 print(f"  📖 Using math-demo.md content")
+            elif example_name == 'multi-column-demo' and os.path.exists('examples/multi-column-demo.md'):
+                with open('examples/multi-column-demo.md', 'r') as f:
+                    showcase_content = f.read()
+                print(f"  📖 Using multi-column-demo.md content")
             
             # Parse slides
             print(f"  📝 Parsing slides...")
@@ -166,6 +171,14 @@ def generate_examples():
             
             # Generate HTML
             print(f"  🌐 Generating HTML...")
+            
+            # Calculate initial slide number display
+            slide_format = _get_slide_number_format(config.get('slide_number.format', 'current/total'))
+            initial_slide_number = slide_format.replace('{current}', '1').replace('{total}', str(len(slides)))
+            if '{percent}' in initial_slide_number:
+                initial_percent = round((1 / len(slides)) * 100)
+                initial_slide_number = initial_slide_number.replace('{percent}', str(initial_percent))
+            
             html_content = converter.template.render(
                 title=f'Bodh {example_name.replace("-", " ").title()} Demo',
                 slides=slides,
@@ -178,7 +191,8 @@ def generate_examples():
                 show_dots=config.get('navigation.show_dots', True),
                 show_slide_numbers=config.get('slide_number.enabled', True),
                 config=config,
-                slide_number_format=_get_slide_number_format(config.get('slide_number.format', 'current/total'))
+                slide_number_format=slide_format,
+                initial_slide_number=initial_slide_number
             )
             
             # Write HTML file

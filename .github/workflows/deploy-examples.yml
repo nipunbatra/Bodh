@@ -43,6 +43,44 @@ jobs:
         echo "🌐 Installing Chromium browser..."
         playwright install chromium
         echo "✅ All dependencies installed successfully!"
+        
+    - name: Run comprehensive test suite
+      run: |
+        echo "🧪 Running Bodh test suite..."
+        python test_bodh.py
+        echo "✅ All tests passed!"
+        
+    - name: Verify Playwright setup
+      env:
+        PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
+        DISPLAY: ":99"
+      run: |
+        echo "🧪 Testing Playwright setup..."
+        # Start virtual display for headless browser  
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        sleep 2
+        python -c "
+        from playwright.sync_api import sync_playwright
+        try:
+            with sync_playwright() as p:
+                browser_options = {
+                    'headless': True,
+                    'args': [
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox',
+                        '--disable-dev-shm-usage',
+                        '--disable-gpu'
+                    ]
+                }
+                browser = p.chromium.launch(**browser_options)
+                page = browser.new_page()
+                page.set_content('<h1>Test</h1>')
+                browser.close()
+            print('✅ Playwright is working correctly')
+        except Exception as e:
+            print(f'❌ Playwright test failed: {e}')
+            raise
+        "
 
     - name: Pre-generation check
       run: |
@@ -62,8 +100,13 @@ jobs:
         ls -la bodh.py || echo "❌ No bodh.py file"
 
     - name: Generate examples
+      env:
+        PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
+        DISPLAY: ":99"
       run: |
         echo "🚀 Starting example generation..."
+        # Start virtual display for headless browser
+        Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
         python generate_examples.py
         echo "✅ Example generation script completed!"
 

@@ -177,17 +177,37 @@ class MarkdownToPDF:
         if columns <= 1:
             return content
         
-        # Look for column separators
+        # Look for column separators with various formats
         if ':::' in content:
-            parts = content.split(':::')
-            if len(parts) >= 3:  # Should have opening, content, and closing
+            # Handle both `::: {.column}` and `:::` formats
+            import re
+            
+            # Pattern to match ::: {.column} content :::
+            column_pattern = r'::: \{\.column\}(.*?):::'
+            matches = re.findall(column_pattern, content, re.DOTALL)
+            
+            if matches:
+                # Found {.column} format
                 column_content = []
-                for i in range(1, len(parts), 2):  # Take every second part (content)
-                    if parts[i].strip():
-                        column_content.append(f'<div class="column">{parts[i].strip()}</div>')
+                for match in matches:
+                    if match.strip():
+                        column_content.append(f'<div class="column">{match.strip()}</div>')
                 
                 if column_content:
+                    # Replace the original content with processed columns
+                    processed_content = re.sub(column_pattern, '', content, flags=re.DOTALL).strip()
                     return f'<div class="columns-layout columns-{columns}">{"".join(column_content)}</div>'
+            else:
+                # Fall back to simple ::: separator format
+                parts = content.split(':::')
+                if len(parts) >= 3:  # Should have opening, content, and closing
+                    column_content = []
+                    for i in range(1, len(parts), 2):  # Take every second part (content)
+                        if parts[i].strip():
+                            column_content.append(f'<div class="column">{parts[i].strip()}</div>')
+                    
+                    if column_content:
+                        return f'<div class="columns-layout columns-{columns}">{"".join(column_content)}</div>'
         
         return content
     
@@ -266,7 +286,7 @@ class MarkdownToPDF:
         
         {% if show_slide_numbers %}
         <div class="slide-counter">
-            <span id="slide-display">{{ slide_number_format }}</span>
+            <span id="slide-display">{{ initial_slide_number }}</span>
         </div>
         {% endif %}
         
@@ -477,6 +497,9 @@ class MarkdownToPDF:
         if self.logo_path and os.path.exists(self.logo_path):
             logo_data = self._encode_image(self.logo_path)
         
+        # Calculate initial slide number display (for PDF we don't need it, but template expects it)
+        initial_slide_number = '1'
+        
         # Generate HTML
         title = Path(markdown_file).stem
         html_content = self.template.render(
@@ -490,7 +513,9 @@ class MarkdownToPDF:
             show_arrows=False,
             show_dots=False,
             show_slide_numbers=False,
-            slide_number_format='{current}/{total}'
+            slide_number_format='{current}/{total}',
+            initial_slide_number=initial_slide_number,
+            config=self.config
         )
         
         # Generate PDF
@@ -500,7 +525,27 @@ class MarkdownToPDF:
         if PDF_BACKEND == 'playwright':
             # Use Playwright (Chrome) for best PDF quality - identical to HTML preview
             with sync_playwright() as p:
-                browser = p.chromium.launch()
+                # Launch browser with CI-friendly options
+                browser_options = {
+                    'headless': True,
+                    'args': [
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox',
+                        '--disable-dev-shm-usage',
+                        '--disable-gpu',
+                        '--no-first-run',
+                        '--no-default-browser-check',
+                        '--disable-default-apps',
+                        '--disable-translate',
+                        '--disable-extensions',
+                        '--disable-background-timer-throttling',
+                        '--disable-backgrounding-occluded-windows',
+                        '--disable-renderer-backgrounding',
+                        '--disable-features=TranslateUI',
+                        '--disable-ipc-flooding-protection'
+                    ]
+                }
+                browser = p.chromium.launch(**browser_options)
                 page = browser.new_page()
                 
                 # Set viewport to match A4 landscape dimensions for consistent rendering
@@ -510,7 +555,7 @@ class MarkdownToPDF:
                 page.set_content(html_content, wait_until='networkidle')
                 
                 # Wait for fonts to load
-                page.wait_for_timeout(1000)
+                page.wait_for_timeout(2000)  # Increase timeout for CI
                 
                 # PDF options for presentation format
                 page.pdf(
@@ -563,6 +608,13 @@ class MarkdownToPDF:
         if self.logo_path and os.path.exists(self.logo_path):
             logo_data = self._encode_image(self.logo_path)
         
+        # Calculate initial slide number display
+        slide_format = self.config.get_slide_number_format()
+        initial_slide_number = slide_format.replace('{current}', '1').replace('{total}', str(len(slides)))
+        if '{percent}' in initial_slide_number:
+            initial_percent = round((1 / len(slides)) * 100)
+            initial_slide_number = initial_slide_number.replace('{percent}', str(initial_percent))
+        
         # Generate HTML
         title = Path(markdown_file).stem
         html_content = self.template.render(
@@ -577,6 +629,7 @@ class MarkdownToPDF:
             show_dots=self.config.get('navigation.show_dots', True),
             show_slide_numbers=self.config.get('slide_number.enabled', True),
             slide_number_format=self.config.get_slide_number_format(),
+            initial_slide_number=initial_slide_number,
             config=self.config
         )
         
