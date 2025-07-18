@@ -525,6 +525,53 @@ class MarkdownToPDF:
                 raise Exception("PDF generation failed")
         
         return output_file
+    
+    def convert_to_html(self, markdown_file, output_file=None):
+        """Convert markdown file to HTML presentation"""
+        if not os.path.exists(markdown_file):
+            raise FileNotFoundError(f"Markdown file not found: {markdown_file}")
+        
+        # Read markdown content
+        with open(markdown_file, 'r', encoding='utf-8') as f:
+            md_content = f.read()
+        
+        # Parse slides
+        slides = self.parse_markdown_slides(md_content)
+        
+        if not slides:
+            raise ValueError("No slides found in markdown file")
+        
+        # Encode logo if provided
+        logo_data = None
+        if self.logo_path and os.path.exists(self.logo_path):
+            logo_data = self._encode_image(self.logo_path)
+        
+        # Generate HTML
+        title = Path(markdown_file).stem
+        html_content = self.template.render(
+            title=title,
+            slides=slides,
+            css=self.css,
+            font_family=self.font_family,
+            logo_data=logo_data,
+            logo_position=self.logo_position,
+            enable_navigation=self.config.get('navigation.enabled', True),
+            show_arrows=self.config.get('navigation.show_arrows', True),
+            show_dots=self.config.get('navigation.show_dots', True),
+            show_slide_numbers=self.config.get('slide_number.enabled', True),
+            slide_number_format=self.config.get_slide_number_format(),
+            config=self.config
+        )
+        
+        # Save HTML
+        if output_file is None:
+            output_file = f"{title}.html"
+        
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        
+        print(f"Converted {markdown_file} to {output_file}")
+        return output_file
 
 
 def main():
@@ -533,27 +580,20 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  %(prog)s presentation.md                    # Basic usage
-  %(prog)s slides.md -t dark -f "Roboto"     # Dark theme with custom font
-  %(prog)s demo.md -c config.yml             # Using configuration file
+  %(prog)s presentation.md                    # Basic usage with default config
+  %(prog)s slides.md -c config.yml           # Using configuration file
+  %(prog)s demo.md --html                    # Generate HTML instead of PDF
+  %(prog)s slides.md --preview               # Generate and open in browser
   %(prog)s --create-config                   # Create sample config
-  %(prog)s --list-themes                      # Show available themes
+  %(prog)s --list-themes                     # Show available themes
         """
     )
     
     parser.add_argument('input', nargs='?', help='Input markdown file')
     parser.add_argument('-c', '--config', help='Configuration file (YAML)')
     parser.add_argument('-o', '--output', help='Output PDF file (optional)')
-    parser.add_argument('-t', '--theme', default='default', 
-                       help='Theme name (default: default)')
-    parser.add_argument('-f', '--font', default='Inter', 
-                       help='Font family (default: Inter)')
-    parser.add_argument('-s', '--size', type=int, default=20, 
-                       help='Base font size (default: 20)')
-    parser.add_argument('-l', '--logo', help='Path to logo image')
-    parser.add_argument('-p', '--position', 
-                       choices=['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-                       default='top-right', help='Logo position (default: top-right)')
+    parser.add_argument('--html', action='store_true', help='Generate HTML instead of PDF')
+    parser.add_argument('--preview', action='store_true', help='Open preview in browser')
     parser.add_argument('-v', '--verbose', action='store_true', help='Verbose output')
     parser.add_argument('--list-themes', action='store_true', help='List available themes')
     parser.add_argument('--create-config', action='store_true', help='Create sample configuration file')
@@ -600,29 +640,20 @@ Examples:
         
         if config_file:
             config = load_config(config_file)
-            # Override config with command line arguments
-            if args.theme != 'default':
-                config.set('theme', args.theme)
-            if args.font != 'Inter':
-                config.set('font.family', args.font)
-            if args.size != 20:
-                config.set('font.size', args.size)
-            if args.logo:
-                config.set('logo.source', args.logo)
-            if args.position != 'top-right':
-                config.set('logo.location', args.position)
-            
             converter = MarkdownToPDF(config=config)
         else:
-            converter = MarkdownToPDF(
-                theme=args.theme,
-                font_family=args.font,
-                font_size=args.size,
-                logo_path=args.logo,
-                logo_position=args.position
-            )
+            # Use default configuration
+            converter = MarkdownToPDF()
         
-        output_file = converter.convert_to_pdf(args.input, args.output)
+        if args.html or args.preview:
+            # Generate HTML
+            output_file = converter.convert_to_html(args.input, args.output)
+            if args.preview:
+                import webbrowser
+                webbrowser.open(f'file://{os.path.abspath(output_file)}')
+        else:
+            # Generate PDF
+            output_file = converter.convert_to_pdf(args.input, args.output)
         
         if args.verbose:
             print(f"Successfully converted {args.input} to {output_file}")
