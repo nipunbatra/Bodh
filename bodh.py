@@ -155,9 +155,8 @@ class MarkdownToPDF:
                 if self.config.get('overlays.enabled', False):
                     slide_content = self._process_overlays(slide_content)
                 
-                # Process multi-column layouts
-                if self.config.get('layout.columns', 1) > 1:
-                    slide_content = self._process_columns(slide_content)
+                # Process multi-column layouts (always check for column syntax)
+                slide_content = self._process_columns(slide_content)
                 
                 # Process hrules for titles
                 if self.config.get('style.hrule.enabled', False) or \
@@ -188,10 +187,6 @@ class MarkdownToPDF:
     
     def _process_columns(self, content):
         """Process multi-column layouts"""
-        columns = self.config.get('layout.columns', 1)
-        if columns <= 1:
-            return content
-        
         # Look for column separators with various formats
         if ':::' in content:
             # Handle both `::: {.column}` and `:::` formats
@@ -206,12 +201,19 @@ class MarkdownToPDF:
                 column_content = []
                 for match in matches:
                     if match.strip():
-                        column_content.append(f'<div class="column">{match.strip()}</div>')
+                        # CRITICAL FIX: Process column content as markdown!
+                        column_html = markdown.markdown(
+                            match.strip(), 
+                            extensions=['fenced_code', 'tables', 'codehilite', 'extra']
+                        )
+                        column_content.append(f'<div class="column">{column_html}</div>')
                 
                 if column_content:
+                    # CRITICAL FIX: Use actual column count, not config!
+                    actual_columns = len(column_content)
                     # Replace the original content with processed columns
                     processed_content = re.sub(column_pattern, '', content, flags=re.DOTALL).strip()
-                    return f'<div class="columns-layout columns-{columns}">{"".join(column_content)}</div>'
+                    return f'<div class="columns-layout columns-{actual_columns}">{"".join(column_content)}</div>'
             else:
                 # Fall back to simple ::: separator format
                 parts = content.split(':::')
@@ -219,10 +221,17 @@ class MarkdownToPDF:
                     column_content = []
                     for i in range(1, len(parts), 2):  # Take every second part (content)
                         if parts[i].strip():
-                            column_content.append(f'<div class="column">{parts[i].strip()}</div>')
+                            # CRITICAL FIX: Process column content as markdown!
+                            column_html = markdown.markdown(
+                                parts[i].strip(), 
+                                extensions=['fenced_code', 'tables', 'codehilite', 'extra']
+                            )
+                            column_content.append(f'<div class="column">{column_html}</div>')
                     
                     if column_content:
-                        return f'<div class="columns-layout columns-{columns}">{"".join(column_content)}</div>'
+                        # CRITICAL FIX: Use actual column count, not config!
+                        actual_columns = len(column_content)
+                        return f'<div class="columns-layout columns-{actual_columns}">{"".join(column_content)}</div>'
         
         return content
     
@@ -284,6 +293,14 @@ class MarkdownToPDF:
         {% if logo_data %}
         <div class="logo logo-{{ logo_position }}">
             <img src="data:image/png;base64,{{ logo_data }}" alt="Logo">
+        </div>
+        {% endif %}
+        {% if show_slide_numbers and not enable_navigation %}
+        <!-- Individual slide numbers for PDF -->
+        <div class="slide-nav">
+            <div class="slide-counter">
+                <span class="slide-display">{{ loop.index }}/{{ slides|length }}</span>
+            </div>
         </div>
         {% endif %}
         <div class="slide-content">
@@ -575,19 +592,24 @@ class MarkdownToPDF:
                 # Set viewport to match A4 landscape dimensions for consistent rendering
                 page.set_viewport_size({"width": 1123, "height": 794})  # A4 landscape at 96 DPI
                 
-                # Load content and wait for fonts/images
-                page.set_content(html_content, wait_until='networkidle')
+                # Load content with more robust timeout handling
+                # Use 'domcontentloaded' instead of 'networkidle' to avoid hanging on missing images
+                page.set_content(html_content, wait_until='domcontentloaded')
                 
-                # Wait for fonts and images to load properly
-                page.wait_for_timeout(3000)  # Increase timeout for CI and font loading
+                # Wait for fonts and images to load properly, but don't wait for missing images
+                page.wait_for_timeout(2000)  # Shorter timeout since we don't wait for network idle
                 
-                # Wait for any Google Fonts to load
-                page.wait_for_function("""
-                    () => {
-                        const fonts = document.fonts;
-                        return fonts.status === 'loaded' || fonts.size === 0;
-                    }
-                """, timeout=10000)
+                # Wait for any Google Fonts to load, but don't block on missing images
+                try:
+                    page.wait_for_function("""
+                        () => {
+                            const fonts = document.fonts;
+                            return fonts.status === 'loaded' || fonts.size === 0;
+                        }
+                    """, timeout=5000)  # Shorter timeout for robustness
+                except Exception:
+                    # If fonts fail to load, continue anyway
+                    print("Warning: Font loading timeout, continuing with PDF generation")
                 
                 # PDF options for presentation format
                 page.pdf(

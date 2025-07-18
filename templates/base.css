@@ -611,8 +611,7 @@ ul li::marker {
 {% endif %}
 {% endif %}
 
-/* Multi-Column Layouts */
-{% if config.get('layout.columns', 1) > 1 %}
+/* Multi-Column Layouts - Always available */
 .columns-layout {
     display: grid;
     gap: {{ config.get('layout.column_gap', '2rem') }};
@@ -626,6 +625,14 @@ ul li::marker {
 
 .columns-3 {
     grid-template-columns: 1fr 1fr 1fr;
+}
+
+.columns-4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.columns-5 {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .column {
@@ -643,7 +650,6 @@ ul li::marker {
     text-align: center;
     {% endif %}
 }
-{% endif %}
 
 /* Overlay System */
 {% if config.get('overlays.enabled') %}
