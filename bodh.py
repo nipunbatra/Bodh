@@ -66,7 +66,7 @@ class StyleGenerator:
     def __init__(self, templates_dir="templates"):
         self.templates_dir = Path(templates_dir)
     
-    def generate_css(self, theme_data, font_family, font_size):
+    def generate_css(self, theme_data, font_family, font_size, config=None):
         """Generate CSS from template and theme data"""
         css_template_path = self.templates_dir / "base.css"
         
@@ -80,7 +80,8 @@ class StyleGenerator:
         return template.render(
             theme=theme_data,
             font_family=font_family,
-            font_size=font_size
+            font_size=font_size,
+            config=config or {}
         )
 
 
@@ -114,7 +115,7 @@ class MarkdownToPDF:
         
         # Generate styles
         self.css = self.style_generator.generate_css(
-            self.theme_data, self.font_family, self.font_size
+            self.theme_data, self.font_family, self.font_size, self.config
         )
         
         self.template = self._get_html_template()
@@ -129,12 +130,25 @@ class MarkdownToPDF:
             return None
     
     def parse_markdown_slides(self, md_content):
-        """Parse markdown content into individual slides"""
+        """Parse markdown content into individual slides with advanced features"""
         slides = []
         slide_parts = md_content.split(f"\n{self.slide_separator}\n")
         
         for slide_content in slide_parts:
             if slide_content.strip():
+                # Process overlays (pause markers)
+                if self.config.get('overlays.enabled', False):
+                    slide_content = self._process_overlays(slide_content)
+                
+                # Process multi-column layouts
+                if self.config.get('layout.columns', 1) > 1:
+                    slide_content = self._process_columns(slide_content)
+                
+                # Process hrules for titles
+                if self.config.get('style.hrule.enabled', False) or \
+                   self.theme_data.get('special_features', {}).get('title_hrule', False):
+                    slide_content = self._process_hrules(slide_content)
+                
                 html_content = markdown.markdown(
                     slide_content.strip(), 
                     extensions=['fenced_code', 'tables', 'codehilite']
@@ -142,6 +156,56 @@ class MarkdownToPDF:
                 slides.append(html_content)
         
         return slides
+    
+    def _process_overlays(self, content):
+        """Process overlay/pause markers in markdown"""
+        # Replace pause markers with HTML overlay divs
+        parts = content.split('<!--pause-->')
+        if len(parts) <= 1:
+            parts = content.split('\\pause')
+        
+        if len(parts) > 1:
+            processed_content = parts[0]
+            for i, part in enumerate(parts[1:], 1):
+                processed_content += f'<div class="overlay" data-overlay="{i}">{part}</div>'
+            return processed_content
+        return content
+    
+    def _process_columns(self, content):
+        """Process multi-column layouts"""
+        columns = self.config.get('layout.columns', 1)
+        if columns <= 1:
+            return content
+        
+        # Look for column separators
+        if ':::' in content:
+            parts = content.split(':::')
+            if len(parts) >= 3:  # Should have opening, content, and closing
+                column_content = []
+                for i in range(1, len(parts), 2):  # Take every second part (content)
+                    if parts[i].strip():
+                        column_content.append(f'<div class="column">{parts[i].strip()}</div>')
+                
+                if column_content:
+                    return f'<div class="columns-layout columns-{columns}">{"".join(column_content)}</div>'
+        
+        return content
+    
+    def _process_hrules(self, content):
+        """Add horizontal rules under titles"""
+        lines = content.split('\n')
+        processed_lines = []
+        
+        for line in lines:
+            processed_lines.append(line)
+            # Add hrule after headings
+            if line.startswith('# ') or line.startswith('## '):
+                hrule_width = self.config.get('style.hrule.width', '80%')
+                hrule_style = self.config.get('style.hrule.style', 'solid')
+                hrule_thickness = self.config.get('style.hrule.thickness', '2px')
+                processed_lines.append(f'<hr class="title-hrule" style="width: {hrule_width}; border-style: {hrule_style}; border-width: {hrule_thickness};">')
+        
+        return '\n'.join(processed_lines)
     
     def _get_html_template(self):
         """HTML template for the presentation"""
@@ -201,6 +265,12 @@ class MarkdownToPDF:
         <button class="nav-btn" id="next-btn" onclick="nextSlide()">→</button>
         {% endif %}
     </div>
+    
+    {% if config.get('overlays.enabled') %}
+    <div class="overlay-controls" style="display: none;">
+        Overlay 0/0
+    </div>
+    {% endif %}
 
     <script>
         let currentSlide = 0;
@@ -279,8 +349,91 @@ class MarkdownToPDF:
             }
         });
         
+        {% if config.get('overlays.enabled') %}
+        // Overlay system for pause functionality
+        let currentOverlay = 0;
+        let maxOverlays = 0;
+        
+        function updateOverlays() {
+            const currentSlideElement = document.querySelectorAll('.slide')[currentSlide];
+            const overlays = currentSlideElement.querySelectorAll('.overlay');
+            maxOverlays = overlays.length;
+            
+            overlays.forEach((overlay, index) => {
+                if (index < currentOverlay) {
+                    overlay.classList.add('visible');
+                } else {
+                    overlay.classList.remove('visible');
+                }
+            });
+            
+            // Update overlay controls
+            const overlayControls = document.querySelector('.overlay-controls');
+            if (overlayControls && maxOverlays > 0) {
+                overlayControls.textContent = `Overlay ${currentOverlay}/${maxOverlays}`;
+                overlayControls.style.display = 'block';
+            } else if (overlayControls) {
+                overlayControls.style.display = 'none';
+            }
+        }
+        
+        function nextOverlay() {
+            if (currentOverlay < maxOverlays) {
+                currentOverlay++;
+                updateOverlays();
+                return true;
+            }
+            return false;
+        }
+        
+        function previousOverlay() {
+            if (currentOverlay > 0) {
+                currentOverlay--;
+                updateOverlays();
+                return true;
+            }
+            return false;
+        }
+        
+        // Override navigation to handle overlays
+        const originalNextSlide = nextSlide;
+        const originalPreviousSlide = previousSlide;
+        
+        nextSlide = function() {
+            if (!nextOverlay()) {
+                currentOverlay = 0;
+                originalNextSlide();
+                updateOverlays();
+            }
+        };
+        
+        previousSlide = function() {
+            if (!previousOverlay()) {
+                if (currentSlide > 0) {
+                    originalPreviousSlide();
+                    // Go to last overlay of previous slide
+                    const prevSlideElement = document.querySelectorAll('.slide')[currentSlide];
+                    const prevOverlays = prevSlideElement.querySelectorAll('.overlay');
+                    currentOverlay = prevOverlays.length;
+                    updateOverlays();
+                }
+            }
+        };
+        
+        // Override showSlide to reset overlays
+        const originalShowSlide = showSlide;
+        showSlide = function(n) {
+            currentOverlay = 0;
+            originalShowSlide(n);
+            updateOverlays();
+        };
+        {% endif %}
+        
         // Initialize
         showSlide(0);
+        {% if config.get('overlays.enabled') %}
+        updateOverlays();
+        {% endif %}
     </script>
     {% endif %}
 </body>

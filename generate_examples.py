@@ -51,7 +51,11 @@ def generate_examples():
     config_examples = [
         ('logo-demo', 'configs/logo-demo.yml'),
         ('slide-numbers-demo', 'configs/slide-numbers-demo.yml'), 
-        ('corporate-branding', 'configs/corporate-branding.yml')
+        ('corporate-branding', 'configs/corporate-branding.yml'),
+        ('multi-column-demo', 'configs/multi-column-demo.yml'),
+        ('overlay-demo', 'configs/overlay-demo.yml'),
+        ('metropolis-demo', 'configs/metropolis-demo.yml'),
+        ('advanced-features', 'configs/advanced-demo.yml')
     ]
     print(f"⚙️ Will generate {len(config_examples)} configuration examples")
     
@@ -138,12 +142,16 @@ def generate_examples():
             converter = MarkdownToPDF(config=config)
             print(f"  ✅ Converter created successfully")
             
-            # Use feature showcase content for config examples
+            # Use appropriate content for config examples
             showcase_content = content
             if example_name == 'feature-showcase' and os.path.exists('examples/feature-showcase.md'):
                 with open('examples/feature-showcase.md', 'r') as f:
                     showcase_content = f.read()
                 print(f"  📖 Using feature-showcase.md content")
+            elif example_name == 'advanced-features' and os.path.exists('examples/advanced-features.md'):
+                with open('examples/advanced-features.md', 'r') as f:
+                    showcase_content = f.read()
+                print(f"  📖 Using advanced-features.md content")
             
             # Parse slides
             print(f"  📝 Parsing slides...")

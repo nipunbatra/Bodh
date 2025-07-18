@@ -98,11 +98,27 @@ See how different configurations change the presentation experience.
 [View HTML](examples/corporate-branding.html){.btn .btn-primary}
 [Download PDF](pdfs/corporate-branding.pdf){.btn .btn-secondary}
 
-## 📊 Feature Showcase
+## 🚀 Advanced Features
 
-**Complete feature demonstration** showing logos, slide numbering, navigation options, and styling variations.
-[View HTML](examples/feature-showcase.html){.btn .btn-primary}
-[Download PDF](pdfs/feature-showcase.pdf){.btn .btn-secondary}
+### Multi-Column Layouts
+**Features:** 2-column layouts, custom bullets, modern styling  
+[View HTML](examples/multi-column-demo.html){.btn .btn-primary}
+[Download PDF](pdfs/multi-column-demo.pdf){.btn .btn-secondary}
+
+### Overlay System (Beamer-style)
+**Features:** Pause markers, step-by-step reveals, fade transitions  
+[View HTML](examples/overlay-demo.html){.btn .btn-primary}
+[Download PDF](pdfs/overlay-demo.pdf){.btn .btn-secondary}
+
+### Metropolis Theme
+**Features:** Academic styling, title rules, minimal navigation  
+[View HTML](examples/metropolis-demo.html){.btn .btn-primary}
+[Download PDF](pdfs/metropolis-demo.pdf){.btn .btn-secondary}
+
+### Complete Advanced Demo
+**Features:** All advanced features combined in one presentation  
+[View HTML](examples/advanced-features.html){.btn .btn-primary}
+[Download PDF](pdfs/advanced-features.pdf){.btn .btn-secondary}
 
 ## 🎯 How to Use These Examples
 

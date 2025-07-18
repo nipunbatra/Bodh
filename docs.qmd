@@ -1,0 +1,244 @@
+---
+title: "Documentation"
+subtitle: "Complete guide to using Bodh"
+---
+
+## 📖 User Guide
+
+### Basic Usage
+
+Bodh converts your markdown files into beautiful presentations. The simplest usage:
+
+```bash
+python bodh.py presentation.md
+```
+
+This generates `presentation.pdf` using the default theme.
+
+### Command Line Options
+
+```bash
+python bodh.py [options] input.md
+
+Options:
+  -o, --output FILE     Output filename
+  -t, --theme THEME     Theme name (default: modern)
+  -c, --config FILE     Configuration file
+  --html                Generate HTML instead of PDF
+  --preview             Open preview in browser
+  -h, --help           Show help message
+```
+
+### Configuration Files
+
+Create a `bodh.yml` file to customize your presentations:
+
+```yaml
+# Basic configuration
+theme: modern
+font:
+  family: "Inter"
+  size: 20
+
+# Logo settings
+logo:
+  source: "company-logo.png"
+  location: "top-right"
+  size: 100
+
+# Slide numbering
+slide_number:
+  enabled: true
+  format: "current/total"
+  position: "bottom-right"
+
+# Advanced features
+style:
+  hrule:
+    enabled: true
+    width: "80%"
+    style: "solid"
+  bullets:
+    style: "arrow"
+    color: "accent"
+
+layout:
+  columns: 1
+  alignment: "center"
+
+overlays:
+  enabled: true
+  transition: "fade"
+```
+
+## 🎨 Themes
+
+### Available Themes
+
+| Theme | Description | Best For |
+|-------|-------------|----------|
+| **modern** | Clean, professional | Business presentations |
+| **minimal** | Ultra-clean whitespace | Design portfolios |
+| **gradient** | Colorful gradients | Conferences, tech talks |
+| **dark** | Professional dark theme | Code demos, tech content |
+| **metropolis** | Beamer-inspired | Academic presentations |
+| **default** | Clean blue accents | General purpose |
+| **sky** | Light blue modern | Creative topics |
+| **solarized** | Warm, eye-friendly | Long presentations |
+| **moon** | Dark blue space-themed | Special occasions |
+
+### Custom Themes
+
+Create your own theme by copying an existing theme file from `themes/` directory and modifying the colors, fonts, and layout settings.
+
+## 🔧 Advanced Features
+
+### Multi-Column Layouts
+
+```yaml
+layout:
+  columns: 2        # 1, 2, or 3 columns
+  column_gap: "2rem"
+  alignment: "center"
+```
+
+Use markdown with column breaks:
+
+```markdown
+## Two Column Layout
+
+::: {.column}
+### Left Column
+- Point one
+- Point two
+:::
+
+::: {.column}
+### Right Column  
+- Point three
+- Point four
+:::
+```
+
+### Overlays and Pauses
+
+```yaml
+overlays:
+  enabled: true
+  transition: "fade"  # fade, slide, none
+  duration: "0.3s"
+```
+
+In markdown, use pause markers:
+
+```markdown
+## Revealing Content
+
+First point appears immediately
+
+<!--pause-->
+
+Second point appears after click
+
+<!--pause-->
+
+Final point appears last
+```
+
+### Custom Bullets
+
+```yaml
+style:
+  bullets:
+    style: "arrow"    # default, circle, square, arrow, custom
+    color: "accent"   # accent, primary, secondary, or hex
+    size: "1em"
+```
+
+### Title Rules
+
+```yaml
+style:
+  hrule:
+    enabled: true
+    width: "80%"       # Width of the line under titles
+    thickness: "2px"
+    style: "solid"     # solid, dashed, dotted
+    color: "accent"
+```
+
+## 🖼️ Images and Media
+
+### Image Syntax
+
+```markdown
+# Regular image
+![Alt text](image.png)
+
+# Image with caption
+![Beautiful landscape](landscape.jpg "Mountain view at sunset")
+
+# Sized images (use HTML)
+<img src="logo.png" width="200" alt="Company logo">
+
+# Centered images
+<div align="center">
+  <img src="chart.png" alt="Sales chart">
+</div>
+```
+
+### Supported Formats
+
+- **Images**: PNG, JPG, SVG, GIF
+- **Logos**: Any image format, automatically optimized
+- **Code**: Syntax highlighting for 100+ languages
+
+## 📱 Web Interface
+
+Start the web interface for live editing:
+
+```bash
+python app.py
+```
+
+Features:
+- **Live preview** - See changes instantly
+- **Theme switching** - Try different themes
+- **Configuration editor** - Modify settings visually
+- **Download options** - Generate HTML or PDF
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+**PDF generation fails:**
+- Ensure Playwright is installed: `playwright install chromium`
+- Check image paths are correct
+- Verify markdown syntax
+
+**Fonts not loading:**
+- Use web-safe fonts or Google Fonts
+- Check internet connection for web fonts
+- Verify font names are correct
+
+**Images not appearing:**
+- Use absolute paths or relative to markdown file
+- Check file permissions
+- Verify image formats are supported
+
+### Performance Tips
+
+- **Large presentations**: Use `--html` for faster preview
+- **Many images**: Optimize image sizes before embedding
+- **Complex layouts**: Test with simple content first
+
+## 🆘 Getting Help
+
+- 📚 Browse [Examples](examples.qmd) for inspiration
+- 🎨 Try different [Themes](themes.qmd)
+- 🐛 Report bugs on [GitHub](https://github.com/nipunbatra/Bodh/issues)
+- 💬 Ask questions in GitHub Discussions
+
+---
+
+*Happy presenting! 🎉*

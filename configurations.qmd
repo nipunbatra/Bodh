@@ -1,0 +1,355 @@
+---
+title: "Configuration Examples"
+subtitle: "Powerful customization options for every need"
+---
+
+## 🔧 Configuration Basics
+
+Bodh uses YAML files to configure presentations. Create a `bodh.yml` file in your project directory to customize themes, layouts, and features.
+
+## 📝 Basic Configuration
+
+### Simple Setup
+```yaml
+theme: modern
+font:
+  family: "Inter"
+  size: 20
+slide_number:
+  enabled: true
+  format: "current/total"
+```
+
+### Corporate Branding
+```yaml
+theme: minimal
+font:
+  family: "Source Sans Pro"
+  size: 18
+
+logo:
+  source: "company-logo.png"
+  location: "top-right"
+  size: 120
+
+slide_number:
+  enabled: true
+  format: "current"
+  position: "bottom-right"
+
+navigation:
+  show_dots: false
+  show_progress: true
+```
+
+## 🎨 Advanced Styling
+
+### Title Rules and Bullets
+```yaml
+theme: metropolis
+style:
+  hrule:
+    enabled: true
+    width: "80%"
+    thickness: "2px"
+    style: "solid"
+    color: "accent"
+  
+  bullets:
+    style: "arrow"
+    color: "accent"
+    size: "1.2em"
+
+font:
+  family: "Fira Sans"
+  size: 22
+```
+
+### Multi-Column Layouts
+```yaml
+theme: modern
+layout:
+  columns: 2
+  column_gap: "3rem"
+  alignment: "left"
+
+style:
+  slide_padding: "2rem 3rem"
+  element_margin: "1rem"
+```
+
+## 🎬 Interactive Features
+
+### Overlay System
+```yaml
+theme: gradient
+overlays:
+  enabled: true
+  transition: "fade"
+  duration: "0.5s"
+
+navigation:
+  enabled: true
+  show_arrows: true
+  show_dots: true
+  keyboard_shortcuts: true
+```
+
+### Custom Navigation
+```yaml
+theme: dark
+navigation:
+  enabled: true
+  show_arrows: false
+  show_dots: true
+  show_progress: true
+
+slide_number:
+  enabled: true
+  format: "percent"
+  position: "bottom-center"
+```
+
+## 📊 Real-World Examples
+
+### Academic Presentation
+```yaml
+# academic.yml - For research presentations
+theme: metropolis
+font:
+  family: "Fira Sans"
+  size: 18
+
+style:
+  hrule:
+    enabled: true
+    width: "70%"
+    style: "solid"
+  bullets:
+    style: "default"
+    color: "primary"
+
+layout:
+  columns: 1
+  alignment: "left"
+
+slide_number:
+  enabled: true
+  format: "current/total"
+
+navigation:
+  show_dots: false
+  show_progress: false
+```
+
+### Tech Conference Talk  
+```yaml
+# tech-talk.yml - For developer presentations
+theme: dark
+font:
+  family: "Fira Code"
+  size: 16
+
+logo:
+  source: "tech-logo.svg"
+  location: "bottom-right"
+  size: 80
+
+style:
+  shadows: true
+  rounded_corners: true
+  bullets:
+    style: "arrow"
+    color: "accent"
+
+overlays:
+  enabled: true
+  transition: "slide"
+
+navigation:
+  show_progress: true
+  keyboard_shortcuts: true
+```
+
+### Corporate Pitch
+```yaml
+# corporate.yml - For business presentations  
+theme: modern
+font:
+  family: "Inter"
+  size: 20
+
+logo:
+  source: "company-logo.png"
+  location: "top-left"
+  size: 150
+
+style:
+  shadows: false
+  rounded_corners: false
+  hrule:
+    enabled: false
+  bullets:
+    style: "circle"
+    color: "primary"
+
+slide_number:
+  enabled: true
+  format: "current"
+  position: "bottom-right"
+
+navigation:
+  show_dots: false
+  show_arrows: true
+```
+
+### Design Portfolio
+```yaml
+# portfolio.yml - For creative presentations
+theme: minimal
+font:
+  family: "Source Sans Pro"
+  size: 24
+
+style:
+  slide_padding: "4rem"
+  element_margin: "2rem"
+  shadows: false
+  bullets:
+    style: "square"
+    color: "accent"
+
+layout:
+  alignment: "center"
+
+navigation:
+  show_dots: true
+  show_arrows: false
+  show_progress: false
+
+slide_number:
+  enabled: false
+```
+
+### Educational Content
+```yaml
+# education.yml - For teaching and courses
+theme: sky
+font:
+  family: "Roboto"
+  size: 22
+
+style:
+  rounded_corners: true
+  shadows: true
+  bullets:
+    style: "default"
+    color: "primary"
+
+layout:
+  columns: 1
+  alignment: "left"
+
+overlays:
+  enabled: true
+  transition: "fade"
+  duration: "0.3s"
+
+navigation:
+  enabled: true
+  show_progress: true
+  keyboard_shortcuts: true
+
+slide_number:
+  enabled: true
+  format: "current/total"
+```
+
+## 🎯 Configuration Tips
+
+### Performance Optimization
+```yaml
+# Fast rendering for development
+style:
+  animations: false
+  shadows: false
+  rounded_corners: false
+
+# High quality for final export  
+style:
+  animations: true
+  shadows: true
+  rounded_corners: true
+```
+
+### Accessibility
+```yaml
+# High contrast for better readability
+theme: dark  # or minimal
+font:
+  size: 24   # Larger text
+
+style:
+  bullets:
+    size: "1.5em"  # Larger bullets
+    
+navigation:
+  keyboard_shortcuts: true  # Always enable
+```
+
+### Print Optimization
+```yaml
+# Optimized for PDF export
+theme: minimal
+style:
+  shadows: false      # Avoid printing issues
+  animations: false   # Not needed in PDF
+  
+layout:
+  alignment: "left"   # Better for reading
+
+slide_number:
+  enabled: true       # Helpful in printed form
+  format: "current/total"
+```
+
+## 📁 File Organization
+
+### Project Structure
+```
+my-presentation/
+├── bodh.yml           # Main configuration
+├── slides.md          # Presentation content
+├── images/            # Image assets
+│   ├── logo.png
+│   └── charts/
+└── configs/           # Alternative configs
+    ├── dark-theme.yml
+    └── print-ready.yml
+```
+
+### Multiple Configurations
+```bash
+# Use different configs for different outputs
+python bodh.py slides.md -c configs/web-preview.yml --html
+python bodh.py slides.md -c configs/print-ready.yml -o final.pdf
+```
+
+## 🔍 Validation and Testing
+
+Bodh automatically validates your configuration and provides helpful error messages:
+
+```bash
+# Test configuration
+python bodh.py --config bodh.yml --validate-only
+
+# Common validation errors:
+# - Invalid theme names
+# - Font sizes out of range (8-72px)
+# - Invalid color formats
+# - Missing logo files
+```
+
+---
+
+*Ready to customize? Check out our [Live Examples](examples.qmd) to see these configurations in action!*

@@ -1,0 +1,132 @@
+---
+title: "Installation"
+subtitle: "Get started with Bodh in minutes"
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Python 3.8+** (Required)
+- **Git** (For cloning the repository)
+
+### Method 1: Clone and Install
+
+```bash
+# Clone the repository
+git clone https://github.com/nipunbatra/Bodh.git
+cd Bodh
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Make it executable (optional)
+chmod +x bodh.py
+```
+
+### Method 2: Direct Download
+
+1. Download the [latest release](https://github.com/nipunbatra/Bodh/releases)
+2. Extract the files
+3. Install dependencies: `pip install -r requirements.txt`
+
+## 📦 Dependencies
+
+Bodh automatically installs these packages:
+
+- **markdown** - For parsing markdown content
+- **pyyaml** - For configuration files  
+- **jinja2** - For template rendering
+- **pygments** - For syntax highlighting
+- **playwright** - For high-quality PDF generation
+- **flask** - For the web interface
+
+## 🔧 Setup Verification
+
+Test your installation:
+
+```bash
+# Test CLI version
+python bodh.py --help
+
+# Test web interface
+python app.py
+```
+
+If everything works, you should see:
+- CLI help for `bodh.py --help`
+- Web server starting on `http://localhost:5000`
+
+## 🌐 Web Interface
+
+Start the web interface for live preview:
+
+```bash
+python app.py
+```
+
+Then open `http://localhost:5000` in your browser.
+
+## 🎯 First Presentation
+
+Create your first presentation:
+
+1. **Create a markdown file** (`my-slides.md`):
+   ```markdown
+   # Welcome to Bodh!
+   
+   ## My First Slide
+   
+   - Beautiful presentations
+   - Made from markdown
+   - Professional quality
+   
+   ---
+   
+   ## Thank You!
+   ```
+
+2. **Generate PDF**:
+   ```bash
+   python bodh.py my-slides.md
+   ```
+
+3. **Or use the web interface** for live preview!
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+**Playwright installation fails:**
+```bash
+# Install Playwright browsers
+playwright install chromium
+```
+
+**Permission errors on macOS/Linux:**
+```bash
+chmod +x bodh.py
+```
+
+**Missing dependencies:**
+```bash
+pip install --upgrade -r requirements.txt
+```
+
+### Getting Help
+
+- 📖 Check the [Documentation](docs.qmd)
+- 🎨 Browse [Examples](examples.qmd) 
+- 🐛 Report issues on [GitHub](https://github.com/nipunbatra/Bodh/issues)
+
+## 📱 Platform Support
+
+| Platform | Status | Notes |
+|----------|--------|-------|
+| **Windows** | ✅ Full support | Use Git Bash or PowerShell |
+| **macOS** | ✅ Full support | Tested on Intel & Apple Silicon |
+| **Linux** | ✅ Full support | All major distributions |
+
+---
+
+*Ready to create beautiful presentations? Check out our [Examples](examples.qmd) to see what's possible!*

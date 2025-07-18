@@ -1,0 +1,50 @@
+# Metropolis Theme Demo Configuration
+# Inspired by the Beamer Metropolis theme
+
+theme: metropolis
+
+font:
+  family: "Fira Sans"
+  size: 20
+
+style:
+  slide_padding: "4rem 5rem"
+  element_margin: "2rem"
+  shadows: false
+  rounded_corners: false
+  animations: false
+  
+  # Metropolis-style title rules
+  hrule:
+    enabled: true
+    width: "100%"
+    thickness: "2px"
+    style: "solid"
+    color: "secondary"
+  
+  # Clean bullet style
+  bullets:
+    style: "default"
+    color: "secondary"
+    size: "1em"
+
+layout:
+  columns: 1
+  alignment: "left"
+
+navigation:
+  enabled: true
+  show_arrows: true
+  show_dots: false  # Minimal navigation
+  show_progress: false
+  keyboard_shortcuts: true
+
+slide_number:
+  enabled: true
+  format: "current/total"
+  position: "bottom-right"
+
+output:
+  format: "pdf"
+  page_size: "A4"
+  orientation: "landscape"

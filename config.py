@@ -58,7 +58,29 @@ class PresentationConfig:
                 'element_margin': '1.5rem',
                 'shadows': False,
                 'rounded_corners': False,
-                'animations': True
+                'animations': True,
+                'hrule': {
+                    'enabled': False,
+                    'width': '80%',
+                    'thickness': '2px',
+                    'style': 'solid',  # solid, dashed, dotted
+                    'color': 'accent'  # accent, primary, secondary, or hex
+                },
+                'bullets': {
+                    'style': 'default',  # default, circle, square, arrow, custom
+                    'color': 'accent',
+                    'size': '1em'
+                }
+            },
+            'layout': {
+                'columns': 1,  # 1, 2, 3 columns
+                'column_gap': '2rem',
+                'alignment': 'center'  # left, center, right, justify
+            },
+            'overlays': {
+                'enabled': False,
+                'transition': 'fade',  # fade, slide, none
+                'duration': '0.3s'
             }
         }
     
@@ -166,8 +188,8 @@ class PresentationConfig:
         issues = []
         
         # Validate theme
-        if self.get('theme') not in ['default', 'modern', 'minimal', 'gradient', 'dark', 'sky', 'solarized', 'moon']:
-            issues.append("Invalid theme. Must be one of: default, modern, minimal, gradient, dark, sky, solarized, moon")
+        if self.get('theme') not in ['default', 'modern', 'minimal', 'gradient', 'dark', 'sky', 'solarized', 'moon', 'metropolis']:
+            issues.append("Invalid theme. Must be one of: default, modern, minimal, gradient, dark, sky, solarized, moon, metropolis")
         
         # Validate font size
         font_size = self.get('font.size')
@@ -183,6 +205,26 @@ class PresentationConfig:
         slide_format = self.get('slide_number.format')
         if slide_format not in ['current', 'current/total', 'total', 'percent']:
             issues.append("Slide number format must be one of: current, current/total, total, percent")
+        
+        # Validate columns
+        columns = self.get('layout.columns', 1)
+        if not isinstance(columns, int) or columns < 1 or columns > 3:
+            issues.append("Layout columns must be 1, 2, or 3")
+        
+        # Validate bullet style
+        bullet_style = self.get('style.bullets.style', 'default')
+        if bullet_style not in ['default', 'circle', 'square', 'arrow', 'custom']:
+            issues.append("Bullet style must be one of: default, circle, square, arrow, custom")
+        
+        # Validate hrule style
+        hrule_style = self.get('style.hrule.style', 'solid')
+        if hrule_style not in ['solid', 'dashed', 'dotted']:
+            issues.append("HR rule style must be one of: solid, dashed, dotted")
+        
+        # Validate overlay transition
+        overlay_transition = self.get('overlays.transition', 'fade')
+        if overlay_transition not in ['fade', 'slide', 'none']:
+            issues.append("Overlay transition must be one of: fade, slide, none")
         
         return issues
 

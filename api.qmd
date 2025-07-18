@@ -1,0 +1,284 @@
+---
+title: "API Reference"
+subtitle: "Technical documentation for developers"
+---
+
+## 🐍 Python API
+
+### Core Classes
+
+#### `MarkdownToPDF`
+Main class for converting markdown to presentations.
+
+```python
+from bodh import MarkdownToPDF
+
+converter = MarkdownToPDF(config_file="bodh.yml")
+converter.convert("slides.md", "output.pdf")
+```
+
+**Methods:**
+- `convert(input_file, output_file, format="pdf")` - Convert markdown to PDF/HTML
+- `generate_html(markdown_content)` - Generate HTML from markdown
+- `generate_pdf(html_content, output_file)` - Generate PDF from HTML
+
+#### `PresentationConfig`
+Configuration management system.
+
+```python
+from config import PresentationConfig
+
+config = PresentationConfig("bodh.yml")
+theme = config.get("theme")
+font_size = config.get("font.size", 20)
+```
+
+**Methods:**
+- `get(key, default=None)` - Get configuration value
+- `set(key, value)` - Set configuration value  
+- `load_config(file)` - Load from YAML file
+- `validate()` - Validate configuration
+
+#### `ThemeLoader`
+Theme management and CSS generation.
+
+```python
+from bodh import ThemeLoader
+
+loader = ThemeLoader()
+css = loader.generate_css("modern", config)
+themes = loader.list_themes()
+```
+
+## 🌐 Web API
+
+### Flask Routes
+
+#### `GET /`
+Main interface with live preview.
+
+#### `POST /generate`
+Generate presentation from markdown.
+
+**Request:**
+```json
+{
+  "markdown": "# Title\nContent...",
+  "theme": "modern",
+  "config": {...}
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "html": "<html>...",
+  "pdf_url": "/download/abc123.pdf"
+}
+```
+
+#### `GET /themes`
+List available themes.
+
+**Response:**
+```json
+{
+  "themes": [
+    {"name": "modern", "description": "Clean professional"},
+    {"name": "dark", "description": "Dark theme"}
+  ]
+}
+```
+
+#### `POST /upload`
+Upload markdown file.
+
+**Request:** `multipart/form-data` with file
+
+**Response:**
+```json
+{
+  "success": true,
+  "content": "markdown content",
+  "filename": "slides.md"
+}
+```
+
+## 🔧 Configuration Schema
+
+### Theme Definition
+```json
+{
+  "name": "theme-name",
+  "description": "Theme description",
+  "colors": {
+    "primary": "#1e40af",
+    "secondary": "#64748b", 
+    "accent": "#f59e0b",
+    "background": "#ffffff",
+    "text": "#1e293b"
+  },
+  "fonts": {
+    "heading": "Inter",
+    "body": "Inter", 
+    "monospace": "Fira Code"
+  },
+  "effects": {
+    "shadows": true,
+    "rounded_corners": true,
+    "gradients": false
+  }
+}
+```
+
+### Configuration File
+```yaml
+# Complete configuration schema
+theme: string                    # Theme name
+font:
+  family: string                 # Font family name
+  size: integer                  # Font size (8-72)
+
+logo:
+  source: string                 # Path to logo file
+  location: string               # top-left|top-right|bottom-left|bottom-right
+  size: integer                  # Max logo size in pixels
+
+slide_number:
+  enabled: boolean               # Show slide numbers
+  format: string                 # current|current/total|total|percent
+  position: string               # Position on slide
+
+navigation:
+  enabled: boolean               # Enable navigation
+  show_arrows: boolean           # Show prev/next buttons
+  show_dots: boolean             # Show slide dots
+  show_progress: boolean         # Show progress bar
+  keyboard_shortcuts: boolean    # Enable keyboard nav
+
+style:
+  slide_padding: string          # CSS padding value
+  element_margin: string         # CSS margin value
+  shadows: boolean               # Enable shadows
+  rounded_corners: boolean       # Enable rounded corners
+  animations: boolean            # Enable animations
+  
+  hrule:
+    enabled: boolean             # Enable title underlines
+    width: string                # Width (e.g., "80%")
+    thickness: string            # CSS border width
+    style: string                # solid|dashed|dotted
+    color: string                # Color value
+    
+  bullets:
+    style: string                # default|circle|square|arrow|custom
+    color: string                # Color value
+    size: string                 # CSS size value
+
+layout:
+  columns: integer               # Number of columns (1-3)
+  column_gap: string             # Gap between columns
+  alignment: string              # left|center|right|justify
+
+overlays:
+  enabled: boolean               # Enable overlay system
+  transition: string             # fade|slide|none
+  duration: string               # CSS duration value
+
+output:
+  format: string                 # pdf|html
+  filename: string               # Output filename
+  page_size: string              # A4|Letter|etc
+  orientation: string            # landscape|portrait
+
+content:
+  slide_separator: string        # Slide separator (default: "---")
+  title_slide: boolean           # Auto-generate title slide
+  thank_you_slide: boolean       # Auto-generate thank you slide
+```
+
+## 🎯 Custom Extensions
+
+### Custom Themes
+Create new themes by adding JSON files to the `themes/` directory:
+
+```json
+{
+  "name": "custom-theme",
+  "description": "My custom theme",
+  "colors": {...},
+  "fonts": {...},
+  "effects": {...}
+}
+```
+
+### Custom Bullet Styles
+Add CSS for custom bullet styles:
+
+```css
+.custom-bullets li::marker {
+  content: "→ ";
+  color: var(--accent-color);
+  font-weight: bold;
+}
+```
+
+### Custom Layouts
+Extend the layout system with CSS grid:
+
+```css
+.four-column-layout {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+```
+
+## 🧪 Testing
+
+### Unit Tests
+```python
+import unittest
+from bodh import MarkdownToPDF
+
+class TestMarkdownToPDF(unittest.TestCase):
+    def test_basic_conversion(self):
+        converter = MarkdownToPDF()
+        html = converter.generate_html("# Test\nContent")
+        self.assertIn("<h1>Test</h1>", html)
+```
+
+### Configuration Testing
+```python
+from config import PresentationConfig
+
+def test_config_validation():
+    config = PresentationConfig()
+    config.set("theme", "invalid-theme")
+    issues = config.validate()
+    assert len(issues) > 0
+```
+
+## 🚀 Performance
+
+### Optimization Tips
+- Use `--html` for faster preview during development
+- Disable animations and shadows for better PDF performance
+- Optimize images before embedding
+- Use web fonts judiciously
+
+### Memory Usage
+- Large presentations: ~50-100MB RAM
+- PDF generation: Additional ~100MB temporarily
+- Image processing: Depends on image sizes
+
+### Browser Support
+- **Chrome/Chromium**: Full support (recommended)
+- **Firefox**: Good support
+- **Safari**: Good support
+- **Edge**: Good support
+
+---
+
+*Need help? Check our [troubleshooting guide](docs.qmd) or [file an issue](https://github.com/nipunbatra/Bodh/issues).*

@@ -1,0 +1,40 @@
+# Overlay/Pause System Demo Configuration
+# Demonstrates Beamer-like pause functionality
+
+theme: gradient
+
+font:
+  family: "Roboto"
+  size: 22
+
+overlays:
+  enabled: true
+  transition: "slide"
+  duration: "0.5s"
+
+style:
+  animations: true
+  shadows: true
+  rounded_corners: true
+  
+  bullets:
+    style: "arrow"
+    color: "accent"
+    size: "1.1em"
+
+navigation:
+  enabled: true
+  show_arrows: true
+  show_dots: true
+  show_progress: true
+  keyboard_shortcuts: true
+
+slide_number:
+  enabled: true
+  format: "percent"
+  position: "bottom-right"
+
+logo:
+  source: "examples/sample-logo.svg"
+  location: "bottom-left"
+  size: 60

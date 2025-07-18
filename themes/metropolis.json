@@ -1,0 +1,54 @@
+{
+  "name": "Metropolis",
+  "description": "Beamer Metropolis-inspired theme with clean typography and minimal design",
+  "colors": {
+    "primary": "#23373b",
+    "secondary": "#eb811b",
+    "accent": "#14b3d6",
+    "background": "#fafafa", 
+    "surface": "#ffffff",
+    "text": "#23373b",
+    "text_light": "#586e75",
+    "text_muted": "#839496",
+    "border": "#dee2e6",
+    "error": "#dc3545",
+    "warning": "#ffc107",
+    "success": "#28a745",
+    "info": "#17a2b8"
+  },
+  "fonts": {
+    "heading": "Fira Sans",
+    "body": "Fira Sans",
+    "monospace": "Fira Code"
+  },
+  "effects": {
+    "shadows": false,
+    "rounded_corners": false,
+    "gradients": false,
+    "animations": false,
+    "transparency": false
+  },
+  "layout": {
+    "slide_padding": "4rem 5rem",
+    "content_max_width": "100%",
+    "heading_spacing": "2rem",
+    "element_spacing": "1.5rem"
+  },
+  "typography": {
+    "h1_size": "2.5em",
+    "h2_size": "2em", 
+    "h3_size": "1.5em",
+    "body_size": "1.1em",
+    "line_height": "1.4",
+    "h1_weight": "300",
+    "h2_weight": "300",
+    "body_weight": "400"
+  },
+  "special_features": {
+    "title_hrule": true,
+    "section_hrule": true,
+    "minimal_navigation": true,
+    "clean_bullets": true,
+    "monospace_emphasis": true
+  }
+}

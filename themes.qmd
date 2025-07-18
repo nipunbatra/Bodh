@@ -1,0 +1,205 @@
+---
+title: "Themes Gallery"
+subtitle: "Choose the perfect style for your presentation"
+---
+
+## 🎨 Theme Overview
+
+Bodh includes 9 carefully crafted themes, each designed for specific use cases. All themes are fully responsive and optimized for both HTML preview and PDF export.
+
+## 📋 Quick Reference
+
+| Theme | Style | Colors | Best For |
+|-------|-------|--------|----------|
+| **Modern** | Clean, professional | Blue/white | Business, corporate |
+| **Minimal** | Ultra-clean | Gray/white | Design, portfolios |
+| **Gradient** | Colorful gradients | Purple/blue | Conferences, tech talks |
+| **Dark** | Professional dark | Orange/dark | Code demos, evening talks |
+| **Metropolis** | Beamer-inspired | Teal/orange | Academic, research |
+| **Default** | Clean, versatile | Blue accents | General purpose |
+| **Sky** | Light, airy | Light blue | Creative, casual |
+| **Solarized** | Warm, comfortable | Solarized palette | Long presentations |
+| **Moon** | Space-themed | Dark blue/purple | Special events |
+
+## 🖼️ Theme Previews
+
+### Modern Theme
+::: {.theme-card}
+**Professional and clean**  
+Perfect for business presentations with a contemporary feel.
+
+- Clean typography with Inter font
+- Professional blue color scheme  
+- Subtle shadows and spacing
+- Works great with corporate logos
+
+[Preview Example](examples/showcase-modern.html){.btn .btn-primary}
+:::
+
+### Minimal Theme  
+::: {.theme-card}
+**Ultra-clean with generous whitespace**  
+Ideal for design-focused presentations and portfolios.
+
+- Maximum whitespace for clarity
+- Elegant typography
+- Minimal distractions
+- Perfect for showcasing visual content
+
+[Preview Example](examples/showcase-minimal.html){.btn .btn-primary}
+:::
+
+### Gradient Theme
+::: {.theme-card}
+**Reveal.js inspired with beautiful gradients**  
+Eye-catching backgrounds perfect for conferences and tech talks.
+
+- Stunning gradient backgrounds
+- High contrast text for readability
+- Modern, trendy appearance
+- Great for energetic presentations
+
+[Preview Example](examples/showcase-gradient.html){.btn .btn-primary}
+:::
+
+### Dark Theme
+::: {.theme-card}
+**Professional dark theme**  
+Excellent for tech presentations, code demos, and evening talks.
+
+- Easy on the eyes in dark environments
+- Orange accents for emphasis
+- Perfect for code syntax highlighting
+- Reduces eye strain during long presentations
+
+[Preview Example](examples/showcase-dark.html){.btn .btn-primary}
+:::
+
+### Metropolis Theme
+::: {.theme-card}
+**Beamer Metropolis-inspired**  
+Clean, academic style inspired by the popular LaTeX Beamer theme.
+
+- Minimal, distraction-free design
+- Perfect for research presentations
+- Consistent with academic standards
+- Excellent typography hierarchy
+
+*Coming soon - currently in development*
+:::
+
+### Default Theme
+::: {.theme-card}
+**Clean white with blue accents**  
+Versatile theme suitable for any type of presentation.
+
+- Timeless, professional appearance
+- Good contrast and readability
+- Works well for any content type
+- Safe choice for formal presentations
+
+[Preview Example](examples/showcase-default.html){.btn .btn-primary}
+:::
+
+### Sky Theme
+::: {.theme-card}
+**Light blue modern design**  
+Fresh and airy feel perfect for creative and casual topics.
+
+- Light, optimistic color palette
+- Great for creative presentations
+- Friendly, approachable style
+- Works well for educational content
+
+[Preview Example](examples/showcase-sky.html){.btn .btn-primary}
+:::
+
+### Solarized Theme
+::: {.theme-card}
+**Warm, eye-friendly colors**  
+Based on the popular Solarized color palette loved by developers.
+
+- Scientifically designed color palette
+- Reduced eye strain
+- Excellent for long presentations
+- Popular among tech professionals
+
+[Preview Example](examples/showcase-solarized.html){.btn .btn-primary}
+:::
+
+### Moon Theme
+::: {.theme-card}
+**Dark blue space-inspired**  
+Elegant and mysterious theme perfect for special occasions.
+
+- Deep, rich color palette
+- Space and night sky inspiration
+- Creates dramatic atmosphere
+- Great for storytelling presentations
+
+[Preview Example](examples/showcase-moon.html){.btn .btn-primary}
+:::
+
+## 🎯 Choosing the Right Theme
+
+### For Business Presentations
+- **Modern**: Professional meetings, client presentations
+- **Minimal**: Design reviews, clean corporate slides
+- **Default**: Safe choice for formal business settings
+
+### For Technical Content
+- **Dark**: Code demos, developer talks, evening presentations
+- **Metropolis**: Academic research, technical papers
+- **Gradient**: Tech conferences, startup pitches
+
+### For Creative Content
+- **Sky**: Educational content, creative workshops
+- **Solarized**: Design presentations, comfortable viewing
+- **Moon**: Special events, storytelling, artistic content
+
+## 🛠️ Customizing Themes
+
+### Using Configuration
+```yaml
+theme: modern
+font:
+  family: "Roboto"  # Override theme font
+  size: 24         # Adjust size
+
+style:
+  shadows: true      # Add shadows
+  rounded_corners: true  # Round corners
+  animations: false  # Disable animations
+```
+
+### Color Customization
+```yaml
+# Override theme colors (coming soon)
+colors:
+  primary: "#1e40af"
+  accent: "#f59e0b" 
+  background: "#ffffff"
+```
+
+## 📊 Theme Comparison
+
+### Typography
+- **Best for readability**: Minimal, Default, Modern
+- **Best for code**: Dark, Metropolis, Solarized  
+- **Most stylish**: Gradient, Moon, Sky
+
+### Color Schemes
+- **High contrast**: Dark, Minimal, Default
+- **Low contrast**: Solarized, Sky, Moon
+- **Colorful**: Gradient, Sky
+- **Monochromatic**: Minimal, Metropolis
+
+### Use Cases
+- **Corporate**: Modern, Default, Minimal
+- **Academic**: Metropolis, Default, Minimal
+- **Creative**: Sky, Gradient, Moon
+- **Technical**: Dark, Solarized, Metropolis
+
+---
+
+*Can't decide? Try the [Examples](examples.qmd) to see all themes in action!*
