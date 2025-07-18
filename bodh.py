@@ -123,8 +123,23 @@ class MarkdownToPDF:
     def _encode_image(self, image_path):
         """Encode image to base64 for embedding"""
         try:
-            with open(image_path, 'rb') as img_file:
-                return base64.b64encode(img_file.read()).decode('utf-8')
+            # Try absolute path first
+            if os.path.isabs(image_path):
+                full_path = image_path
+            else:
+                # Try relative to current working directory
+                full_path = os.path.abspath(image_path)
+                
+            print(f"Loading image from: {full_path}")
+            
+            if not os.path.exists(full_path):
+                print(f"Warning: Image file not found at {full_path}")
+                return None
+                
+            with open(full_path, 'rb') as img_file:
+                data = base64.b64encode(img_file.read()).decode('utf-8')
+                print(f"Successfully encoded image: {len(data)} characters")
+                return data
         except Exception as e:
             print(f"Warning: Could not load image {image_path}: {e}")
             return None
@@ -302,6 +317,14 @@ class MarkdownToPDF:
         <button class="nav-btn" id="next-btn" onclick="nextSlide()">→</button>
         {% endif %}
     </div>
+    {% elif show_slide_numbers %}
+    <!-- Slide numbers for PDF (when navigation is disabled) -->
+    <div class="slide-nav">
+        <div class="slide-counter">
+            <span id="slide-display">{{ initial_slide_number }}</span>
+        </div>
+    </div>
+    {% endif %}
     
     {% if config.get('overlays.enabled') %}
     <div class="overlay-controls" style="display: none;">
@@ -309,6 +332,7 @@ class MarkdownToPDF:
     </div>
     {% endif %}
 
+    {% if enable_navigation %}
     <script>
         let currentSlide = 0;
         const totalSlides = {{ slides|length }};
@@ -512,7 +536,7 @@ class MarkdownToPDF:
             enable_navigation=False,
             show_arrows=False,
             show_dots=False,
-            show_slide_numbers=False,
+            show_slide_numbers=True,
             slide_number_format='{current}/{total}',
             initial_slide_number=initial_slide_number,
             config=self.config

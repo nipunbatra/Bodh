@@ -445,15 +445,15 @@ td {
 /* Slide Navigation */
 .slide-nav {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 1rem;
+    right: 1rem;
     display: flex;
     gap: 1rem;
     z-index: 1000;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 1rem;
-    border-radius: 12px;
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+    backdrop-filter: blur(5px);
 }
 
 .nav-btn {
@@ -479,12 +479,39 @@ td {
 }
 
 .slide-counter {
-    color: white;
-    font-size: 14px;
+    color: {{ theme.colors.text }};
+    font-size: 11px;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-weight: 500;
+    gap: 0.3rem;
+    font-weight: 400;
+    font-family: '{{ font_family }}', sans-serif;
+    opacity: 0.7;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    transition: opacity 0.3s ease;
+}
+
+.slide-counter:hover {
+    opacity: 1;
+}
+
+/* Standalone slide number display (reveal.js style) */
+.slide-number-standalone {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    color: {{ theme.colors.text }};
+    font-size: 14px;
+    font-weight: 300;
+    font-family: '{{ font_family }}', sans-serif;
+    opacity: 0.6;
+    z-index: 999;
+    pointer-events: none;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 .slide-dots {
@@ -671,7 +698,7 @@ ul li::marker {
 
 {% if theme.special_features and theme.special_features.monospace_emphasis %}
 code, .monospace {
-    font-family: '{{ theme.fonts.monospace }}', 'Fira Code', 'SF Mono', monospace;
+    font-family: 'Fira Code', 'SF Mono', monospace;
     background: rgba(35, 55, 59, 0.1);
     padding: 0.1rem 0.3rem;
     border-radius: 3px;
@@ -680,16 +707,55 @@ code, .monospace {
 {% endif %}
 
 @media print {
-    .slide-nav,
+    /* Hide interactive elements */
     .keyboard-hint,
-    .overlay-controls {
-        display: none;
+    .overlay-controls,
+    .nav-btn,
+    .slide-dots,
+    .dot {
+        display: none !important;
     }
     
+    /* Ensure slides are visible */
     .slide {
         display: flex !important;
+        page-break-inside: avoid;
     }
     
+    /* Keep slide navigation container but make it minimal */
+    .slide-nav {
+        background: transparent !important;
+        backdrop-filter: none !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+    }
+    
+    /* Style slide counter for PDF */
+    .slide-counter {
+        display: flex !important;
+        background: transparent !important;
+        color: {{ theme.colors.text }} !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        padding: 0.2rem 0.5rem !important;
+        border: 1px solid {{ theme.colors.accent }} !important;
+        border-radius: 4px !important;
+        opacity: 1 !important;
+        backdrop-filter: none !important;
+    }
+    
+    /* Ensure logos are visible */
+    .logo {
+        display: block !important;
+        opacity: 1 !important;
+    }
+    
+    .logo img {
+        display: block !important;
+        opacity: 1 !important;
+    }
+    
+    /* Show overlays in PDF */
     .overlay {
         opacity: 1 !important;
         transform: none !important;
