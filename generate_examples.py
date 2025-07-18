@@ -10,35 +10,51 @@ from bodh import MarkdownToPDF
 def generate_examples():
     """Generate HTML and PDF examples for all themes"""
     
+    print("🚀 Starting Bodh example generation...")
+    print(f"📁 Current working directory: {os.getcwd()}")
+    
     # Create output directories
+    print("📂 Creating output directories...")
     os.makedirs('docs/examples', exist_ok=True)
     os.makedirs('docs/pdfs', exist_ok=True)
+    print("✅ Output directories created: docs/examples/ and docs/pdfs/")
     
     # Check if showcase file exists
     if not os.path.exists('examples/showcase.md'):
-        print("Error: examples/showcase.md not found")
+        print("❌ Error: examples/showcase.md not found")
+        print("📁 Current directory contents:")
+        for item in os.listdir('.'):
+            print(f"  - {item}")
         return
     
     # Read showcase content
+    print("📖 Reading showcase.md content...")
     with open('examples/showcase.md', 'r') as f:
         content = f.read()
+    print(f"✅ Read {len(content)} characters from showcase.md")
     
     # Themes to generate
     themes = ['modern', 'minimal', 'gradient', 'dark', 'default', 'sky', 'solarized', 'moon']
+    print(f"🎨 Will generate examples for {len(themes)} themes: {', '.join(themes)}")
     
     html_generated = 0
     pdf_generated = 0
     
-    for theme in themes:
-        print(f"Generating examples for theme: {theme}")
+    for i, theme in enumerate(themes, 1):
+        print(f"\n🎨 [{i}/{len(themes)}] Generating examples for theme: {theme}")
         
         try:
+            print(f"  🔧 Creating MarkdownToPDF converter for {theme}...")
             # Create converter
             converter = MarkdownToPDF(theme=theme, font_family='Inter', font_size=20)
+            print(f"  ✅ Converter created successfully")
             
+            print(f"  📝 Parsing slides from markdown...")
             # Parse slides
             slides = converter.parse_markdown_slides(content)
+            print(f"  ✅ Found {len(slides)} slides")
             
+            print(f"  🌐 Generating HTML content...")
             # Generate HTML with navigation
             html_content = converter.template.render(
                 title=f'Bodh Showcase - {theme.title()} Theme',
@@ -53,35 +69,61 @@ def generate_examples():
                 show_slide_numbers=True,
                 slide_number_format='{current}/{total}'
             )
+            print(f"  ✅ Generated {len(html_content)} characters of HTML")
             
             # Write HTML file
             html_path = f'docs/examples/showcase-{theme}.html'
+            print(f"  💾 Writing HTML to {html_path}...")
             with open(html_path, 'w') as f:
                 f.write(html_content)
-            print(f"Generated HTML: {html_path}")
+            print(f"  ✅ HTML saved: {html_path}")
             html_generated += 1
             
             # Generate PDF (only for main themes to avoid timeout, and only if Playwright is available)
             if theme in ['modern', 'minimal', 'gradient', 'dark']:
                 try:
                     pdf_path = f'docs/pdfs/showcase-{theme}.pdf'
+                    print(f"  📄 Generating PDF: {pdf_path}...")
                     converter.convert_to_pdf('examples/showcase.md', pdf_path)
-                    print(f"Generated PDF: {pdf_path}")
+                    print(f"  ✅ PDF generated: {pdf_path}")
                     pdf_generated += 1
                 except Exception as pdf_error:
-                    print(f"Warning: Could not generate PDF for {theme}: {pdf_error}")
+                    print(f"  ⚠️  Warning: Could not generate PDF for {theme}: {pdf_error}")
                     # Continue without PDF generation
+            else:
+                print(f"  ⏭️  Skipping PDF generation for {theme} (not in main themes)")
                 
         except Exception as e:
-            print(f"Error generating {theme}: {e}")
+            print(f"  ❌ Error generating {theme}: {e}")
+            import traceback
+            print(f"  📋 Full error trace: {traceback.format_exc()}")
             continue
     
-    print(f"Example generation completed! HTML: {html_generated}, PDF: {pdf_generated}")
+    print(f"\n🎉 Example generation completed!")
+    print(f"📊 Summary: {html_generated} HTML files, {pdf_generated} PDF files generated")
     
     # Ensure index.html exists
     if not os.path.exists('docs/index.html'):
-        print("Creating fallback index.html")
+        print("🔧 Creating fallback index.html...")
         create_fallback_index()
+        print("✅ Fallback index.html created")
+    else:
+        print("✅ Index.html already exists")
+    
+    # Final verification
+    print(f"\n📁 Final verification of docs/ directory:")
+    if os.path.exists('docs'):
+        for root, dirs, files in os.walk('docs'):
+            level = root.replace('docs', '').count(os.sep)
+            indent = ' ' * 2 * level
+            print(f"{indent}{os.path.basename(root)}/")
+            subindent = ' ' * 2 * (level + 1)
+            for file in files:
+                file_path = os.path.join(root, file)
+                size = os.path.getsize(file_path)
+                print(f"{subindent}{file} ({size} bytes)")
+    else:
+        print("❌ No docs directory found!")
 
 def create_fallback_index():
     """Create a fallback index.html if it doesn't exist"""

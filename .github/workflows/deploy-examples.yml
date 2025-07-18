@@ -29,20 +29,59 @@ jobs:
 
     - name: Install dependencies
       run: |
+        echo "🔧 Installing Python dependencies..."
         python -m pip install --upgrade pip
+        echo "📦 Installing requirements..."
         pip install -r requirements.txt
+        echo "🎭 Installing Playwright dependencies..."
         playwright install-deps chromium
+        echo "🌐 Installing Chromium browser..."
         playwright install chromium
+        echo "✅ All dependencies installed successfully!"
+
+    - name: Pre-generation check
+      run: |
+        echo "🔍 Checking repository structure before generation..."
+        echo "Current directory: $(pwd)"
+        echo "Repository contents:"
+        ls -la
+        echo "Examples directory:"
+        ls -la examples/ || echo "❌ No examples directory"
+        echo "Showcase file:"
+        ls -la examples/showcase.md || echo "❌ No showcase.md file"
+        echo "Themes directory:"
+        ls -la themes/ || echo "❌ No themes directory"
+        echo "Config file:"
+        ls -la config.py || echo "❌ No config.py file"
+        echo "Main script:"
+        ls -la bodh.py || echo "❌ No bodh.py file"
 
     - name: Generate examples
       run: |
+        echo "🚀 Starting example generation..."
         python generate_examples.py
+        echo "✅ Example generation script completed!"
 
-    - name: Debug - Check docs directory
+    - name: Post-generation detailed check
       run: |
-        echo "Checking docs directory:"
-        ls -la docs/
-        cat docs/index.html
+        echo "📊 Checking results after generation..."
+        echo "Docs directory structure:"
+        find docs/ -type f -exec ls -la {} \; 2>/dev/null || echo "❌ No docs directory or files"
+        echo ""
+        echo "📄 Index.html content preview:"
+        head -20 docs/index.html 2>/dev/null || echo "❌ No index.html found"
+        echo ""
+        echo "🖼️ Examples directory:"
+        ls -la docs/examples/ 2>/dev/null || echo "❌ No examples directory"
+        echo ""
+        echo "📑 PDFs directory:"
+        ls -la docs/pdfs/ 2>/dev/null || echo "❌ No pdfs directory"
+        echo ""
+        echo "📏 File sizes:"
+        du -h docs/* 2>/dev/null || echo "❌ No docs files to measure"
+        echo ""
+        echo "🧮 Total files generated:"
+        find docs/ -type f | wc -l 2>/dev/null || echo "0"
 
     - name: Setup Pages
       uses: actions/configure-pages@v4
