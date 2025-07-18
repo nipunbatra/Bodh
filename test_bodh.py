@@ -7,8 +7,10 @@ Tests all major functionality to prevent regressions
 import os
 import tempfile
 import shutil
-import pytest
+import subprocess
+import sys
 from pathlib import Path
+import pytest
 from bodh import MarkdownToPDF
 from config import PresentationConfig
 
@@ -333,13 +335,5 @@ def run_comprehensive_test():
 
 
 if __name__ == "__main__":
-    # Install pytest if not available
-    try:
-        import pytest
-    except ImportError:
-        print("Installing pytest...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "pytest"])
-        import pytest
-    
     success = run_comprehensive_test()
     exit(0 if success else 1)
