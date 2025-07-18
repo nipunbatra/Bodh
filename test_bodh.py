@@ -309,6 +309,83 @@ class TestErrorHandling:
             shutil.rmtree(temp_dir)
 
 
+class TestSyntaxHighlighting:
+    """Test syntax highlighting functionality"""
+    
+    def test_syntax_highlighting_css(self):
+        """Test that syntax highlighting CSS is included"""
+        converter = MarkdownToPDF()
+        css = converter.css
+        
+        # Should have codehilite styles
+        assert '.codehilite' in css
+        assert 'color: #008000' in css  # Keyword colors
+        assert 'color: #BA2121' in css  # String colors
+    
+    def test_code_block_processing(self):
+        """Test that code blocks are processed with syntax highlighting"""
+        converter = MarkdownToPDF()
+        
+        content = """# Code Test
+
+```python
+def hello():
+    print("Hello, World!")
+```
+"""
+        
+        slides = converter.parse_markdown_slides(content)
+        assert len(slides) == 1
+        assert 'codehilite' in slides[0]
+        assert 'def' in slides[0]  # Python keyword should be present
+
+
+class TestLayoutFixes:
+    """Test layout and positioning fixes"""
+    
+    def test_slide_navigation_positioning(self):
+        """Test that slide navigation is positioned on the right"""
+        converter = MarkdownToPDF()
+        css = converter.css
+        
+        # Should have right positioning for slide nav
+        assert 'bottom: 2rem' in css
+        assert 'right: 2rem' in css
+        assert 'left: 50%' not in css  # Should not be centered
+    
+    def test_fixed_slide_layout(self):
+        """Test that slides have fixed top positioning"""
+        converter = MarkdownToPDF()
+        css = converter.css
+        
+        # Should have flex-start for fixed positioning
+        assert 'justify-content: flex-start' in css
+        assert 'padding-top: 2rem' in css
+
+
+class TestImageHandling:
+    """Test image handling and logos"""
+    
+    def test_sample_images_exist(self):
+        """Test that sample images exist in examples directory"""
+        sample_png = Path('examples/sample-image.png')
+        sample_jpg = Path('examples/sample-image.jpg')
+        
+        assert sample_png.exists(), "Sample PNG image should exist"
+        assert sample_jpg.exists(), "Sample JPG image should exist"
+    
+    def test_logo_encoding(self):
+        """Test logo image encoding"""
+        logo_path = 'examples/sample-logo.svg'
+        if os.path.exists(logo_path):
+            converter = MarkdownToPDF()
+            encoded_logo = converter._encode_image(logo_path)
+            
+            assert encoded_logo is not None
+            assert isinstance(encoded_logo, str)
+            assert len(encoded_logo) > 0
+
+
 def run_comprehensive_test():
     """Run all tests and return results"""
     import subprocess

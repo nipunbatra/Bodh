@@ -549,23 +549,33 @@ class MarkdownToPDF:
                 page = browser.new_page()
                 
                 # Set viewport to match A4 landscape dimensions for consistent rendering
-                page.set_viewport_size({"width": 1122, "height": 794})  # A4 landscape at 96 DPI
+                page.set_viewport_size({"width": 1123, "height": 794})  # A4 landscape at 96 DPI
                 
                 # Load content and wait for fonts/images
                 page.set_content(html_content, wait_until='networkidle')
                 
-                # Wait for fonts to load
-                page.wait_for_timeout(2000)  # Increase timeout for CI
+                # Wait for fonts and images to load properly
+                page.wait_for_timeout(3000)  # Increase timeout for CI and font loading
+                
+                # Wait for any Google Fonts to load
+                page.wait_for_function("""
+                    () => {
+                        const fonts = document.fonts;
+                        return fonts.status === 'loaded' || fonts.size === 0;
+                    }
+                """, timeout=10000)
                 
                 # PDF options for presentation format
                 page.pdf(
                     path=output_file,
                     format='A4',
                     landscape=True,
-                    margin={'top': '1.5cm', 'bottom': '1.5cm', 'left': '1.5cm', 'right': '1.5cm'},
+                    margin={'top': '0.5cm', 'bottom': '0.5cm', 'left': '0.5cm', 'right': '0.5cm'},
                     print_background=True,
                     prefer_css_page_size=True,
-                    display_header_footer=False
+                    display_header_footer=False,
+                    width='11.7in',  # A4 landscape width
+                    height='8.3in'   # A4 landscape height
                 )
                 browser.close()
         elif PDF_BACKEND == 'weasyprint':
