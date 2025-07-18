@@ -1,0 +1,35 @@
+# Bodh Configuration - Corporate Branding
+# Professional setup with logo and clean numbering
+
+theme: dark
+font:
+  family: "Source Sans Pro"
+  size: 20
+
+slide_number:
+  enabled: true
+  format: current         # Just "1", "2", "3"
+  position: top-right
+
+navigation:
+  enabled: true
+  show_arrows: false      # Minimal navigation
+  show_dots: true
+  show_progress: false
+  keyboard_shortcuts: true
+
+style:
+  shadows: true
+  rounded_corners: false  # Corporate sharp edges
+  animations: false       # Professional, no distractions
+  slide_padding: 2.5rem
+
+logo:
+  source: examples/sample-logo.svg
+  location: top-left
+  size: 120
+
+content:
+  slide_separator: "---"
+  title_slide: true
+  thank_you_slide: true

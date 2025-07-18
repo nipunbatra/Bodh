@@ -1,0 +1,123 @@
+---
+title: "Live Examples"
+subtitle: "See Bodh in action with interactive demos"
+---
+
+## 🎨 Theme Showcase
+
+Experience all available themes with interactive HTML previews and downloadable PDFs.
+
+### Basic Themes
+
+:::{.examples-grid}
+
+::: {.example-card}
+### Modern Theme
+**Clean, professional design**  
+Perfect for business presentations and client meetings.
+[View HTML](examples/showcase-modern.html){.btn .btn-primary}
+[Download PDF](pdfs/showcase-modern.pdf){.btn .btn-secondary}
+:::
+
+::: {.example-card}
+### Minimal Theme  
+**Ultra-clean with generous whitespace**  
+Ideal for design-focused presentations and portfolios.
+[View HTML](examples/showcase-minimal.html){.btn .btn-primary}
+[Download PDF](pdfs/showcase-minimal.pdf){.btn .btn-secondary}
+:::
+
+::: {.example-card}
+### Gradient Theme
+**Reveal.js inspired gradients**  
+Eye-catching backgrounds perfect for conferences.
+[View HTML](examples/showcase-gradient.html){.btn .btn-primary}
+[Download PDF](pdfs/showcase-gradient.pdf){.btn .btn-secondary}
+:::
+
+::: {.example-card}
+### Dark Theme
+**Professional dark theme**  
+Great for tech presentations and code demos.
+[View HTML](examples/showcase-dark.html){.btn .btn-primary}
+[Download PDF](pdfs/showcase-dark.pdf){.btn .btn-secondary}
+:::
+
+:::
+
+### Additional Themes
+
+:::{.examples-grid}
+
+::: {.example-card}
+### Default Theme
+**Clean white with blue accents**  
+Versatile theme suitable for any presentation.
+[View HTML](examples/showcase-default.html){.btn .btn-primary}
+:::
+
+::: {.example-card}
+### Sky Theme  
+**Light blue modern design**  
+Fresh and airy feel perfect for creative topics.
+[View HTML](examples/showcase-sky.html){.btn .btn-primary}
+:::
+
+::: {.example-card}
+### Solarized Theme
+**Warm, eye-friendly colors**  
+Based on the popular Solarized color palette.
+[View HTML](examples/showcase-solarized.html){.btn .btn-primary}
+:::
+
+::: {.example-card}
+### Moon Theme
+**Dark blue space-inspired**  
+Elegant and mysterious for special occasions.
+[View HTML](examples/showcase-moon.html){.btn .btn-primary}
+:::
+
+:::
+
+## 🔧 Configuration Examples
+
+See how different configurations change the presentation experience.
+
+### Logo Demonstration
+**Features:** Company logo, slide numbering, full navigation
+[View HTML](examples/logo-demo.html){.btn .btn-primary}
+[Download PDF](pdfs/logo-demo.pdf){.btn .btn-secondary}
+
+### Slide Number Variations  
+**Features:** Different numbering formats, progress indicators
+[View HTML](examples/slide-numbers-demo.html){.btn .btn-primary}
+[Download PDF](pdfs/slide-numbers-demo.pdf){.btn .btn-secondary}
+
+### Corporate Branding
+**Features:** Professional setup, minimal navigation, sharp design
+[View HTML](examples/corporate-branding.html){.btn .btn-primary}
+[Download PDF](pdfs/corporate-branding.pdf){.btn .btn-secondary}
+
+## 📊 Feature Showcase
+
+**Complete feature demonstration** showing logos, slide numbering, navigation options, and styling variations.
+[View HTML](examples/feature-showcase.html){.btn .btn-primary}
+[Download PDF](pdfs/feature-showcase.pdf){.btn .btn-secondary}
+
+## 🎯 How to Use These Examples
+
+1. **Click "View HTML"** to see the interactive presentation with navigation
+2. **Use arrow keys** or click navigation buttons to browse slides  
+3. **Click "Download PDF"** to see the print-ready version
+4. **Compare** HTML vs PDF quality - they're nearly identical!
+
+## 💡 Tips for Testing
+
+- **Try keyboard navigation**: Arrow keys, spacebar, Home, End
+- **Test on mobile**: Swipe gestures work on touch devices
+- **Check different screen sizes**: All themes are responsive
+- **Compare themes**: See which style fits your content best
+
+---
+
+*All examples are automatically regenerated when the code is updated, ensuring they always reflect the latest features and improvements.*

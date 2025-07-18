@@ -1,0 +1,224 @@
+---
+title: "Bodh - Beautiful Markdown to PDF Presentations"
+subtitle: "Transform your knowledge into stunning presentations"
+---
+
+:::{.hero-banner}
+# 🚀 Bodh - Beautiful Presentations
+
+**Bodh** (बोध) means "knowledge" or "understanding" in Hindi - the perfect name for a tool that helps you share your insights through beautiful presentations.
+
+Transform your markdown into stunning professional presentations with just a few clicks.
+:::
+
+## 🎯 Live Examples & Demo
+
+See Bodh in action with interactive HTML previews and downloadable PDFs:
+
+:::{.examples-grid}
+
+::: {.example-card}
+### Modern Theme
+Clean, professional design with modern typography  
+[View HTML](examples/showcase-modern.html){.btn .btn-primary}
+[Download PDF](pdfs/showcase-modern.pdf){.btn .btn-secondary}
+:::
+
+::: {.example-card}
+### Minimal Theme  
+Ultra-clean design with generous whitespace  
+[View HTML](examples/showcase-minimal.html){.btn .btn-primary}
+[Download PDF](pdfs/showcase-minimal.pdf){.btn .btn-secondary}
+:::
+
+::: {.example-card}
+### Gradient Theme
+Reveal.js inspired with beautiful gradients  
+[View HTML](examples/showcase-gradient.html){.btn .btn-primary}
+[Download PDF](pdfs/showcase-gradient.pdf){.btn .btn-secondary}
+:::
+
+::: {.example-card}
+### Dark Theme
+Professional dark theme for tech presentations  
+[View HTML](examples/showcase-dark.html){.btn .btn-primary}
+[Download PDF](pdfs/showcase-dark.pdf){.btn .btn-secondary}
+:::
+
+:::
+
+*Examples are automatically updated with each release*
+
+## ✨ Features
+
+- **8 Beautiful Themes** - Modern, minimal, gradient, dark, and more
+- **Configuration Presets** - Quick setup with predefined styles (Simple, Tech Talk, Academic, etc.)
+- **Live Preview** - See your slides as you type
+- **Slide Navigation** - Next/previous buttons and keyboard controls
+- **PDF Preview** - View your PDF before downloading
+- **Custom Fonts** - Choose from popular Google Fonts
+- **File Upload** - Drag and drop existing markdown files
+- **Responsive Design** - Works on all devices
+- **Professional Output** - High-quality PDF generation
+
+## 🚀 Quick Start
+
+### 1. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Run the Web UI
+
+```bash
+# Default port (5000)
+python app.py
+
+# Custom port
+python app.py -p 8080
+
+# With debug mode
+python app.py -p 3000 -d
+```
+
+### 3. Open in Browser
+
+```
+http://localhost:5000
+```
+
+## 📝 Command Line Usage
+
+### Basic Usage
+```bash
+# Basic usage
+python bodh.py presentation.md
+
+# With custom theme and font
+python bodh.py slides.md -t modern -f "Inter" -s 22
+
+# With logo
+python bodh.py slides.md -t gradient -l logo.png -p top-right
+```
+
+### Configuration Files
+```bash
+# Create sample configuration
+python bodh.py --create-config
+
+# Use specific configuration
+python bodh.py slides.md -c configs/minimal.yml
+
+# Override config with CLI arguments
+python bodh.py slides.md -c config.yml -t dark -f "Roboto"
+
+# Auto-detect default config (bodh.yml)
+python bodh.py slides.md -v
+```
+
+### Available Options
+```bash
+# See all options
+python bodh.py --help
+
+# List available themes
+python bodh.py --list-themes
+```
+
+## 🎨 Available Themes
+
+| Theme | Description |
+|-------|-------------|
+| **modern** | Slides.com inspired clean design |
+| **minimal** | Ultra-clean with generous spacing |
+| **gradient** | Reveal.js inspired gradient backgrounds |
+| **dark** | Professional dark theme |
+| **default** | Clean white with subtle blue accents |
+| **sky** | Light blue modern theme |
+| **solarized** | Warm, eye-friendly colors |
+| **moon** | Dark blue space-inspired |
+
+## 📋 Markdown Format
+
+Separate slides with `---`:
+
+```markdown
+# Welcome Slide
+## Your presentation title
+
+Content for first slide
+
+---
+
+## Second Slide
+
+- Bullet point 1
+- Bullet point 2
+- Bullet point 3
+
+---
+
+# Thank You!
+
+Questions?
+```
+
+## 🎯 Features in Detail
+
+### Configuration System
+- **YAML Configuration**: Full support for configuration files
+- **Auto-detection**: Automatically finds `bodh.yml` in current directory
+- **CLI Overrides**: Command line arguments override config values
+- **Example Configs**: Minimal, presentation, and academic styles included
+
+### Slide Navigation
+- **Keyboard**: Arrow keys, Space, Home, End
+- **Mouse**: Click navigation buttons or dots
+- **Touch**: Swipe on mobile devices
+- **Slide Numbers**: Multiple formats (1, 1/10, 10, 10%)
+
+### Supported Markdown
+- Headers (H1-H6)
+- Lists (ordered and unordered)
+- **Bold** and *italic* text
+- `Code snippets` and code blocks
+- Tables
+- Blockquotes
+- Images
+
+### PDF Generation
+- **High-quality PDF output** using Chrome's PDF engine (Playwright)
+- **Identical quality to HTML preview** - full CSS support, gradients, shadows, animations
+- Landscape A4 format
+- Print-ready quality
+- Consistent typography
+- **Fallback support** for WeasyPrint and xhtml2pdf if Playwright unavailable
+
+## 📦 Requirements
+
+- Python 3.7+
+- Flask 3.0+
+- Markdown
+- Jinja2
+- Playwright (preferred) or WeasyPrint or xhtml2pdf
+
+## 🌟 Pro Tips
+
+1. **Keep slides simple** - One main point per slide
+2. **Use consistent formatting** - Stick to your chosen theme
+3. **Test different themes** - Preview before generating PDF
+4. **Optimize images** - Use web-optimized formats
+5. **Preview first** - Always check HTML preview before PDF
+
+## 🤝 Contributing
+
+Feel free to submit issues, feature requests, or pull requests!
+
+## 📄 License
+
+MIT License - See LICENSE file for details
+
+---
+
+**Happy Presenting with Bodh!** 🎉

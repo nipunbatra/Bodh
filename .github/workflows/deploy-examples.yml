@@ -26,6 +26,11 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
+        
+    - name: Set up Quarto
+      uses: quarto-dev/quarto-actions/setup@v2
+      with:
+        version: 'pre-release'
 
     - name: Install dependencies
       run: |
@@ -82,6 +87,12 @@ jobs:
         echo ""
         echo "🧮 Total files generated:"
         find docs/ -type f | wc -l 2>/dev/null || echo "0"
+
+    - name: Build Quarto site
+      run: |
+        echo "📚 Building Quarto documentation site..."
+        quarto render
+        echo "✅ Quarto site built successfully!"
 
     - name: Setup Pages
       uses: actions/configure-pages@v4

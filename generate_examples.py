@@ -7,6 +7,16 @@ import os
 from pathlib import Path
 from bodh import MarkdownToPDF
 
+def _get_slide_number_format(format_type):
+    """Convert config format to template format"""
+    format_map = {
+        'current': '{current}',
+        'current/total': '{current}/{total}',
+        'total': '{total}',
+        'percent': '{percent}%'
+    }
+    return format_map.get(format_type, '{current}/{total}')
+
 def generate_examples():
     """Generate HTML and PDF examples for all themes"""
     
@@ -33,9 +43,17 @@ def generate_examples():
         content = f.read()
     print(f"✅ Read {len(content)} characters from showcase.md")
     
-    # Themes to generate
+    # Basic theme examples
     themes = ['modern', 'minimal', 'gradient', 'dark', 'default', 'sky', 'solarized', 'moon']
     print(f"🎨 Will generate examples for {len(themes)} themes: {', '.join(themes)}")
+    
+    # Configuration-based examples
+    config_examples = [
+        ('logo-demo', 'configs/logo-demo.yml'),
+        ('slide-numbers-demo', 'configs/slide-numbers-demo.yml'), 
+        ('corporate-branding', 'configs/corporate-branding.yml')
+    ]
+    print(f"⚙️ Will generate {len(config_examples)} configuration examples")
     
     html_generated = 0
     pdf_generated = 0
@@ -95,6 +113,87 @@ def generate_examples():
                 
         except Exception as e:
             print(f"  ❌ Error generating {theme}: {e}")
+            import traceback
+            print(f"  📋 Full error trace: {traceback.format_exc()}")
+            continue
+    
+    # Generate configuration-based examples
+    print(f"\n⚙️ Generating configuration-based examples...")
+    for i, (example_name, config_path) in enumerate(config_examples, 1):
+        print(f"\n🔧 [{i}/{len(config_examples)}] Generating {example_name} with {config_path}")
+        
+        try:
+            # Check if config file exists
+            if not os.path.exists(config_path):
+                print(f"  ❌ Config file not found: {config_path}")
+                continue
+                
+            print(f"  📖 Loading configuration from {config_path}")
+            from config import load_config
+            config = load_config(config_path)
+            print(f"  ✅ Configuration loaded successfully")
+            
+            # Create converter with configuration
+            print(f"  🔧 Creating converter with configuration...")
+            converter = MarkdownToPDF(config=config)
+            print(f"  ✅ Converter created successfully")
+            
+            # Use feature showcase content for config examples
+            showcase_content = content
+            if example_name == 'feature-showcase' and os.path.exists('examples/feature-showcase.md'):
+                with open('examples/feature-showcase.md', 'r') as f:
+                    showcase_content = f.read()
+                print(f"  📖 Using feature-showcase.md content")
+            
+            # Parse slides
+            print(f"  📝 Parsing slides...")
+            slides = converter.parse_markdown_slides(showcase_content)
+            print(f"  ✅ Found {len(slides)} slides")
+            
+            # Generate HTML
+            print(f"  🌐 Generating HTML...")
+            html_content = converter.template.render(
+                title=f'Bodh {example_name.replace("-", " ").title()} Demo',
+                slides=slides,
+                css=converter.css,
+                font_family=config.get('font.family', 'Inter'),
+                logo_data=None,  # Logo will be handled by config
+                logo_position=config.get('logo.location', 'top-right'),
+                enable_navigation=config.get('navigation.enabled', True),
+                show_arrows=config.get('navigation.show_arrows', True),
+                show_dots=config.get('navigation.show_dots', True),
+                show_slide_numbers=config.get('slide_number.enabled', True),
+                slide_number_format=_get_slide_number_format(config.get('slide_number.format', 'current/total'))
+            )
+            
+            # Write HTML file
+            html_path = f'docs/examples/{example_name}.html'
+            print(f"  💾 Writing HTML to {html_path}...")
+            with open(html_path, 'w') as f:
+                f.write(html_content)
+            print(f"  ✅ HTML saved: {html_path}")
+            html_generated += 1
+            
+            # Generate PDF for configuration examples
+            try:
+                pdf_path = f'docs/pdfs/{example_name}.pdf'
+                print(f"  📄 Generating PDF: {pdf_path}...")
+                
+                # Use showcase content for PDF generation
+                temp_md_file = f'temp_{example_name}.md'
+                with open(temp_md_file, 'w') as f:
+                    f.write(showcase_content)
+                
+                converter.convert_to_pdf(temp_md_file, pdf_path)
+                os.remove(temp_md_file)  # Clean up temp file
+                
+                print(f"  ✅ PDF generated: {pdf_path}")
+                pdf_generated += 1
+            except Exception as pdf_error:
+                print(f"  ⚠️  Warning: Could not generate PDF for {example_name}: {pdf_error}")
+                
+        except Exception as e:
+            print(f"  ❌ Error generating {example_name}: {e}")
             import traceback
             print(f"  📋 Full error trace: {traceback.format_exc()}")
             continue

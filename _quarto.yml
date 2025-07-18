@@ -1,0 +1,49 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Bodh - Beautiful Presentations"
+  description: "Transform your markdown into stunning professional presentations"
+  navbar:
+    logo: examples/sample-logo.svg
+    title: "बोध Bodh"
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Examples"
+        href: examples.qmd
+      - text: "Documentation"
+        href: docs.qmd
+      - text: "Themes"
+        href: themes.qmd
+    right:
+      - icon: github
+        href: https://github.com/nipunbatra/Bodh
+  sidebar:
+    - title: "Getting Started"
+      contents:
+        - index.qmd
+        - installation.qmd
+    - title: "Examples"
+      contents:
+        - examples.qmd
+        - themes.qmd
+        - configurations.qmd
+    - title: "Documentation"
+      contents:
+        - docs.qmd
+        - api.qmd
+  page-footer:
+    center: "Made with ❤️ using [Quarto](https://quarto.org) | Bodh (बोध) means knowledge in Hindi"
+
+format:
+  html:
+    theme: 
+      - flatly
+      - custom.scss
+    css: styles.css
+    toc: true
+    toc-location: right
+    code-copy: true
+    code-fold: false
