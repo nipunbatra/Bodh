@@ -135,11 +135,26 @@ class MarkdownToPDF:
             if not os.path.exists(full_path):
                 print(f"Warning: Image file not found at {full_path}")
                 return None
+            
+            # Determine MIME type based on file extension
+            file_ext = os.path.splitext(full_path)[1].lower()
+            if file_ext == '.svg':
+                mime_type = 'image/svg+xml'
+            elif file_ext == '.png':
+                mime_type = 'image/png'
+            elif file_ext in ['.jpg', '.jpeg']:
+                mime_type = 'image/jpeg'
+            elif file_ext == '.gif':
+                mime_type = 'image/gif'
+            elif file_ext == '.webp':
+                mime_type = 'image/webp'
+            else:
+                mime_type = 'image/png'  # Default fallback
                 
             with open(full_path, 'rb') as img_file:
                 data = base64.b64encode(img_file.read()).decode('utf-8')
-                print(f"Successfully encoded image: {len(data)} characters")
-                return data
+                print(f"Successfully encoded image: {len(data)} characters, MIME: {mime_type}")
+                return {'data': data, 'mime_type': mime_type}
         except Exception as e:
             print(f"Warning: Could not load image {image_path}: {e}")
             return None
@@ -292,7 +307,7 @@ class MarkdownToPDF:
     <div class="slide{% if enable_navigation and loop.first %} active{% endif %}">
         {% if logo_data %}
         <div class="logo logo-{{ logo_position }}">
-            <img src="data:image/png;base64,{{ logo_data }}" alt="Logo">
+            <img src="data:{{ logo_mime_type }};base64,{{ logo_data }}" alt="Logo">
         </div>
         {% endif %}
         {% if show_slide_numbers and not enable_navigation %}
@@ -333,13 +348,6 @@ class MarkdownToPDF:
         {% if show_arrows %}
         <button class="nav-btn" id="next-btn" onclick="nextSlide()">→</button>
         {% endif %}
-    </div>
-    {% elif show_slide_numbers %}
-    <!-- Slide numbers for PDF (when navigation is disabled) -->
-    <div class="slide-nav">
-        <div class="slide-counter">
-            <span id="slide-display">{{ initial_slide_number }}</span>
-        </div>
     </div>
     {% endif %}
     
@@ -535,8 +543,12 @@ class MarkdownToPDF:
         
         # Encode logo if provided
         logo_data = None
+        logo_mime_type = 'image/png'  # Default
         if self.logo_path and os.path.exists(self.logo_path):
-            logo_data = self._encode_image(self.logo_path)
+            logo_result = self._encode_image(self.logo_path)
+            if logo_result:
+                logo_data = logo_result['data']
+                logo_mime_type = logo_result['mime_type']
         
         # Calculate initial slide number display (for PDF we don't need it, but template expects it)
         initial_slide_number = '1'
@@ -549,6 +561,7 @@ class MarkdownToPDF:
             css=self.css,
             font_family=self.font_family,
             logo_data=logo_data,
+            logo_mime_type=logo_mime_type,
             logo_position=self.logo_position,
             enable_navigation=False,
             show_arrows=False,
@@ -661,8 +674,12 @@ class MarkdownToPDF:
         
         # Encode logo if provided
         logo_data = None
+        logo_mime_type = 'image/png'  # Default
         if self.logo_path and os.path.exists(self.logo_path):
-            logo_data = self._encode_image(self.logo_path)
+            logo_result = self._encode_image(self.logo_path)
+            if logo_result:
+                logo_data = logo_result['data']
+                logo_mime_type = logo_result['mime_type']
         
         # Calculate initial slide number display
         slide_format = self.config.get_slide_number_format()
@@ -679,6 +696,7 @@ class MarkdownToPDF:
             css=self.css,
             font_family=self.font_family,
             logo_data=logo_data,
+            logo_mime_type=logo_mime_type,
             logo_position=self.logo_position,
             enable_navigation=self.config.get('navigation.enabled', True),
             show_arrows=self.config.get('navigation.show_arrows', True),
