@@ -382,8 +382,12 @@ class TestImageHandling:
             encoded_logo = converter._encode_image(logo_path)
             
             assert encoded_logo is not None
-            assert isinstance(encoded_logo, str)
-            assert len(encoded_logo) > 0
+            assert isinstance(encoded_logo, dict)
+            assert 'data' in encoded_logo
+            assert 'mime_type' in encoded_logo
+            assert isinstance(encoded_logo['data'], str)
+            assert len(encoded_logo['data']) > 0
+            assert encoded_logo['mime_type'] == 'image/svg+xml'
 
 
 def run_comprehensive_test():
