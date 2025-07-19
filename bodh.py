@@ -676,12 +676,12 @@ class MarkdownToPDF:
                     except Exception:
                         print("Warning: MathJax loading timeout, continuing with PDF generation")
                 
-                # PDF options for presentation format
+                # PDF options for presentation format - let CSS handle margins
                 page.pdf(
                     path=output_file,
                     format='A4',
                     landscape=True,
-                    margin={'top': '0.5cm', 'bottom': '0.5cm', 'left': '0.5cm', 'right': '0.5cm'},
+                    margin={'top': '0', 'bottom': '0', 'left': '0', 'right': '0'},
                     print_background=True,
                     prefer_css_page_size=True,
                     display_header_footer=False,
