@@ -17,8 +17,8 @@
     "line_height": "1.8"
   },
   "spacing": {
-    "slide_padding": "5rem",
-    "element_margin": "3rem"
+    "slide_padding": "3rem",
+    "element_margin": "2rem"
   },
   "effects": {
     "shadows": false,

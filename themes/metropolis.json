@@ -29,7 +29,7 @@
     "transparency": false
   },
   "spacing": {
-    "slide_padding": "4rem 5rem",
+    "slide_padding": "3rem",
     "element_margin": "1.5rem"
   },
   "layout": {

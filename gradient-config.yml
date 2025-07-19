@@ -1,0 +1,9 @@
+theme: gradient
+font:
+  family: Inter
+  size: 20
+slide_number:
+  enabled: true
+  format: current/total
+navigation:
+  enabled: false
