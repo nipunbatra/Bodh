@@ -133,7 +133,7 @@ Logo should be here too.
             html_content = f.read()
         
         assert 'logo-top-right' in html_content, "HTML missing logo class"
-        assert 'data:image/png;base64,' in html_content, "HTML missing base64 logo data"
+        assert 'data:image/svg+xml;base64,' in html_content, "HTML missing base64 logo data"
         
         # Verify PDF exists and has reasonable size
         assert os.path.exists(pdf_file), "PDF not created"
@@ -143,7 +143,10 @@ Logo should be here too.
         # Check that logo was actually encoded
         logo_data = converter._encode_image('examples/sample-logo.svg')
         assert logo_data is not None, "Logo not encoded"
-        assert len(logo_data) > 100, "Logo data too small"
+        assert 'data' in logo_data, "Logo missing data field"
+        assert 'mime_type' in logo_data, "Logo missing mime_type field"
+        assert len(logo_data['data']) > 100, "Logo data too small"
+        assert logo_data['mime_type'] in ['image/svg+xml', 'image/png', 'image/jpeg', 'image/jpg', 'image/gif'], "Unsupported logo format"
         
         # Test: Generate PDF HTML content (what actually goes to PDF)
         with open(test_md, 'r') as f:
@@ -157,7 +160,9 @@ Logo should be here too.
             slides=slides,
             css=converter.css,
             font_family=converter.font_family,
-            logo_data=logo_data,
+            font_css=converter.font_css,
+            logo_data=logo_data['data'] if logo_data else None,
+            logo_mime_type=logo_data['mime_type'] if logo_data else 'image/png',
             logo_position=converter.logo_position,
             enable_navigation=False,
             show_arrows=False,
@@ -170,8 +175,8 @@ Logo should be here too.
         
         # CRITICAL: PDF HTML must contain logo
         assert 'logo-top-right' in pdf_html, "PDF HTML missing logo class"
-        assert 'data:image/png;base64,' in pdf_html, "PDF HTML missing base64 logo data"
-        assert logo_data in pdf_html, "PDF HTML missing actual logo data"
+        assert f'data:{logo_data["mime_type"]};base64,' in pdf_html, "PDF HTML missing base64 logo data"
+        assert logo_data['data'] in pdf_html, "PDF HTML missing actual logo data"
         
         print("✅ PDF logo test passed - logo should render in PDF")
     
@@ -332,9 +337,9 @@ More text with different formatting.
         with open(html_file, 'r') as f:
             html_content = f.read()
         
-        # Check Google Fonts link
-        assert 'fonts.googleapis.com' in html_content, "Missing Google Fonts link"
-        assert 'Inter' in html_content, "Missing Inter font"
+        # Check for embedded fonts (should have embedded font data now)
+        assert 'font-face' in html_content, "Missing embedded font data"
+        assert 'Inter' in html_content, "Missing Inter font reference"
         
         # Generate PDF
         pdf_file = os.path.join(self.temp_dir, "font_test.pdf")

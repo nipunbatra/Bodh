@@ -1,6 +1,6 @@
 @page {
     size: A4 landscape;
-    margin: 1.5cm;
+    margin: 0.5cm;
     -webkit-print-color-adjust: exact;
     color-adjust: exact;
     background: {{ theme.colors.background }};
@@ -728,12 +728,19 @@ code, .monospace {
         page-break-inside: avoid;
     }
     
-    /* Keep slide navigation container but make it minimal */
+    /* Keep slide navigation container but make it minimal and positioned correctly */
     .slide-nav {
+        position: absolute !important;
+        top: 1rem !important;
+        right: 1rem !important;
+        bottom: auto !important;
         background: transparent !important;
         backdrop-filter: none !important;
         padding: 0 !important;
         border-radius: 0 !important;
+        margin-bottom: 0 !important;
+        text-align: right !important;
+        z-index: 1000 !important;
     }
     
     /* Style slide counter for PDF */

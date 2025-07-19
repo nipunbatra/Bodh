@@ -13,6 +13,7 @@ import json
 import base64
 import yaml
 from config import PresentationConfig, load_config, create_sample_config
+from font_manager import FontManager
 try:
     from playwright.sync_api import sync_playwright
     PDF_BACKEND = 'playwright'
@@ -109,6 +110,7 @@ class MarkdownToPDF:
         # Initialize components
         self.theme_loader = ThemeLoader()
         self.style_generator = StyleGenerator()
+        self.font_manager = FontManager()
         
         # Load theme
         self.theme_data = self.theme_loader.load_theme(self.theme_name)
@@ -117,6 +119,9 @@ class MarkdownToPDF:
         self.css = self.style_generator.generate_css(
             self.theme_data, self.font_family, self.font_size, self.config
         )
+        
+        # Get optimized font CSS
+        self.font_css = self.font_manager.get_optimized_font_css(self.font_family)
         
         self.template = self._get_html_template()
     
@@ -164,8 +169,11 @@ class MarkdownToPDF:
         slides = []
         slide_parts = md_content.split(f"\n{self.slide_separator}\n")
         
-        for slide_content in slide_parts:
+        for i, slide_content in enumerate(slide_parts):
             if slide_content.strip():
+                # Validate content before processing
+                self._validate_slide_content(slide_content, i + 1)
+                
                 # Process overlays (pause markers)
                 if self.config.get('overlays.enabled', False):
                     slide_content = self._process_overlays(slide_content)
@@ -185,6 +193,45 @@ class MarkdownToPDF:
                 slides.append(html_content)
         
         return slides
+    
+    def _validate_slide_content(self, content, slide_number):
+        """Validate slide content and warn about potential issues"""
+        warnings = []
+        
+        # Check for very long lines that might cause horizontal overflow
+        lines = content.split('\n')
+        for line_num, line in enumerate(lines, 1):
+            # Remove markdown formatting for length check
+            clean_line = line.replace('*', '').replace('_', '').replace('`', '')
+            if len(clean_line) > 120:  # Threshold for potential overflow
+                warnings.append(f"Slide {slide_number}, line {line_num}: Very long line ({len(clean_line)} chars) may cause text cutoff")
+        
+        # Check for excessive content that might not fit on one slide
+        total_lines = len([l for l in lines if l.strip()])
+        if total_lines > 25:  # Threshold for too much content
+            warnings.append(f"Slide {slide_number}: High content density ({total_lines} lines) may cause text cutoff")
+        
+        # Check for very long code blocks
+        in_code_block = False
+        code_lines = 0
+        for line in lines:
+            if line.strip().startswith('```'):
+                if in_code_block:
+                    if code_lines > 15:  # Too many lines in code block
+                        warnings.append(f"Slide {slide_number}: Long code block ({code_lines} lines) may not fit properly")
+                    in_code_block = False
+                    code_lines = 0
+                else:
+                    in_code_block = True
+            elif in_code_block:
+                code_lines += 1
+                if len(line) > 100:  # Very long code line
+                    warnings.append(f"Slide {slide_number}: Long code line may cause horizontal overflow")
+        
+        # Print warnings
+        for warning in warnings:
+            print(f"⚠️  {warning}")
+            print("   💡 Consider: breaking content across multiple slides, using shorter lines, or adjusting font size")
     
     def _process_overlays(self, content):
         """Process overlay/pause markers in markdown"""
@@ -274,7 +321,13 @@ class MarkdownToPDF:
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+    {% if font_css %}
+    <style>
+        {{ font_css }}
+    </style>
+    {% else %}
     <link href="https://fonts.googleapis.com/css2?family={{ font_family.replace(' ', '+') }}:wght@300;400;600;700&display=swap" rel="stylesheet">
+    {% endif %}
     {% if config.get('math.enabled', True) %}
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -560,6 +613,7 @@ class MarkdownToPDF:
             slides=slides,
             css=self.css,
             font_family=self.font_family,
+            font_css=self.font_css,
             logo_data=logo_data,
             logo_mime_type=logo_mime_type,
             logo_position=self.logo_position,
@@ -605,24 +659,22 @@ class MarkdownToPDF:
                 # Set viewport to match A4 landscape dimensions for consistent rendering
                 page.set_viewport_size({"width": 1123, "height": 794})  # A4 landscape at 96 DPI
                 
-                # Load content with more robust timeout handling
-                # Use 'domcontentloaded' instead of 'networkidle' to avoid hanging on missing images
+                # Load content - since fonts are embedded, we can load much faster
                 page.set_content(html_content, wait_until='domcontentloaded')
                 
-                # Wait for fonts and images to load properly, but don't wait for missing images
-                page.wait_for_timeout(2000)  # Shorter timeout since we don't wait for network idle
+                # Much shorter wait since fonts are embedded and don't need network loading
+                page.wait_for_timeout(1000)  # Reduced timeout since fonts are embedded
                 
-                # Wait for any Google Fonts to load, but don't block on missing images
-                try:
-                    page.wait_for_function("""
-                        () => {
-                            const fonts = document.fonts;
-                            return fonts.status === 'loaded' || fonts.size === 0;
-                        }
-                    """, timeout=5000)  # Shorter timeout for robustness
-                except Exception:
-                    # If fonts fail to load, continue anyway
-                    print("Warning: Font loading timeout, continuing with PDF generation")
+                # Quick check for MathJax if enabled, but don't wait too long
+                if self.config.get('math.enabled', True):
+                    try:
+                        page.wait_for_function("""
+                            () => {
+                                return window.MathJax ? window.MathJax.startup.document.state() >= 6 : true;
+                            }
+                        """, timeout=3000)  # Quick MathJax check
+                    except Exception:
+                        print("Warning: MathJax loading timeout, continuing with PDF generation")
                 
                 # PDF options for presentation format
                 page.pdf(
@@ -695,6 +747,7 @@ class MarkdownToPDF:
             slides=slides,
             css=self.css,
             font_family=self.font_family,
+            font_css=self.font_css,
             logo_data=logo_data,
             logo_mime_type=logo_mime_type,
             logo_position=self.logo_position,
