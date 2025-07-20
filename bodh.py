@@ -72,11 +72,30 @@ class StyleGenerator:
         with open(css_template_path, 'r') as f:
             css_content = f.read()
         
+        # Calculate font sizes based on config
+        base_size = font_size or 20
+        
+        # Get custom font sizes from config or calculate defaults
+        if config:
+            title_size = config.get('font.title_size')
+            text_size = config.get('font.text_size')
+        else:
+            title_size = None
+            text_size = None
+        
+        # Calculate relative font sizes (em values)
+        font_sizes = {
+            'h1': title_size / base_size if title_size else 2.8,
+            'h2': title_size / base_size * 0.8 if title_size else 2.2,
+            'text': text_size / base_size if text_size else 1.2
+        }
+        
         template = Template(css_content)
         return template.render(
             theme=theme_data,
             font_family=font_family,
             font_size=font_size,
+            font_sizes=font_sizes,
             config=config or {}
         )
 
@@ -129,15 +148,19 @@ class MarkdownToPDF:
                 return f.read()
         return ""
 
-    def _encode_image(self, image_path):
+    def _encode_image(self, image_path, base_dir=None):
         """Encode image to base64 for embedding"""
         try:
             # Try absolute path first
             if os.path.isabs(image_path):
                 full_path = image_path
             else:
-                # Try relative to current working directory
-                full_path = os.path.abspath(image_path)
+                # CRITICAL FIX: Resolve relative to markdown file directory, not CWD
+                if base_dir:
+                    full_path = os.path.join(base_dir, image_path)
+                else:
+                    # Fallback to current working directory for backward compatibility
+                    full_path = os.path.abspath(image_path)
                 
             print(f"Loading image from: {full_path}")
             
@@ -200,7 +223,7 @@ class MarkdownToPDF:
             print(f"Warning: Could not convert PDF {pdf_path}: {e}")
             return None
     
-    def parse_markdown_slides(self, md_content):
+    def parse_markdown_slides(self, md_content, base_dir=None):
         """Parse markdown content into individual slides with advanced features"""
         slides = []
         slide_parts = md_content.split(f"\n{self.slide_separator}\n")
@@ -209,6 +232,9 @@ class MarkdownToPDF:
             if slide_content.strip():
                 # Validate content before processing
                 self._validate_slide_content(slide_content, i + 1)
+                
+                # CRITICAL FIX: Process images first, before other processing
+                slide_content = self._process_images(slide_content, base_dir)
                 
                 # Process overlays (pause markers)
                 if self.config.get('overlays.enabled', False):
@@ -332,6 +358,37 @@ class MarkdownToPDF:
                         return f'<div class="columns-layout columns-{actual_columns}">{" ".join(column_content)}</div>'
         
         return content
+    
+    def _process_images(self, content, base_dir=None):
+        """Process images in markdown content, converting to base64 data URLs"""
+        import re
+        
+        # Pattern to match markdown images: ![alt text](image_path)
+        image_pattern = r'!\[([^\]]*)\]\(([^)]+)\)'
+        
+        def replace_image(match):
+            alt_text = match.group(1)
+            image_path = match.group(2)
+            
+            # Skip if already a data URL
+            if image_path.startswith('data:'):
+                return match.group(0)
+            
+            # Skip if it's a web URL
+            if image_path.startswith(('http://', 'https://')):
+                return match.group(0)
+            
+            # Try to encode the image
+            encoded_result = self._encode_image(image_path, base_dir)
+            if encoded_result:
+                data_url = f"data:{encoded_result['mime_type']};base64,{encoded_result['data']}"
+                return f"![{alt_text}]({data_url})"
+            else:
+                # Keep original if encoding failed
+                print(f"Warning: Could not process image {image_path}, keeping original reference")
+                return match.group(0)
+        
+        return re.sub(image_pattern, replace_image, content)
     
     def _process_hrules(self, content):
         """Add horizontal rules under titles"""
@@ -630,8 +687,11 @@ class MarkdownToPDF:
         with open(markdown_file, 'r', encoding='utf-8') as f:
             md_content = f.read()
         
+        # CRITICAL FIX: Get base directory for image resolution
+        base_dir = os.path.dirname(os.path.abspath(markdown_file))
+        
         # Parse slides
-        slides = self.parse_markdown_slides(md_content)
+        slides = self.parse_markdown_slides(md_content, base_dir)
         
         if not slides:
             raise ValueError("No slides found in markdown file")
@@ -773,8 +833,11 @@ class MarkdownToPDF:
         with open(markdown_file, 'r', encoding='utf-8') as f:
             md_content = f.read()
         
+        # CRITICAL FIX: Get base directory for image resolution
+        base_dir = os.path.dirname(os.path.abspath(markdown_file))
+        
         # Parse slides
-        slides = self.parse_markdown_slides(md_content)
+        slides = self.parse_markdown_slides(md_content, base_dir)
         
         if not slides:
             raise ValueError("No slides found in markdown file")

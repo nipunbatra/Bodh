@@ -1,0 +1,8 @@
+theme: minimal
+font: 
+  family: "Inter"
+  size: 20
+  title_size: 36
+  text_size: 18
+slide_number:
+  format: "current"

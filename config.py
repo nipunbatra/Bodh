@@ -23,7 +23,9 @@ class PresentationConfig:
             'theme': 'modern',
             'font': {
                 'family': 'Inter',
-                'size': 20
+                'size': 20,
+                'title_size': None,  # If None, will use calculated sizes based on base size
+                'text_size': None    # If None, will use base size
             },
             'logo': {
                 'source': None,

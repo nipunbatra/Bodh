@@ -1,0 +1,6 @@
+theme: sky
+font: 
+  family: "Inter"
+  size: 24
+slide_number:
+  format: "current"

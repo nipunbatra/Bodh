@@ -7,7 +7,7 @@
 
 $z = f(x,y) = x^{2} + y^{2}$
 
-![Contour plot with gradient](gradient-descent/contour-x_squared_plus_y_squared_quiver-with-gradient.pdf)
+![Contour plot with gradient](contour-x_squared_plus_y_squared_quiver-with-gradient.pdf)
 
 **Gradient** denotes the direction of steepest ascent or the direction in which there is a maximum increase in f(x,y)
 
@@ -102,7 +102,7 @@ $$\vec{x_1} = \vec{x_0} - \alpha \nabla f(\vec{x_0})$$
 ### Low Learning Rate ($\alpha=0.01$)
 *Converges slowly*
 
-![Low learning rate](gradient-descent/gd-lr-0.01.pdf)
+![Low learning rate](gd-lr-0.01.pdf)
 
 ---
 
@@ -111,7 +111,7 @@ $$\vec{x_1} = \vec{x_0} - \alpha \nabla f(\vec{x_0})$$
 ### High Learning Rate ($\alpha=0.8$)
 *Converges quickly, but might overshoot*
 
-![High learning rate](gradient-descent/gd-lr-0.8.pdf)
+![High learning rate](gd-lr-0.8.pdf)
 
 ---
 
@@ -120,7 +120,7 @@ $$\vec{x_1} = \vec{x_0} - \alpha \nabla f(\vec{x_0})$$
 ### Very High Learning Rate ($\alpha=1.01$)
 *Diverges*
 
-![Very high learning rate](gradient-descent/gd-lr-1.01.pdf)
+![Very high learning rate](gd-lr-1.01.pdf)
 
 ---
 
@@ -129,7 +129,7 @@ $$\vec{x_1} = \vec{x_0} - \alpha \nabla f(\vec{x_0})$$
 ### Appropriate Learning Rate ($\alpha=0.1$)
 *Just right*
 
-![Appropriate learning rate](gradient-descent/gd-lr-0.1.pdf)
+![Appropriate learning rate](gd-lr-0.1.pdf)
 
 ---
 
@@ -229,7 +229,7 @@ $$\theta_1 = \theta_1 - \alpha\frac{\partial MSE}{\partial \theta_1}$$
 
 ### SGD Contour Visualization
 
-![SGD contour functions](gradient-descent/gradient-descent-3-functions.pdf)
+![SGD contour functions](gradient-descent-3-functions.pdf)
 
 ---
 

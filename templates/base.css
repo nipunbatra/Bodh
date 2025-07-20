@@ -234,7 +234,7 @@ pre, code {
 /* Typography - Optimized for better spacing and readability */
 h1 {
     color: {{ theme.colors.heading }};
-    font-size: 2.8em;
+    font-size: {{ font_sizes.h1 }}em;
     margin-bottom: 1.5rem;
     margin-top: 0.5rem;
     text-align: center;
@@ -248,7 +248,7 @@ h1 {
 
 h2 {
     color: {{ theme.colors.heading }};
-    font-size: 2.2em;
+    font-size: {{ font_sizes.h2 }}em;
     margin-bottom: 1.2rem;
     margin-top: 1.5rem;
     font-weight: {{ theme.typography.heading_weight }};
@@ -278,14 +278,14 @@ h4 {
 }
 
 p {
-    font-size: 1.2em;
+    font-size: {{ font_sizes.text }}em;
     margin-bottom: {{ theme.spacing.element_margin }};
     text-align: justify;
 }
 
 /* Lists */
 ul, ol {
-    font-size: 1.1em;
+    font-size: {{ font_sizes.text }}em;
     margin-bottom: {{ theme.spacing.element_margin }};
     padding-left: 2.5rem;
 }

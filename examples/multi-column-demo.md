@@ -6,7 +6,7 @@ Welcome to the multi-column layout demonstration in Bodh!
 
 ## Two-Column Layout Example
 
-:::
+::: {.column}
 ### Left Column
 
 - First point on the left
@@ -19,6 +19,8 @@ Welcome to the multi-column layout demonstration in Bodh!
 - Improved readability
 - Professional look
 :::
+
+::: {.column}
 ### Right Column
 
 - First point on the right
@@ -36,7 +38,7 @@ Welcome to the multi-column layout demonstration in Bodh!
 
 ## Code & Documentation
 
-:::
+::: {.column}
 ### Code Example
 
 ```python
@@ -50,6 +52,8 @@ result = hello_world()
 print(f"Result: {result}")
 ```
 :::
+
+::: {.column}
 ### Documentation
 
 **Function Overview:**
@@ -68,7 +72,7 @@ print(f"Result: {result}")
 
 ## Comparison Table
 
-:::
+::: {.column}
 ### Pros
 
 ✅ **Advantages:**
@@ -83,6 +87,8 @@ print(f"Result: {result}")
 - Technical specifications
 - Product catalogs
 :::
+
+::: {.column}
 ### Cons
 
 ❌ **Limitations:**
