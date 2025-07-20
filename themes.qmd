@@ -33,7 +33,7 @@ Perfect for business presentations with a contemporary feel.
 - Subtle shadows and spacing
 - Works great with corporate logos
 
-[Preview Example](examples/showcase-modern.html){.btn .btn-primary}
+[Preview HTML](examples/showcase-modern.html){.btn .btn-primary} [Download PDF](pdfs/showcase-modern.pdf){.btn .btn-secondary}
 :::
 
 ### Minimal Theme  
@@ -46,7 +46,7 @@ Ideal for design-focused presentations and portfolios.
 - Minimal distractions
 - Perfect for showcasing visual content
 
-[Preview Example](examples/showcase-minimal.html){.btn .btn-primary}
+[Preview HTML](examples/showcase-minimal.html){.btn .btn-primary} [Download PDF](pdfs/showcase-minimal.pdf){.btn .btn-secondary}
 :::
 
 ### Gradient Theme
@@ -59,7 +59,7 @@ Eye-catching backgrounds perfect for conferences and tech talks.
 - Modern, trendy appearance
 - Great for energetic presentations
 
-[Preview Example](examples/showcase-gradient.html){.btn .btn-primary}
+[Preview HTML](examples/showcase-gradient.html){.btn .btn-primary} [Download PDF](pdfs/showcase-gradient.pdf){.btn .btn-secondary}
 :::
 
 ### Dark Theme
@@ -72,7 +72,7 @@ Excellent for tech presentations, code demos, and evening talks.
 - Perfect for code syntax highlighting
 - Reduces eye strain during long presentations
 
-[Preview Example](examples/showcase-dark.html){.btn .btn-primary}
+[Preview HTML](examples/showcase-dark.html){.btn .btn-primary} [Download PDF](pdfs/showcase-dark.pdf){.btn .btn-secondary}
 :::
 
 ### Metropolis Theme
@@ -98,7 +98,7 @@ Versatile theme suitable for any type of presentation.
 - Works well for any content type
 - Safe choice for formal presentations
 
-[Preview Example](examples/showcase-default.html){.btn .btn-primary}
+[Preview HTML](examples/showcase-default.html){.btn .btn-primary} [Download PDF](pdfs/showcase-default.pdf){.btn .btn-secondary}
 :::
 
 ### Sky Theme
@@ -111,7 +111,7 @@ Fresh and airy feel perfect for creative and casual topics.
 - Friendly, approachable style
 - Works well for educational content
 
-[Preview Example](examples/showcase-sky.html){.btn .btn-primary}
+[Preview HTML](examples/showcase-sky.html){.btn .btn-primary} [Download PDF](pdfs/showcase-sky.pdf){.btn .btn-secondary}
 :::
 
 ### Solarized Theme
@@ -124,7 +124,7 @@ Based on the popular Solarized color palette loved by developers.
 - Excellent for long presentations
 - Popular among tech professionals
 
-[Preview Example](examples/showcase-solarized.html){.btn .btn-primary}
+[Preview HTML](examples/showcase-solarized.html){.btn .btn-primary} [Download PDF](pdfs/showcase-solarized.pdf){.btn .btn-secondary}
 :::
 
 ### Moon Theme
@@ -137,7 +137,7 @@ Elegant and mysterious theme perfect for special occasions.
 - Creates dramatic atmosphere
 - Great for storytelling presentations
 
-[Preview Example](examples/showcase-moon.html){.btn .btn-primary}
+[Preview HTML](examples/showcase-moon.html){.btn .btn-primary} [Download PDF](pdfs/showcase-moon.pdf){.btn .btn-secondary}
 :::
 
 ## 🎯 Choosing the Right Theme
