@@ -123,7 +123,7 @@ pre, code {
 
 /* Syntax highlighting */
 .codehilite {
-    background: rgba(0, 0, 0, 0.05);
+    background: {{ theme.colors.code_bg }};
     padding: 1.5rem;
     border-radius: 8px;
     overflow-x: auto;
@@ -337,36 +337,37 @@ blockquote p {
     z-index: 1;
 }
 
-/* Code */
+/* Inline code */
 code {
     background: {{ theme.colors.code_bg }};
     padding: 0.2rem 0.5rem;
-    border-radius: 6px;
+    border-radius: 4px;
     font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
     font-size: 0.9em;
     color: {{ theme.colors.accent }};
     font-weight: 500;
 }
 
-pre {
+/* Code blocks - only style when NOT inside .codehilite */
+pre:not(.codehilite pre) {
     background: {{ theme.colors.code_bg }};
-    padding: 2rem;
-    {% if theme.effects.rounded_corners %}
-    border-radius: 16px;
-    {% endif %}
+    padding: 1.5rem;
+    border-radius: 8px;
     overflow-x: auto;
     font-size: 0.95em;
-    margin: 2rem 0;
+    margin: 1.5rem 0;
     font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-    {% if theme.effects.shadows %}
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    {% endif %}
 }
 
+/* Remove styling from code inside code blocks to prevent double-boxing */
+.codehilite pre,
+.codehilite code,
 pre code {
-    background: none;
-    padding: 0;
-    color: {{ theme.colors.text }};
+    background: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    color: inherit;
     font-weight: 400;
 }
 
