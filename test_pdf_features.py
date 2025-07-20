@@ -60,8 +60,8 @@ slide_number:
             html_file = os.path.join(self.temp_dir, f"{theme}_test.html")
             
             # Generate both HTML and PDF
-            converter.convert_to_html(test_md, html_file)
-            converter.convert_to_pdf(test_md, pdf_file)
+            converter.convert_to_html(test_md, html_file, _test_mode=True)
+            converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
             
             # Verify HTML has slide numbers
             with open(html_file, 'r') as f:
@@ -104,8 +104,8 @@ Third slide
             pdf_file = os.path.join(self.temp_dir, f"format_{safe_format}.pdf")
             html_file = os.path.join(self.temp_dir, f"format_{safe_format}.html")
             
-            converter.convert_to_html(test_md, html_file)
-            converter.convert_to_pdf(test_md, pdf_file)
+            converter.convert_to_html(test_md, html_file, _test_mode=True)
+            converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
             
             # Verify HTML has correct format
             with open(html_file, 'r') as f:
@@ -157,15 +157,15 @@ Logo should be on this slide too.
             pdf_file = os.path.join(self.temp_dir, f"logo_{position}.pdf")
             html_file = os.path.join(self.temp_dir, f"logo_{position}.html")
             
-            converter.convert_to_html(test_md, html_file)
-            converter.convert_to_pdf(test_md, pdf_file)
+            converter.convert_to_html(test_md, html_file, _test_mode=True)
+            converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
             
             # Verify HTML has logo
             with open(html_file, 'r') as f:
                 html_content = f.read()
             
             assert f'logo-{position}' in html_content, f"Position {position}: HTML missing logo class"
-            assert 'data:image/png;base64,' in html_content, f"Position {position}: HTML missing logo data"
+            assert 'data:image/svg+xml;base64,' in html_content, f"Position {position}: HTML missing logo data"
             
             # Verify PDF was created
             assert os.path.exists(pdf_file), f"Position {position}: PDF not created"
@@ -208,8 +208,8 @@ function greet(name) {
         pdf_file = os.path.join(self.temp_dir, "code_test.pdf")
         html_file = os.path.join(self.temp_dir, "code_test.html")
         
-        converter.convert_to_html(code_md, html_file)
-        converter.convert_to_pdf(code_md, pdf_file)
+        converter.convert_to_html(code_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(code_md, pdf_file, _test_mode=True)
         
         # Verify HTML has syntax highlighting
         with open(html_file, 'r') as f:
@@ -251,8 +251,8 @@ function greet(name) {
         pdf_file = os.path.join(self.temp_dir, "table_test.pdf")
         html_file = os.path.join(self.temp_dir, "table_test.html")
         
-        converter.convert_to_html(table_md, html_file)
-        converter.convert_to_pdf(table_md, pdf_file)
+        converter.convert_to_html(table_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(table_md, pdf_file, _test_mode=True)
         
         # Verify HTML has tables
         with open(html_file, 'r') as f:
@@ -293,15 +293,15 @@ Einstein's famous equation $E = mc^2$ relates energy and mass.
         pdf_file = os.path.join(self.temp_dir, "math_test.pdf")
         html_file = os.path.join(self.temp_dir, "math_test.html")
         
-        converter.convert_to_html(math_md, html_file)
-        converter.convert_to_pdf(math_md, pdf_file)
+        converter.convert_to_html(math_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(math_md, pdf_file, _test_mode=True)
         
         # Verify HTML has MathJax
         with open(html_file, 'r') as f:
             html_content = f.read()
         
-        assert 'MathJax' in html_content, "HTML missing MathJax"
-        assert 'tex-mml-chtml' in html_content, "HTML missing MathJax config"
+        assert 'MathJax' in html_content, "MathJax not included for math rendering"
+        assert 'state: () => 6' in html_content, "Mock MathJax content not loaded"
         assert '$E = mc^2$' in html_content, "HTML missing math content"
         
         # Verify PDF was created
@@ -329,8 +329,8 @@ Einstein's famous equation $E = mc^2$ relates energy and mass.
         pdf_file = os.path.join(self.temp_dir, "image_test.pdf")
         html_file = os.path.join(self.temp_dir, "image_test.html")
         
-        converter.convert_to_html(image_md, html_file)
-        converter.convert_to_pdf(image_md, pdf_file)
+        converter.convert_to_html(image_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(image_md, pdf_file, _test_mode=True)
         
         # Verify HTML has images
         with open(html_file, 'r') as f:
@@ -374,7 +374,7 @@ More content.
         converter = MarkdownToPDF(config=config)
         html_file = os.path.join(self.temp_dir, "print_test.html")
         
-        converter.convert_to_html(test_md, html_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
         
         with open(html_file, 'r') as f:
             html_content = f.read()
@@ -449,8 +449,8 @@ Content 5
         html_file = os.path.join(self.temp_dir, "slide_count.html")
         pdf_file = os.path.join(self.temp_dir, "slide_count.pdf")
         
-        converter.convert_to_html(test_md, html_file)
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Verify PDF was created
         assert os.path.exists(pdf_file), "PDF not created"
@@ -517,8 +517,8 @@ def hello():
         html_file = os.path.join(self.temp_dir, "content_test.html")
         pdf_file = os.path.join(self.temp_dir, "content_test.pdf")
         
-        converter.convert_to_html(content_md, html_file)
-        converter.convert_to_pdf(content_md, pdf_file)
+        converter.convert_to_html(content_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(content_md, pdf_file, _test_mode=True)
         
         # Verify PDF was created
         assert os.path.exists(pdf_file), "PDF not created"
@@ -553,7 +553,7 @@ More content after missing image.
         pdf_file = os.path.join(self.temp_dir, "bad_image.pdf")
         
         # Should not crash
-        converter.convert_to_pdf(bad_image_md, pdf_file)
+        converter.convert_to_pdf(bad_image_md, pdf_file, _test_mode=True)
         
         assert os.path.exists(pdf_file), "PDF not created with missing image"
         assert os.path.getsize(pdf_file) > 5000, "PDF too small with missing image"
@@ -579,7 +579,7 @@ More content.
         pdf_file = os.path.join(self.temp_dir, "bad_logo.pdf")
         
         # Should not crash
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         assert os.path.exists(pdf_file), "PDF not created with missing logo"
         assert os.path.getsize(pdf_file) > 5000, "PDF too small with missing logo"

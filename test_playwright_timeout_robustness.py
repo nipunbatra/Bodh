@@ -83,7 +83,7 @@ This ensures the slide has substantial content beyond just images.
         pdf_file = os.path.join(self.temp_dir, "missing_images.pdf")
         
         # Should not timeout or hang
-        converter.convert_to_pdf(missing_md, pdf_file)
+        converter.convert_to_pdf(missing_md, pdf_file, _test_mode=True)
         
         end_time = time.time()
         conversion_time = end_time - start_time
@@ -143,7 +143,7 @@ def test_font_loading():
             pdf_file = os.path.join(self.temp_dir, f"font_{font}.pdf")
             
             start_time = time.time()
-            converter.convert_to_pdf(font_md, pdf_file)
+            converter.convert_to_pdf(font_md, pdf_file, _test_mode=True)
             end_time = time.time()
             
             conversion_time = end_time - start_time
@@ -172,9 +172,7 @@ def test_font_loading():
 ```python
 def large_function_{i}():
     '''This is a large function with lots of content'''
-    data = [
-        {{'item': {j}, 'value': 'data_{j}_{i}'}} for j in range(50)
-    ]
+    data = [{{'item': j, 'value': f'data_{{j}}_{{i}}'}} for j in range(50)]
     return data
 ```
 
@@ -200,7 +198,7 @@ def large_function_{i}():
         converter = MarkdownToPDF()
         pdf_file = os.path.join(self.temp_dir, "large_with_missing.pdf")
         
-        converter.convert_to_pdf(large_md, pdf_file)
+        converter.convert_to_pdf(large_md, pdf_file, _test_mode=True)
         
         end_time = time.time()
         conversion_time = end_time - start_time
@@ -262,7 +260,7 @@ def test_mixed_images():
         converter = MarkdownToPDF()
         pdf_file = os.path.join(self.temp_dir, "mixed_images.pdf")
         
-        converter.convert_to_pdf(mixed_md, pdf_file)
+        converter.convert_to_pdf(mixed_md, pdf_file, _test_mode=True)
         
         end_time = time.time()
         conversion_time = end_time - start_time
@@ -303,7 +301,7 @@ This is a test slide with missing resources.
         # Generate 5 PDFs rapidly
         for i in range(5):
             pdf_file = os.path.join(self.temp_dir, f"rapid_{i}.pdf")
-            converter.convert_to_pdf(test_md, pdf_file)
+            converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
             assert os.path.exists(pdf_file), f"PDF {i} not created"
         
         end_time = time.time()
@@ -362,7 +360,7 @@ This is a test slide with missing resources.
         pdf_file = os.path.join(self.temp_dir, "timeout_test.pdf")
         
         # This should not hang or timeout
-        converter.convert_to_pdf(timeout_md, pdf_file)
+        converter.convert_to_pdf(timeout_md, pdf_file, _test_mode=True)
         
         end_time = time.time()
         conversion_time = end_time - start_time

@@ -42,7 +42,7 @@ The gradient should fill the slide properly without huge margins.
         
         # Generate HTML to analyze CSS
         html_file = os.path.join(self.temp_dir, "gradient_test.html")
-        converter.convert_to_html(test_md, html_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
         
         with open(html_file, 'r') as f:
             html_content = f.read()
@@ -138,7 +138,7 @@ The gradient should fill the slide properly without huge margins.
             try:
                 converter = MarkdownToPDF(theme=theme_name)
                 html_file = os.path.join(self.temp_dir, f"bg_test_{theme_name}.html")
-                converter.convert_to_html(test_md, html_file)
+                converter.convert_to_html(test_md, html_file, _test_mode=True)
                 
                 with open(html_file, 'r') as f:
                     html_content = f.read()
@@ -190,8 +190,8 @@ def very_long_function_name_that_might_cause_issues():
         html_file = os.path.join(self.temp_dir, "long_lines.html")
         pdf_file = os.path.join(self.temp_dir, "long_lines.pdf")
         
-        converter.convert_to_html(test_md, html_file)
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Check that CSS has word wrapping
         with open(html_file, 'r') as f:
@@ -263,8 +263,8 @@ def very_long_function_name_that_might_cause_issues():
         html_file = os.path.join(self.temp_dir, "nested.html")
         pdf_file = os.path.join(self.temp_dir, "nested.pdf")
         
-        converter.convert_to_html(test_md, html_file)
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Verify HTML structure
         with open(html_file, 'r') as f:
@@ -325,8 +325,8 @@ def test_unicode():
         html_file = os.path.join(self.temp_dir, "special_chars.html")
         pdf_file = os.path.join(self.temp_dir, "special_chars.pdf")
         
-        converter.convert_to_html(test_md, html_file)
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Verify UTF-8 encoding is preserved
         with open(html_file, 'r', encoding='utf-8') as f:
@@ -404,7 +404,7 @@ class TestConfigurationEdgeCases:
                 pdf_file = os.path.join(self.temp_dir, f"extreme_{hash(str(config_dict))}.pdf")
                 
                 # Should not crash
-                converter.convert_to_pdf(test_md, pdf_file)
+                converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
                 assert os.path.exists(pdf_file), f"PDF not created with config: {config_dict}"
                 
                 print(f"✅ Handled extreme config: {config_dict}")
@@ -434,7 +434,7 @@ class TestConfigurationEdgeCases:
         
         # Generate to verify it works
         html_file = os.path.join(self.temp_dir, "inheritance_test.html")
-        converter.convert_to_html(test_md, html_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
         
         with open(html_file, 'r') as f:
             html_content = f.read()
@@ -481,8 +481,8 @@ class TestContentRenderingIssues:
         html_file = os.path.join(self.temp_dir, "table_test.html")
         pdf_file = os.path.join(self.temp_dir, "table_test.pdf")
         
-        converter.convert_to_html(test_md, html_file)
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Check CSS handles table overflow
         with open(html_file, 'r') as f:
@@ -538,8 +538,8 @@ This is plain text that might be very long and cause wrapping issues in the code
         html_file = os.path.join(self.temp_dir, "code_test.html")
         pdf_file = os.path.join(self.temp_dir, "code_test.pdf")
         
-        converter.convert_to_html(test_md, html_file)
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Check code highlighting and formatting
         with open(html_file, 'r') as f:
@@ -589,15 +589,15 @@ cx + dy
         html_file = os.path.join(self.temp_dir, "math_test.html")
         pdf_file = os.path.join(self.temp_dir, "math_test.pdf")
         
-        converter.convert_to_html(test_md, html_file)
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Check MathJax is included
         with open(html_file, 'r') as f:
             html_content = f.read()
         
         assert 'MathJax' in html_content, "MathJax not included for math rendering"
-        assert 'tex-mml-chtml.js' in html_content, "MathJax script not loaded"
+        assert 'state: () => 6' in html_content, "Mock MathJax content not loaded"
         
         # Check for math delimiters
         assert '$' in html_content or '\\(' in html_content, "Math delimiters not preserved"

@@ -65,7 +65,7 @@ This is another slide with:
         converter = MarkdownToPDF()
         output_file = os.path.join(self.temp_dir, "test.html")
         
-        converter.convert_to_html(self.test_md, output_file)
+        converter.convert_to_html(self.test_md, output_file, _test_mode=True)
         
         assert os.path.exists(output_file), "HTML file should be created"
         
@@ -83,7 +83,7 @@ This is another slide with:
         converter = MarkdownToPDF()
         output_file = os.path.join(self.temp_dir, "test.pdf")
         
-        converter.convert_to_pdf(self.test_md, output_file)
+        converter.convert_to_pdf(self.test_md, output_file, _test_mode=True)
         
         assert os.path.exists(output_file), "PDF file should be created"
         assert os.path.getsize(output_file) > 1000, "PDF should have content"
@@ -266,10 +266,10 @@ class TestCSSGeneration:
         """Test that generated CSS has fixed layout (not centered)"""
         converter = MarkdownToPDF()
         css = converter.css
-        
+    
         # Should have flex-start for fixed positioning
         assert 'justify-content: flex-start' in css
-        assert 'padding-top: 2rem' in css
+        assert 'padding-top: 1rem' in css
     
     def test_mathjax_overflow_handling(self):
         """Test that MathJax-enabled configs have proper overflow handling"""
@@ -360,7 +360,7 @@ class TestLayoutFixes:
         
         # Should have flex-start for fixed positioning
         assert 'justify-content: flex-start' in css
-        assert 'padding-top: 2rem' in css
+        assert 'padding-top: 1rem' in css
 
 
 class TestImageHandling:

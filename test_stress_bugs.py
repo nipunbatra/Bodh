@@ -60,7 +60,7 @@ Here's some longer text to make the slide more substantial and test text wrappin
         pdf_file = os.path.join(self.temp_dir, "massive.pdf")
         
         # Should not crash or timeout
-        converter.convert_to_pdf(massive_md, pdf_file)
+        converter.convert_to_pdf(massive_md, pdf_file, _test_mode=True)
         
         end_time = time.time()
         processing_time = end_time - start_time
@@ -114,7 +114,7 @@ Here's some longer text to make the slide more substantial and test text wrappin
         pdf_file = os.path.join(self.temp_dir, "extreme.pdf")
         
         # Should not crash with extreme content
-        converter.convert_to_pdf(extreme_md, pdf_file)
+        converter.convert_to_pdf(extreme_md, pdf_file, _test_mode=True)
         
         assert os.path.exists(pdf_file), "Extreme content PDF not created"
         pdf_size = os.path.getsize(pdf_file)
@@ -179,7 +179,7 @@ Zero​Width​Space​Test
         pdf_file = os.path.join(self.temp_dir, "unicode.pdf")
         
         # Should handle all Unicode characters without crashing
-        converter.convert_to_pdf(unicode_md, pdf_file)
+        converter.convert_to_pdf(unicode_md, pdf_file, _test_mode=True)
         
         assert os.path.exists(pdf_file), "Unicode PDF not created"
         pdf_size = os.path.getsize(pdf_file)
@@ -286,7 +286,7 @@ ___
         pdf_file = os.path.join(self.temp_dir, "malformed.pdf")
         
         # Should handle malformed markdown gracefully
-        converter.convert_to_pdf(malformed_md, pdf_file)
+        converter.convert_to_pdf(malformed_md, pdf_file, _test_mode=True)
         
         assert os.path.exists(pdf_file), "Malformed markdown PDF not created"
         pdf_size = os.path.getsize(pdf_file)
@@ -452,7 +452,7 @@ Final slide.
         start_time = time.time()
         for i in range(20):
             pdf_file = os.path.join(self.temp_dir, f"rapid_{i}.pdf")
-            converter.convert_to_pdf(test_md, pdf_file)
+            converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
             assert os.path.exists(pdf_file), f"PDF {i} not created"
         
         end_time = time.time()
@@ -498,7 +498,7 @@ Large table follows:
         pdf_file = os.path.join(self.temp_dir, "memory.pdf")
         
         # Should handle memory-intensive content
-        converter.convert_to_pdf(memory_md, pdf_file)
+        converter.convert_to_pdf(memory_md, pdf_file, _test_mode=True)
         
         assert os.path.exists(pdf_file), "Memory-intensive PDF not created"
         pdf_size = os.path.getsize(pdf_file)

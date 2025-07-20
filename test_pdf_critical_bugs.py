@@ -51,8 +51,8 @@ This is the third slide.
         html_file = os.path.join(self.temp_dir, "test.html")
         pdf_file = os.path.join(self.temp_dir, "test.pdf")
         
-        converter.convert_to_html(test_md, html_file)
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Verify HTML has slide numbers
         with open(html_file, 'r') as f:
@@ -125,8 +125,8 @@ Logo should be here too.
         html_file = os.path.join(self.temp_dir, "logo_test.html")
         pdf_file = os.path.join(self.temp_dir, "logo_test.pdf")
         
-        converter.convert_to_html(test_md, html_file)
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Verify HTML has logo
         with open(html_file, 'r') as f:
@@ -202,7 +202,7 @@ Testing navigation hiding.
         
         # Generate HTML
         html_file = os.path.join(self.temp_dir, "print_test.html")
-        converter.convert_to_html(test_md, html_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
         
         with open(html_file, 'r') as f:
             html_content = f.read()
@@ -256,7 +256,7 @@ Testing content that should fit within A4 landscape dimensions.
         pdf_file = os.path.join(self.temp_dir, "viewport_test.pdf")
         
         # Generate PDF
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Verify PDF exists and has reasonable size
         assert os.path.exists(pdf_file), "PDF not created"
@@ -289,7 +289,7 @@ Testing background consistency.
         pdf_file = os.path.join(self.temp_dir, "background_test.pdf")
         
         # Generate PDF
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Verify PDF exists
         assert os.path.exists(pdf_file), "PDF not created"
@@ -332,7 +332,7 @@ More text with different formatting.
         
         # Generate HTML to check font loading
         html_file = os.path.join(self.temp_dir, "font_test.html")
-        converter.convert_to_html(test_md, html_file)
+        converter.convert_to_html(test_md, html_file, _test_mode=True)
         
         with open(html_file, 'r') as f:
             html_content = f.read()
@@ -343,7 +343,7 @@ More text with different formatting.
         
         # Generate PDF
         pdf_file = os.path.join(self.temp_dir, "font_test.pdf")
-        converter.convert_to_pdf(test_md, pdf_file)
+        converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # Verify PDF exists and has reasonable size
         assert os.path.exists(pdf_file), "PDF not created"

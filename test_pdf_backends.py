@@ -63,7 +63,7 @@ def test_weasyprint():
             converter = MarkdownToPDF()
             pdf_file = os.path.join(self.temp_dir, "weasyprint_test.pdf")
             
-            converter.convert_to_pdf(test_md, pdf_file)
+            converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
             
             end_time = time.time()
             conversion_time = end_time - start_time
@@ -122,7 +122,7 @@ def test_playwright():
             converter = MarkdownToPDF()
             pdf_file = os.path.join(self.temp_dir, "playwright_test.pdf")
             
-            converter.convert_to_pdf(test_md, pdf_file)
+            converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
             
             end_time = time.time()
             conversion_time = end_time - start_time
@@ -190,7 +190,7 @@ def backend_comparison():
                 converter = MarkdownToPDF()
                 pdf_file = os.path.join(self.temp_dir, f"comparison_{backend}.pdf")
                 
-                converter.convert_to_pdf(test_md, pdf_file)
+                converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
                 
                 end_time = time.time()
                 conversion_time = end_time - start_time
@@ -250,7 +250,7 @@ This tests backend performance with many missing images.
                 converter = MarkdownToPDF()
                 pdf_file = os.path.join(self.temp_dir, f"missing_{backend}.pdf")
                 
-                converter.convert_to_pdf(missing_md, pdf_file)
+                converter.convert_to_pdf(missing_md, pdf_file, _test_mode=True)
                 
                 end_time = time.time()
                 conversion_time = end_time - start_time

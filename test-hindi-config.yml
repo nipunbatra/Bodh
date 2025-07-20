@@ -1,0 +1,7 @@
+theme: minimal
+font: 
+  family: "Noto Sans Devanagari"
+  size: 20
+slide_number:
+  enabled: true
+  format: "current/total"

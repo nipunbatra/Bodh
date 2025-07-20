@@ -65,8 +65,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    /* Fixed top positioning for consistent title placement */
-    padding-top: 2rem;
+    /* Reduced top padding for better title positioning */
+    padding-top: 1rem;
     /* Prevent content overflow */
     max-width: 100%;
     /* Allow content to expand for MathJax */
@@ -231,25 +231,26 @@ pre, code {
     right: 2rem;
 }
 
-/* Typography - Reveal.js inspired */
+/* Typography - Optimized for better spacing and readability */
 h1 {
     color: {{ theme.colors.heading }};
-    font-size: 3.5em;
-    margin-bottom: 2rem;
+    font-size: 2.8em;
+    margin-bottom: 1.5rem;
+    margin-top: 0.5rem;
     text-align: center;
     font-weight: {{ theme.typography.heading_weight }};
     line-height: 1.1;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
     {% if theme.effects.shadows %}
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     {% endif %}
 }
 
 h2 {
     color: {{ theme.colors.heading }};
-    font-size: 2.6em;
-    margin-bottom: 1.5rem;
-    margin-top: 2rem;
+    font-size: 2.2em;
+    margin-bottom: 1.2rem;
+    margin-top: 1.5rem;
     font-weight: {{ theme.typography.heading_weight }};
     line-height: 1.2;
     letter-spacing: -0.02em;

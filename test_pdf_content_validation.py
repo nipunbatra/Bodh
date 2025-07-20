@@ -43,7 +43,7 @@ Regular text should use the configured font family.
         
         # Generate PDF
         pdf_file = os.path.join(temp_dir, "font_test.pdf")
-        result = converter.convert_to_pdf(test_md, pdf_file)
+        result = converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # PDF should exist and be reasonably sized
         assert os.path.exists(result)
@@ -92,7 +92,7 @@ def very_long_function_name_that_should_trigger_horizontal_overflow_warning():
         
         try:
             pdf_file = os.path.join(temp_dir, "validation_test.pdf")
-            converter.convert_to_pdf(test_md, pdf_file)
+            converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
             
             # Get captured output
             output = captured_output.getvalue()
@@ -133,7 +133,7 @@ $$\\sum_{n=1}^{\\infty} \\frac{1}{n^2} = \\frac{\\pi^2}{6}$$
         converter = MarkdownToPDF(config=config)
         
         pdf_file = os.path.join(temp_dir, "math_test.pdf")
-        result = converter.convert_to_pdf(test_md, pdf_file)
+        result = converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         # PDF should exist and be reasonably sized
         assert os.path.exists(result)
@@ -178,7 +178,7 @@ grep "pattern" file.txt
         converter = MarkdownToPDF(config=config)
         
         pdf_file = os.path.join(temp_dir, "code_test.pdf")
-        result = converter.convert_to_pdf(test_md, pdf_file)
+        result = converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         assert os.path.exists(result)
         assert os.path.getsize(result) > 2000
@@ -217,7 +217,7 @@ Right column content:
         converter = MarkdownToPDF(config=config)
         
         pdf_file = os.path.join(temp_dir, "columns_test.pdf")
-        result = converter.convert_to_pdf(test_md, pdf_file)
+        result = converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         assert os.path.exists(result)
         assert os.path.getsize(result) > 2000
@@ -249,7 +249,7 @@ This slide should have a logo in the top-right corner.
         assert os.path.exists(converter.logo_path)
         
         pdf_file = os.path.join(temp_dir, "logo_test.pdf")
-        result = converter.convert_to_pdf(test_md, pdf_file)
+        result = converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         assert os.path.exists(result)
         # PDF with embedded logo should be larger
@@ -296,7 +296,7 @@ Third slide content
         
         # Generate PDF
         pdf_file = os.path.join(temp_dir, "numbers_test.pdf")
-        result = converter.convert_to_pdf(test_md, pdf_file)
+        result = converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         
         assert os.path.exists(result)
         assert os.path.getsize(result) > 2000
@@ -329,7 +329,7 @@ Regular content that should render quickly.
         # Time the PDF generation
         start_time = time.time()
         pdf_file = os.path.join(temp_dir, "performance_test.pdf")
-        result = converter.convert_to_pdf(test_md, pdf_file)
+        result = converter.convert_to_pdf(test_md, pdf_file, _test_mode=True)
         end_time = time.time()
         
         generation_time = end_time - start_time

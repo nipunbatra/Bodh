@@ -19,14 +19,15 @@ class FontManager:
         
         # Google Fonts API for font families
         self.google_fonts = {
-            'Inter': 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap',
-            'Roboto': 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap',
-            'Open Sans': 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap',
-            'Lato': 'https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap',
-            'Montserrat': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap',
-            'Source Sans Pro': 'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap',
-            'Fira Code': 'https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap',
-            'JetBrains Mono': 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap',
+            'Inter': 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap&subset=latin,latin-ext',
+            'Roboto': 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap&subset=latin,latin-ext',
+            'Open Sans': 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap&subset=latin,latin-ext',
+            'Lato': 'https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap&subset=latin,latin-ext',
+            'Montserrat': 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap&subset=latin,latin-ext',
+            'Source Sans Pro': 'https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap&subset=latin,latin-ext',
+            'Fira Code': 'https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap&subset=latin,latin-ext',
+            'JetBrains Mono': 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap&subset=latin,latin-ext',
+            'Noto Sans Devanagari': 'https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap&subset=devanagari,latin',
         }
     
     def get_font_cache_key(self, font_family):
@@ -135,6 +136,7 @@ class FontManager:
             'Source Sans Pro': '"Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
             'Fira Code': '"Fira Code", "SF Mono", Monaco, monospace',
             'JetBrains Mono': '"JetBrains Mono", "SF Mono", Monaco, monospace',
+            'Noto Sans Devanagari': '"Noto Sans Devanagari", "Devanagari Sangam MN", "Noto Sans", sans-serif',
         }
         
         fallback = system_fonts.get(font_family, f'"{font_family}", sans-serif')

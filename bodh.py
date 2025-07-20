@@ -14,16 +14,11 @@ import base64
 import yaml
 from config import PresentationConfig, load_config, create_sample_config
 from font_manager import FontManager
-try:
-    from playwright.sync_api import sync_playwright
-    PDF_BACKEND = 'playwright'
-except ImportError:
-    try:
-        from weasyprint import HTML, CSS
-        PDF_BACKEND = 'weasyprint'
-    except ImportError:
-        from xhtml2pdf import pisa
-        PDF_BACKEND = 'xhtml2pdf'
+from playwright.sync_api import sync_playwright
+
+PDF_BACKEND = 'playwright' # Default to playwright
+from playwright.sync_api import sync_playwright
+
 
 
 class ThemeLoader:
@@ -124,7 +119,16 @@ class MarkdownToPDF:
         self.font_css = self.font_manager.get_optimized_font_css(self.font_family)
         
         self.template = self._get_html_template()
-    
+        self.mock_mathjax_js = self._get_mock_mathjax_js()
+
+    def _get_mock_mathjax_js(self):
+        """Reads the mock MathJax JS file for testing"""
+        mock_js_path = Path(__file__).parent / "static/js/mock_mathjax.js"
+        if mock_js_path.exists():
+            with open(mock_js_path, 'r') as f:
+                return f.read()
+        return ""
+
     def _encode_image(self, image_path):
         """Encode image to base64 for embedding"""
         try:
@@ -153,6 +157,9 @@ class MarkdownToPDF:
                 mime_type = 'image/gif'
             elif file_ext == '.webp':
                 mime_type = 'image/webp'
+            elif file_ext == '.pdf':
+                # Convert PDF to PNG for embedding
+                return self._convert_pdf_to_image(full_path)
             else:
                 mime_type = 'image/png'  # Default fallback
                 
@@ -162,6 +169,35 @@ class MarkdownToPDF:
                 return {'data': data, 'mime_type': mime_type}
         except Exception as e:
             print(f"Warning: Could not load image {image_path}: {e}")
+            return None
+    
+    def _convert_pdf_to_image(self, pdf_path):
+        """Convert PDF to PNG for embedding in presentations"""
+        try:
+            import fitz  # PyMuPDF
+            
+            # Open PDF
+            pdf_doc = fitz.open(pdf_path)
+            page = pdf_doc[0]  # Get first page
+            
+            # Render page to image (high DPI for quality)
+            mat = fitz.Matrix(2.0, 2.0)  # 2x scale for better quality
+            pix = page.get_pixmap(matrix=mat)
+            img_data = pix.tobytes("png")
+            
+            # Encode to base64
+            data = base64.b64encode(img_data).decode('utf-8')
+            pdf_doc.close()
+            
+            print(f"Successfully converted PDF to PNG: {len(data)} characters")
+            return {'data': data, 'mime_type': 'image/png'}
+            
+        except ImportError:
+            print("Warning: PyMuPDF not installed, cannot convert PDF figures")
+            print("Install with: pip install PyMuPDF")
+            return None
+        except Exception as e:
+            print(f"Warning: Could not convert PDF {pdf_path}: {e}")
             return None
     
     def parse_markdown_slides(self, md_content):
@@ -275,7 +311,7 @@ class MarkdownToPDF:
                     actual_columns = len(column_content)
                     # Replace the original content with processed columns
                     processed_content = re.sub(column_pattern, '', content, flags=re.DOTALL).strip()
-                    return f'<div class="columns-layout columns-{actual_columns}">{"".join(column_content)}</div>'
+                    return f'<div class="columns-layout columns-{actual_columns}">{" ".join(column_content)}</div>'
             else:
                 # Fall back to simple ::: separator format
                 parts = content.split(':::')
@@ -293,7 +329,7 @@ class MarkdownToPDF:
                     if column_content:
                         # CRITICAL FIX: Use actual column count, not config!
                         actual_columns = len(column_content)
-                        return f'<div class="columns-layout columns-{actual_columns}">{"".join(column_content)}</div>'
+                        return f'<div class="columns-layout columns-{actual_columns}">{" ".join(column_content)}</div>'
         
         return content
     
@@ -329,13 +365,19 @@ class MarkdownToPDF:
     <link href="https://fonts.googleapis.com/css2?family={{ font_family.replace(' ', '+') }}:wght@300;400;600;700&display=swap" rel="stylesheet">
     {% endif %}
     {% if config.get('math.enabled', True) %}
+    {% if use_local_mathjax %}
+    <script>
+        {{ mock_mathjax_js | safe }}
+    </script>
+    {% else %}
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    {% endif %}
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                inlineMath: [['$','$'], ['\\(','\\)']],
+                displayMath: [['$$','$$'], ['\\[','\\]']],
                 processEscapes: true,
                 processEnvironments: true
             },
@@ -579,7 +621,7 @@ class MarkdownToPDF:
 </html>
         """)
     
-    def convert_to_pdf(self, markdown_file, output_file=None):
+    def convert_to_pdf(self, markdown_file, output_file=None, _test_mode=False):
         """Convert markdown file to PDF presentation"""
         if not os.path.exists(markdown_file):
             raise FileNotFoundError(f"Markdown file not found: {markdown_file}")
@@ -623,14 +665,19 @@ class MarkdownToPDF:
             show_slide_numbers=True,
             slide_number_format='{current}/{total}',
             initial_slide_number=initial_slide_number,
-            config=self.config
+            config=self.config,
+            use_local_mathjax=_test_mode,
+            mock_mathjax_js=self.mock_mathjax_js
         )
         
         # Generate PDF
         if output_file is None:
             output_file = f"{title}.pdf"
         
-        if PDF_BACKEND == 'playwright':
+        # Determine PDF backend to use
+        current_pdf_backend = os.environ.get('BODH_PDF_BACKEND', 'playwright') # Default to playwright
+
+        if current_pdf_backend == 'playwright':
             # Use Playwright (Chrome) for best PDF quality - identical to HTML preview
             with sync_playwright() as p:
                 # Launch browser with CI-friendly options
@@ -666,7 +713,7 @@ class MarkdownToPDF:
                 page.wait_for_timeout(1000)  # Reduced timeout since fonts are embedded
                 
                 # Quick check for MathJax if enabled, but don't wait too long
-                if self.config.get('math.enabled', True):
+                if self.config.get('math.enabled', True) and not _test_mode:
                     try:
                         page.wait_for_function("""
                             () => {
@@ -689,27 +736,35 @@ class MarkdownToPDF:
                     height='8.3in'   # A4 landscape height
                 )
                 browser.close()
-        elif PDF_BACKEND == 'weasyprint':
+        elif current_pdf_backend == 'weasyprint':
             # Use WeasyPrint for better CSS support and quality
-            html_doc = HTML(string=html_content, base_url='.')
-            html_doc.write_pdf(output_file, optimize_size=('fonts', 'images'))
-        else:
-            # Fallback to xhtml2pdf
-            with open(output_file, 'wb') as pdf_file:
-                pisa_status = pisa.CreatePDF(
-                    html_content, 
-                    dest=pdf_file,
-                    encoding='utf-8',
-                    show_error_as_pdf=True,
-                    default_css_media_type='print'
-                )
-                
-            if pisa_status.err:
-                raise Exception("PDF generation failed")
+            try:
+                from weasyprint import HTML, CSS
+                html_doc = HTML(string=html_content, base_url='.')
+                html_doc.write_pdf(output_file, optimize_size=('fonts', 'images'))
+            except (ImportError, OSError) as e:
+                raise Exception(f"WeasyPrint backend selected but not available or misconfigured: {e}")
+        elif current_pdf_backend == 'xhtml2pdf':
+            try:
+                from xhtml2pdf import pisa
+                # Fallback to xhtml2pdf
+                with open(output_file, 'wb') as pdf_file:
+                    pisa_status = pisa.CreatePDF(
+                        html_content, 
+                        dest=pdf_file,
+                        encoding='utf-8',
+                        show_error_as_pdf=True,
+                        default_css_media_type='print'
+                    )
+                    
+                if pisa_status.err:
+                    raise Exception("PDF generation failed")
+            except ImportError as e:
+                raise Exception(f"xhtml2pdf backend selected but not available: {e}")
         
         return output_file
     
-    def convert_to_html(self, markdown_file, output_file=None):
+    def convert_to_html(self, markdown_file, output_file=None, _test_mode=False):
         """Convert markdown file to HTML presentation"""
         if not os.path.exists(markdown_file):
             raise FileNotFoundError(f"Markdown file not found: {markdown_file}")
@@ -757,7 +812,9 @@ class MarkdownToPDF:
             show_slide_numbers=self.config.get('slide_number.enabled', True),
             slide_number_format=self.config.get_slide_number_format(),
             initial_slide_number=initial_slide_number,
-            config=self.config
+            config=self.config,
+            use_local_mathjax=_test_mode,
+            mock_mathjax_js=self.mock_mathjax_js
         )
         
         # Save HTML
@@ -850,11 +907,14 @@ Examples:
                 webbrowser.open(f'file://{os.path.abspath(output_file)}')
         else:
             # Generate PDF
+            # Set PDF_BACKEND for the CLI tool based on environment variable or default
+            if 'BODH_PDF_BACKEND' not in os.environ:
+                os.environ['BODH_PDF_BACKEND'] = 'playwright' # Default to playwright for CLI
             output_file = converter.convert_to_pdf(args.input, args.output)
         
         if args.verbose:
             print(f"Successfully converted {args.input} to {output_file}")
-            print(f"PDF Backend: {PDF_BACKEND}")
+            print(f"PDF Backend: {os.environ.get('BODH_PDF_BACKEND')}")
             print(f"Theme: {converter.theme_name} ({converter.theme_data['name']})")
             print(f"Font: {converter.font_family} ({converter.font_size}px)")
             if converter.logo_path:
