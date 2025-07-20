@@ -34,28 +34,28 @@ jobs:
 
     - name: Install dependencies
       run: |
-        echo "🔧 Installing Python dependencies..."
+        echo "Installing Python dependencies..."
         python -m pip install --upgrade pip
-        echo "📦 Installing requirements..."
+        echo "Installing requirements..."
         pip install -r requirements.txt
-        echo "🎭 Installing Playwright dependencies..."
+        echo "Installing Playwright dependencies..."
         playwright install-deps chromium
-        echo "🌐 Installing Chromium browser..."
+        echo "Installing Chromium browser..."
         playwright install chromium
-        echo "✅ All dependencies installed successfully!"
+        echo "All dependencies installed successfully!"
         
     - name: Run comprehensive test suite
       run: |
-        echo "🧪 Running Bodh test suite..."
-        python test_bodh.py
-        echo "✅ All tests passed!"
+        echo "Running Bodh test suite..."
+        python tests/test_bodh.py
+        echo "All tests passed!"
         
     - name: Verify Playwright setup
       env:
         PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
         DISPLAY: ":99"
       run: |
-        echo "🧪 Testing Playwright setup..."
+        echo "Testing Playwright setup..."
         # Start virtual display for headless browser  
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
         sleep 2
@@ -76,78 +76,78 @@ jobs:
                 page = browser.new_page()
                 page.set_content('<h1>Test</h1>')
                 browser.close()
-            print('✅ Playwright is working correctly')
+            print('Playwright is working correctly')
         except Exception as e:
-            print(f'❌ Playwright test failed: {e}')
+            print(f'Playwright test failed: {e}')
             raise
         "
 
     - name: Pre-generation check
       run: |
-        echo "🔍 Checking repository structure before generation..."
+        echo "Checking repository structure before generation..."
         echo "Current directory: $(pwd)"
         echo "Repository contents:"
         ls -la
         echo "Examples directory:"
-        ls -la examples/ || echo "❌ No examples directory"
+        ls -la examples/ || echo "No examples directory"
         echo "Showcase file:"
-        ls -la examples/showcase.md || echo "❌ No showcase.md file"
+        ls -la examples/showcase.md || echo "No showcase.md file"
         echo "Themes directory:"
-        ls -la themes/ || echo "❌ No themes directory"
+        ls -la themes/ || echo "No themes directory"
         echo "Config file:"
-        ls -la config.py || echo "❌ No config.py file"
+        ls -la config.py || echo "No config.py file"
         echo "Main script:"
-        ls -la bodh.py || echo "❌ No bodh.py file"
+        ls -la bodh.py || echo "No bodh.py file"
 
     - name: Generate examples
       env:
         PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
         DISPLAY: ":99"
       run: |
-        echo "🚀 Starting example generation..."
+        echo "Starting example generation..."
         # Start virtual display for headless browser
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
         python generate_examples.py
-        echo "✅ Example generation script completed!"
+        echo "Example generation script completed!"
 
     - name: Post-generation detailed check
       run: |
-        echo "📊 Checking results after generation..."
+        echo "Checking results after generation..."
         echo "Docs directory structure:"
-        find docs/ -type f -exec ls -la {} \; 2>/dev/null || echo "❌ No docs directory or files"
+        find docs/ -type f -exec ls -la {} \; 2>/dev/null || echo "No docs directory or files"
         echo ""
-        echo "📄 Index.html content preview:"
-        head -20 docs/index.html 2>/dev/null || echo "❌ No index.html found"
+        echo "Index.html content preview:"
+        head -20 docs/index.html 2>/dev/null || echo "No index.html found"
         echo ""
-        echo "🖼️ Examples directory:"
-        ls -la docs/examples/ 2>/dev/null || echo "❌ No examples directory"
+        echo "Examples directory:"
+        ls -la docs/examples/ 2>/dev/null || echo "No examples directory"
         echo ""
-        echo "📑 PDFs directory:"
-        ls -la docs/pdfs/ 2>/dev/null || echo "❌ No pdfs directory"
+        echo "PDFs directory:"
+        ls -la docs/pdfs/ 2>/dev/null || echo "No pdfs directory"
         echo ""
-        echo "📏 File sizes:"
-        du -h docs/* 2>/dev/null || echo "❌ No docs files to measure"
+        echo "File sizes:"
+        du -h docs/* 2>/dev/null || echo "No docs files to measure"
         echo ""
-        echo "🧮 Total files generated:"
+        echo "Total files generated:"
         find docs/ -type f | wc -l 2>/dev/null || echo "0"
 
     - name: Build Quarto site
       run: |
-        echo "📚 Building Quarto documentation site..."
+        echo "Building Quarto documentation site..."
         quarto render
-        echo "✅ Quarto site built successfully!"
+        echo "Quarto site built successfully!"
         
     - name: Copy examples to Quarto output
       run: |
-        echo "📂 Copying generated examples to Quarto site..."
+        echo "Copying generated examples to Quarto site..."
         mkdir -p _site/examples _site/pdfs
-        cp -r docs/examples/* _site/examples/ 2>/dev/null || echo "⚠️ No examples to copy"
-        cp -r docs/pdfs/* _site/pdfs/ 2>/dev/null || echo "⚠️ No PDFs to copy"
+        cp -r docs/examples/* _site/examples/ 2>/dev/null || echo "No examples to copy"
+        cp -r docs/pdfs/* _site/pdfs/ 2>/dev/null || echo "No PDFs to copy"
         
-        echo "📊 Final verification:"
-        ls -la _site/examples/ || echo "❌ No examples directory"
-        ls -la _site/pdfs/ || echo "❌ No pdfs directory"
-        echo "🧮 Total files in _site:"
+        echo "Final verification:"
+        ls -la _site/examples/ || echo "No examples directory"
+        ls -la _site/pdfs/ || echo "No pdfs directory"
+        echo "Total files in _site:"
         find _site/ -type f | wc -l
 
     - name: Setup Pages
