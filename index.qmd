@@ -4,52 +4,52 @@ subtitle: "Transform your knowledge into stunning presentations"
 ---
 
 :::{.hero-banner}
-# 🚀 Bodh - Beautiful Presentations
+# Bodh - Beautiful Presentations
 
 **Bodh** (बोध) means "knowledge" or "understanding" in Hindi - the perfect name for a tool that helps you share your insights through beautiful presentations.
 
 Transform your markdown into stunning professional presentations with just a few clicks.
 :::
 
-## 🎯 Live Examples & Demo
+## Live Demo - Single Example, Multiple Styles
 
-See Bodh in action with interactive HTML previews and downloadable PDFs:
+**Comprehensive Gradient Descent Tutorial** demonstrating all features with different themes and configurations:
 
 :::{.examples-grid}
 
 ::: {.example-card}
 ### Modern Theme
-Clean, professional design with modern typography  
-[View HTML](examples/showcase-modern.html){.btn .btn-primary}
-[Download PDF](pdfs/showcase-modern.pdf){.btn .btn-secondary}
+Clean, professional design with Inter fonts  
+[View HTML](examples/gradient-descent-modern.html){.btn .btn-primary}
+[Download PDF](pdfs/gradient-descent-modern.pdf){.btn .btn-secondary}
 :::
 
 ::: {.example-card}
 ### Minimal Theme  
-Ultra-clean design with generous whitespace  
-[View HTML](examples/showcase-minimal.html){.btn .btn-primary}
-[Download PDF](pdfs/showcase-minimal.pdf){.btn .btn-secondary}
-:::
-
-::: {.example-card}
-### Gradient Theme
-Reveal.js inspired with beautiful gradients  
-[View HTML](examples/showcase-gradient.html){.btn .btn-primary}
-[Download PDF](pdfs/showcase-gradient.pdf){.btn .btn-secondary}
+Ultra-clean design, no logo, generous whitespace  
+[View HTML](examples/gradient-descent-minimal.html){.btn .btn-primary}
+[Download PDF](pdfs/gradient-descent-minimal.pdf){.btn .btn-secondary}
 :::
 
 ::: {.example-card}
 ### Dark Theme
-Professional dark theme for tech presentations  
-[View HTML](examples/showcase-dark.html){.btn .btn-primary}
-[Download PDF](pdfs/showcase-dark.pdf){.btn .btn-secondary}
+Professional dark theme with light text  
+[View HTML](examples/gradient-descent-dark.html){.btn .btn-primary}
+[Download PDF](pdfs/gradient-descent-dark.pdf){.btn .btn-secondary}
+:::
+
+::: {.example-card}
+### Academic Style
+LaTeX backend, academic formatting, small fonts  
+[View HTML](examples/gradient-descent-academic.html){.btn .btn-primary}
+[Download PDF](pdfs/gradient-descent-academic.pdf){.btn .btn-secondary}
 :::
 
 :::
 
-*Examples are automatically updated with each release*
+*Same comprehensive content, infinite styling possibilities*
 
-## ✨ Features
+## Features
 
 - **8 Beautiful Themes** - Modern, minimal, gradient, dark, and more
 - **Configuration Presets** - Quick setup with predefined styles (Simple, Tech Talk, Academic, etc.)
@@ -61,7 +61,7 @@ Professional dark theme for tech presentations
 - **Responsive Design** - Works on all devices
 - **Professional Output** - High-quality PDF generation
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Install Dependencies
 
@@ -88,7 +88,7 @@ python app.py -p 3000 -d
 http://localhost:5000
 ```
 
-## 📝 Command Line Usage
+## Command Line Usage
 
 ### Basic Usage
 ```bash
@@ -126,7 +126,7 @@ python bodh.py --help
 python bodh.py --list-themes
 ```
 
-## 🎨 Available Themes
+## Available Themes
 
 | Theme | Description |
 |-------|-------------|
@@ -139,7 +139,7 @@ python bodh.py --list-themes
 | **solarized** | Warm, eye-friendly colors |
 | **moon** | Dark blue space-inspired |
 
-## 📋 Markdown Format
+## Markdown Format
 
 Separate slides with `---`:
 
@@ -164,7 +164,7 @@ Content for first slide
 Questions?
 ```
 
-## 🎯 Features in Detail
+## Features in Detail
 
 ### Configuration System
 - **YAML Configuration**: Full support for configuration files
@@ -195,7 +195,7 @@ Questions?
 - Consistent typography
 - **Fallback support** for WeasyPrint and xhtml2pdf if Playwright unavailable
 
-## 📦 Requirements
+## Requirements
 
 - Python 3.7+
 - Flask 3.0+

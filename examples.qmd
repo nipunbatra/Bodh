@@ -1,13 +1,13 @@
 ---
 title: "Live Examples"
-subtitle: "See Bodh in action with interactive demos"
+subtitle: "One comprehensive example, infinite possibilities"
 ---
 
-## 🎨 Theme Showcase
+## Single Example, Multiple Configurations
 
-Experience all available themes with interactive HTML previews and downloadable PDFs.
+**Gradient Descent Tutorial** - One comprehensive presentation demonstrating ALL features, rendered with different themes, configurations, fonts, layouts, and styling options.
 
-### Basic Themes
+### Same Content, Different Themes
 
 :::{.examples-grid}
 
@@ -15,135 +15,145 @@ Experience all available themes with interactive HTML previews and downloadable 
 ### Modern Theme
 **Clean, professional design**  
 Perfect for business presentations and client meetings.
-[View HTML](examples/showcase-modern.html){.btn .btn-primary}
-[Download PDF](pdfs/showcase-modern.pdf){.btn .btn-secondary}
+[View HTML](examples/gradient-descent-modern.html){.btn .btn-primary}
+[Download PDF](pdfs/gradient-descent-modern.pdf){.btn .btn-secondary}
 :::
 
 ::: {.example-card}
 ### Minimal Theme  
 **Ultra-clean with generous whitespace**  
 Ideal for design-focused presentations and portfolios.
-[View HTML](examples/showcase-minimal.html){.btn .btn-primary}
-[Download PDF](pdfs/showcase-minimal.pdf){.btn .btn-secondary}
-:::
-
-::: {.example-card}
-### Gradient Theme
-**Reveal.js inspired gradients**  
-Eye-catching backgrounds perfect for conferences.
-[View HTML](examples/showcase-gradient.html){.btn .btn-primary}
-[Download PDF](pdfs/showcase-gradient.pdf){.btn .btn-secondary}
+[View HTML](examples/gradient-descent-minimal.html){.btn .btn-primary}
+[Download PDF](pdfs/gradient-descent-minimal.pdf){.btn .btn-secondary}
 :::
 
 ::: {.example-card}
 ### Dark Theme
 **Professional dark theme**  
 Great for tech presentations and code demos.
-[View HTML](examples/showcase-dark.html){.btn .btn-primary}
-[Download PDF](pdfs/showcase-dark.pdf){.btn .btn-secondary}
+[View HTML](examples/gradient-descent-dark.html){.btn .btn-primary}
+[Download PDF](pdfs/gradient-descent-dark.pdf){.btn .btn-secondary}
+:::
+
+::: {.example-card}
+### Gradient Theme
+**Reveal.js inspired gradients**  
+Eye-catching backgrounds perfect for conferences.
+[View HTML](examples/gradient-descent-gradient.html){.btn .btn-primary}
+[Download PDF](pdfs/gradient-descent-gradient.pdf){.btn .btn-secondary}
 :::
 
 :::
 
-### Additional Themes
+### Same Content, Different Configurations
 
 :::{.examples-grid}
 
 ::: {.example-card}
-### Default Theme
-**Clean white with blue accents**  
-Versatile theme suitable for any presentation.
-[View HTML](examples/showcase-default.html){.btn .btn-primary}
+### Academic Style
+**Traditional academic paper look**  
+LaTeX backend, small fonts, academic formatting.
+[View HTML](examples/gradient-descent-academic.html){.btn .btn-primary}
+[Download PDF](pdfs/gradient-descent-academic.pdf){.btn .btn-secondary}
 :::
 
 ::: {.example-card}
-### Sky Theme  
-**Light blue modern design**  
-Fresh and airy feel perfect for creative topics.
-[View HTML](examples/showcase-sky.html){.btn .btn-primary}
-:::
-
-::: {.example-card}
-### Solarized Theme
-**Warm, eye-friendly colors**  
-Based on the popular Solarized color palette.
-[View HTML](examples/showcase-solarized.html){.btn .btn-primary}
-:::
-
-::: {.example-card}
-### Moon Theme
-**Dark blue space-inspired**  
-Elegant and mysterious for special occasions.
-[View HTML](examples/showcase-moon.html){.btn .btn-primary}
+### Presentation Style  
+**Large fonts, bold colors**  
+No slide numbers, large typography for presentations.
+[View HTML](examples/gradient-descent-presentation.html){.btn .btn-primary}
+[Download PDF](pdfs/gradient-descent-presentation.pdf){.btn .btn-secondary}
 :::
 
 :::
 
-## 🔧 Configuration Examples
+:::
 
-See how different configurations change the presentation experience.
+## What You'll See
 
-### Logo Demonstration
-**Features:** Company logo, slide numbering, full navigation
-[View HTML](examples/logo-demo.html){.btn .btn-primary}
-[Download PDF](pdfs/logo-demo.pdf){.btn .btn-secondary}
+Each variation uses the **same comprehensive gradient descent content** including:
 
-### Slide Number Variations  
-**Features:** Different numbering formats, progress indicators
-[View HTML](examples/slide-numbers-demo.html){.btn .btn-primary}
-[Download PDF](pdfs/slide-numbers-demo.pdf){.btn .btn-secondary}
+- **Machine Learning Theory**: Mathematical foundations, optimization algorithms
+- **Multi-column Layouts**: Side-by-side content organization
+- **LaTeX Mathematics**: Complex equations with MathJax rendering
+- **Code Examples**: Python implementations with syntax highlighting
+- **Performance Tables**: Benchmark comparisons and data visualization
+- **Professional Design**: Typography, spacing, branding elements
 
-### Corporate Branding
-**Features:** Professional setup, minimal navigation, sharp design
-[View HTML](examples/corporate-branding.html){.btn .btn-primary}
-[Download PDF](pdfs/corporate-branding.pdf){.btn .btn-secondary}
+## Configuration Variations Demonstrated
 
-## 🚀 Advanced Features
+### Typography & Fonts
+- **Academic**: Small fonts (14px) for dense content
+- **Presentation**: Large fonts (24px) for visibility
+- **Modern**: Medium fonts (18px) for balance
 
-### Multi-Column Layouts
-**Features:** 2-column layouts, custom bullets, modern styling  
-[View HTML](examples/multi-column-demo.html){.btn .btn-primary}
-[Download PDF](pdfs/multi-column-demo.pdf){.btn .btn-secondary}
+### Logo Positioning
+- **Modern**: Bottom-right placement
+- **Minimal**: No logo for clean look  
+- **Academic**: Top-center for formal presentations
+- **Gradient**: Bottom-left for balance
 
-### Overlay System (Beamer-style)
-**Features:** Pause markers, step-by-step reveals, fade transitions  
-[View HTML](examples/overlay-demo.html){.btn .btn-primary}
-[Download PDF](pdfs/overlay-demo.pdf){.btn .btn-secondary}
+### Slide Numbers
+- **Academic**: "Page X of Y" format, bottom-center
+- **Modern**: "Slide X" format, top-right
+- **Minimal**: Simple numbers, bottom-right
+- **Presentation**: Disabled for clean look
 
-### Metropolis Theme
-**Features:** Academic styling, title rules, minimal navigation  
-[View HTML](examples/metropolis-demo.html){.btn .btn-primary}
-[Download PDF](pdfs/metropolis-demo.pdf){.btn .btn-secondary}
+### Backend Engines
+- **Academic**: LaTeX backend for academic quality (ultra-fast)
+- **Others**: Playwright backend with MathJax for interactive features
 
-### Complete Advanced Demo
-**Features:** All advanced features combined in one presentation  
-[View HTML](examples/advanced-features.html){.btn .btn-primary}
-[Download PDF](pdfs/advanced-features.pdf){.btn .btn-secondary}
-
-### LaTeX Mathematics
-**Features:** MathJax support, inline and display math, scientific formulas  
-[View HTML](examples/math-demo.html){.btn .btn-primary}
-[Download PDF](pdfs/math-demo.pdf){.btn .btn-secondary}
-
-### HR Rule Title Underlines
-**Features:** 80% width horizontal rules under titles, clean styling  
-[View HTML](examples/hrule-demo.html){.btn .btn-primary}
-[Download PDF](pdfs/hrule-demo.pdf){.btn .btn-secondary}
-
-## 🎯 How to Use These Examples
+## How to Use These Examples
 
 1. **Click "View HTML"** to see the interactive presentation with navigation
 2. **Use arrow keys** or click navigation buttons to browse slides  
 3. **Click "Download PDF"** to see the print-ready version
-4. **Compare** HTML vs PDF quality - they're nearly identical!
+4. **Compare configurations**: See how the same content looks with different styling
 
-## 💡 Tips for Testing
+## Key Benefits
 
-- **Try keyboard navigation**: Arrow keys, spacebar, Home, End
-- **Test on mobile**: Swipe gestures work on touch devices
-- **Check different screen sizes**: All themes are responsive
-- **Compare themes**: See which style fits your content best
+- **Same Content**: No confusion from different examples
+- **Clear Comparisons**: Easy to see the impact of configuration changes
+- **Real Use Case**: Complete ML tutorial demonstrates all features
+- **Consistent Quality**: All variations maintain professional standards
+
+## Theme Details
+
+Each theme creates a unique presentation experience with the same gradient descent content:
+
+### Modern Theme
+**Professional and clean** - Perfect for business presentations with contemporary feel. Clean typography with Inter font, professional blue color scheme, subtle shadows and spacing.
+
+### Minimal Theme  
+**Ultra-clean with generous whitespace** - Ideal for design-focused presentations and portfolios. Maximum whitespace for clarity, elegant typography, minimal distractions.
+
+### Dark Theme
+**Professional dark theme** - Excellent for tech presentations, code demos, and evening talks. Easy on the eyes in dark environments, orange accents for emphasis.
+
+### Gradient Theme
+**Reveal.js inspired with beautiful gradients** - Eye-catching backgrounds perfect for conferences and tech talks. Stunning gradient backgrounds, high contrast text for readability.
+
+### Academic Style
+**Traditional academic paper look** - LaTeX backend with small fonts for dense content. Perfect for research presentations, academic conferences.
+
+### Presentation Style
+**Large fonts, bold colors** - No slide numbers, large typography optimized for live presentations. Bold red accents, high contrast.
+
+## Choosing the Right Configuration
+
+### For Business Presentations
+- **Modern**: Professional meetings, client presentations
+- **Minimal**: Design reviews, clean corporate slides
+
+### For Technical Content
+- **Dark**: Code demos, developer talks, evening presentations
+- **Academic**: Research presentations, technical papers
+- **Gradient**: Tech conferences, startup pitches
+
+### For Live Presentations
+- **Presentation**: Large fonts, no slide numbers, bold colors
+- **Modern**: Professional balance of readability and style
 
 ---
 
-*All examples are automatically regenerated when the code is updated, ensuring they always reflect the latest features and improvements.*
+*Same comprehensive content, infinite styling possibilities through configuration.*

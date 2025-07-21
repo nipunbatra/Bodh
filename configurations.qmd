@@ -7,108 +7,141 @@ subtitle: "Powerful customization options for every need"
 
 Bodh uses YAML files to configure presentations. Create a `bodh.yml` file in your project directory to customize themes, layouts, and features.
 
-## 📝 Basic Configuration
+## 📝 Configuration Examples
 
-### Simple Setup
+All examples use the **same comprehensive gradient descent content** but with different configurations to demonstrate the power of customization.
+
+### Modern Configuration
 ```yaml
-theme: modern
+# configs/gradient-descent-modern.yml
+theme:
+  name: "modern"
+
+logo:
+  path: "examples/sample-logo.svg"
+  position: "bottom-right" 
+  size: "medium"
+
+slide_number:
+  enabled: true
+  format: "Slide {current}"
+  position: "top-right"
+
+font:
+  family: "Inter"
+  size: 18
+
+pdf:
+  engine: "playwright"
+```
+**Result**: [Modern Style](examples/gradient-descent-modern.html)
+
+### Minimal Configuration
+```yaml
+# configs/gradient-descent-minimal.yml
+theme:
+  name: "minimal"
+
+# No logo for clean look
+logo:
+  enabled: false
+
+slide_number:
+  enabled: true
+  format: "{current}/{total}"
+  position: "bottom-right"
+
 font:
   family: "Inter"
   size: 20
-slide_number:
-  enabled: true
-  format: "current/total"
-```
 
-### Corporate Branding
+pdf:
+  engine: "playwright"
+```
+**Result**: [Minimal Style](examples/gradient-descent-minimal.html)
+
+### Academic Configuration  
 ```yaml
-theme: minimal
-font:
-  family: "Source Sans Pro"
-  size: 18
+# configs/gradient-descent-academic.yml
+theme:
+  name: "default"
 
 logo:
-  source: "company-logo.png"
-  location: "top-right"
-  size: 120
+  path: "examples/sample-logo.svg"
+  position: "top-center" 
+  size: "small"
 
 slide_number:
   enabled: true
-  format: "current"
-  position: "bottom-right"
-
-navigation:
-  show_dots: false
-  show_progress: true
-```
-
-## 🎨 Advanced Styling
-
-### Title Rules and Bullets
-```yaml
-theme: metropolis
-style:
-  hrule:
-    enabled: true
-    width: "80%"
-    thickness: "2px"
-    style: "solid"
-    color: "accent"
-  
-  bullets:
-    style: "arrow"
-    color: "accent"
-    size: "1.2em"
+  format: "Page {current} of {total}"
+  position: "bottom-center"
 
 font:
-  family: "Fira Sans"
-  size: 22
+  family: "Inter"
+  size: 14  # Smaller for more content
+
+pdf:
+  engine: "latex"  # LaTeX backend for academic quality
+  latex_engine: "pdflatex"
+
+colors:
+  background: "#ffffff"
+  text: "#000000"
+  accent: "#8b0000"  # Dark red for academic look
 ```
+**Result**: [Academic Style](examples/gradient-descent-academic.html)
 
-### Multi-Column Layouts
+### Presentation Configuration
 ```yaml
-theme: modern
-layout:
-  columns: 2
-  column_gap: "3rem"
-  alignment: "left"
+# configs/gradient-descent-presentation.yml
+theme:
+  name: "modern"
 
-style:
-  slide_padding: "2rem 3rem"
-  element_margin: "1rem"
+logo:
+  path: "examples/sample-logo.svg"
+  position: "bottom-right" 
+  size: "large"
+
+slide_number:
+  enabled: false  # No slide numbers for clean presentation
+
+font:
+  family: "Inter"
+  size: 24  # Large for presentations
+
+colors:
+  background: "#ffffff"
+  text: "#2d3748"
+  accent: "#e53e3e"  # Bold red for emphasis
 ```
+**Result**: [Presentation Style](examples/gradient-descent-presentation.html)
 
-## 🎬 Interactive Features
-
-### Overlay System
+### Dark Theme Configuration
 ```yaml
-theme: gradient
-overlays:
-  enabled: true
-  transition: "fade"
-  duration: "0.5s"
+# configs/gradient-descent-dark.yml
+theme:
+  name: "dark"
 
-navigation:
-  enabled: true
-  show_arrows: true
-  show_dots: true
-  keyboard_shortcuts: true
-```
-
-### Custom Navigation
-```yaml
-theme: dark
-navigation:
-  enabled: true
-  show_arrows: false
-  show_dots: true
-  show_progress: true
+logo:
+  path: "examples/sample-logo.svg"
+  position: "bottom-right" 
+  size: "medium"
 
 slide_number:
   enabled: true
-  format: "percent"
-  position: "bottom-center"
+  format: "{current}"
+  position: "top-right"
+
+font:
+  family: "Inter"
+  size: 18
+
+colors:
+  background: "#1a202c"
+  text: "#ffffff"
+  accent: "#ed8936"  # Orange accent
 ```
+**Result**: [Dark Style](examples/gradient-descent-dark.html)
 
 ## 📊 Real-World Examples
 
