@@ -29,7 +29,7 @@
 }
 
 body {
-    font-family: '{{ font_family }}', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: '{{ font_family }}', 'Inter', 'Noto Sans Devanagari', 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: {{ theme.typography.line_height }};
     color: {{ theme.colors.text }};
     background: {{ theme.colors.background }};
@@ -39,6 +39,9 @@ body {
     font-weight: {{ theme.typography.body_weight }};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Support for Unicode text including Devanagari */
+    unicode-bidi: plaintext;
+    text-rendering: optimizeLegibility;
 }
 
 .slide {
@@ -47,7 +50,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: {{ theme.spacing.slide_padding if theme.spacing and theme.spacing.slide_padding else '3rem' }};
+    align-items: flex-start;
+    padding: {{ theme.spacing.slide_padding if theme.spacing and theme.spacing.slide_padding else '1.5rem 3rem 3rem 3rem' }};
     box-sizing: border-box;
     background: {{ theme.colors.background }};
     position: relative;
@@ -65,10 +69,12 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    /* Reduced top padding for better title positioning */
-    padding-top: 1rem;
+    align-items: flex-start;
+    /* Minimal top padding for Metropolis-style positioning */
+    padding-top: 0.5rem;
     /* Prevent content overflow */
     max-width: 100%;
+    width: 100%;
     /* Allow content to expand for MathJax */
     {% if config.get('math.enabled', True) %}
     overflow: visible;
@@ -231,16 +237,18 @@ pre, code {
     right: 2rem;
 }
 
-/* Typography - Optimized for better spacing and readability */
+/* Typography - Metropolis-inspired with better spacing */
 h1 {
     color: {{ theme.colors.heading }};
     font-size: {{ font_sizes.h1 }}em;
     margin-bottom: 1.5rem;
-    margin-top: 0.5rem;
-    text-align: center;
+    margin-top: 0;
+    text-align: left;
     font-weight: {{ theme.typography.heading_weight }};
     line-height: 1.1;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
+    padding-left: 0;
+    width: 100%;
     {% if theme.effects.shadows %}
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     {% endif %}
@@ -249,11 +257,12 @@ h1 {
 h2 {
     color: {{ theme.colors.heading }};
     font-size: {{ font_sizes.h2 }}em;
-    margin-bottom: 1.2rem;
-    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 0.8rem;
+    text-align: left;
     font-weight: {{ theme.typography.heading_weight }};
     line-height: 1.2;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     {% if theme.effects.shadows %}
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     {% endif %}
@@ -279,20 +288,29 @@ h4 {
 
 p {
     font-size: {{ font_sizes.text }}em;
-    margin-bottom: {{ theme.spacing.element_margin }};
-    text-align: justify;
+    margin-bottom: 1.3rem;
+    text-align: left;
+    line-height: 1.65;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
 }
 
-/* Lists */
+/* Lists - Fixed line breaks and spacing */
 ul, ol {
     font-size: {{ font_sizes.text }}em;
     margin-bottom: {{ theme.spacing.element_margin }};
     padding-left: 2.5rem;
+    width: 100%;
 }
 
 li {
     margin-bottom: 0.8rem;
-    line-height: 1.8;
+    line-height: 1.65;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    display: list-item;
+    white-space: normal;
 }
 
 li::marker {

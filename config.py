@@ -86,9 +86,13 @@ class PresentationConfig:
             },
             'math': {
                 'enabled': True,
-                'engine': 'mathjax',  # mathjax, katex
+                'engine': 'mathjax',  # mathjax, katex, local, disabled
+                'mode': 'cdn',  # cdn, local, cached, fast
+                'timeout': 8000,  # milliseconds to wait for MathJax
+                'fallback': 'local',  # local, unicode, disabled
                 'inline_delimiters': [['$', '$'], ['\\(', '\\)']],
-                'display_delimiters': [['$$', '$$'], ['\\[', '\\]']]
+                'display_delimiters': [['$$', '$$'], ['\\[', '\\]']],
+                'local_path': 'static/mathjax/mathjax-local.js'
             }
         }
     

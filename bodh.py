@@ -139,12 +139,21 @@ class MarkdownToPDF:
         
         self.template = self._get_html_template()
         self.mock_mathjax_js = self._get_mock_mathjax_js()
+        self.local_mathjax_js = self._get_local_mathjax_js()
 
     def _get_mock_mathjax_js(self):
         """Reads the mock MathJax JS file for testing"""
         mock_js_path = Path(__file__).parent / "static/js/mock_mathjax.js"
         if mock_js_path.exists():
             with open(mock_js_path, 'r') as f:
+                return f.read()
+        return ""
+    
+    def _get_local_mathjax_js(self):
+        """Reads the local MathJax JS file for offline use"""
+        local_js_path = Path(__file__).parent / "static/mathjax/mathjax-local.js"
+        if local_js_path.exists():
+            with open(local_js_path, 'r') as f:
                 return f.read()
         return ""
 
@@ -292,8 +301,8 @@ class MarkdownToPDF:
         
         # Print warnings
         for warning in warnings:
-            print(f"⚠️  {warning}")
-            print("   💡 Consider: breaking content across multiple slides, using shorter lines, or adjusting font size")
+            print(f"Warning: {warning}")
+            print("   Consider: breaking content across multiple slides, using shorter lines, or adjusting font size")
     
     def _process_overlays(self, content):
         """Process overlay/pause markers in markdown"""
@@ -422,7 +431,12 @@ class MarkdownToPDF:
     <link href="https://fonts.googleapis.com/css2?family={{ font_family.replace(' ', '+') }}:wght@300;400;600;700&display=swap" rel="stylesheet">
     {% endif %}
     {% if config.get('math.enabled', True) %}
-    {% if use_local_mathjax %}
+    {% set math_mode = config.get('math.mode', 'cdn') %}
+    {% if math_mode == 'local' or use_local_mathjax %}
+    <script>
+        {{ local_mathjax_js | safe }}
+    </script>
+    {% elif math_mode == 'fast' %}
     <script>
         {{ mock_mathjax_js | safe }}
     </script>
@@ -436,10 +450,26 @@ class MarkdownToPDF:
                 inlineMath: [['$','$'], ['\\(','\\)']],
                 displayMath: [['$$','$$'], ['\\[','\\]']],
                 processEscapes: true,
-                processEnvironments: true
+                processEnvironments: true,
+                packages: {'[+]': ['noerrors']}
             },
             options: {
-                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+                renderActions: {
+                    addMenu: [0, '', '']
+                }
+            },
+            startup: {
+                ready() {
+                    MathJax.startup.defaultReady();
+                    console.log('MathJax is ready');
+                },
+                pageReady() {
+                    return MathJax.startup.document.render();
+                }
+            },
+            loader: {
+                load: ['[tex]/noerrors']
             }
         };
     </script>
@@ -727,7 +757,8 @@ class MarkdownToPDF:
             initial_slide_number=initial_slide_number,
             config=self.config,
             use_local_mathjax=_test_mode,
-            mock_mathjax_js=self.mock_mathjax_js
+            mock_mathjax_js=self.mock_mathjax_js,
+            local_mathjax_js=self.local_mathjax_js
         )
         
         # Generate PDF
@@ -772,16 +803,32 @@ class MarkdownToPDF:
                 # Much shorter wait since fonts are embedded and don't need network loading
                 page.wait_for_timeout(1000)  # Reduced timeout since fonts are embedded
                 
-                # Quick check for MathJax if enabled, but don't wait too long
+                # Wait for MathJax if enabled, with configurable timeout and fallback handling
                 if self.config.get('math.enabled', True) and not _test_mode:
-                    try:
-                        page.wait_for_function("""
-                            () => {
-                                return window.MathJax ? window.MathJax.startup.document.state() >= 6 : true;
-                            }
-                        """, timeout=3000)  # Quick MathJax check
-                    except Exception:
-                        print("Warning: MathJax loading timeout, continuing with PDF generation")
+                    math_mode = self.config.get('math.mode', 'cdn')
+                    math_timeout = self.config.get('math.timeout', 8000)
+                    
+                    if math_mode in ['local', 'fast']:
+                        # Local/fast mode - minimal wait
+                        page.wait_for_timeout(500)
+                        print(f"Using {math_mode} MathJax mode - fast rendering")
+                    else:
+                        # CDN mode - wait for full loading
+                        try:
+                            print(f"Waiting for MathJax CDN (timeout: {math_timeout}ms)...")
+                            page.wait_for_function("""
+                                () => {
+                                    return window.MathJax && window.MathJax.startup && window.MathJax.startup.document.state() >= 6;
+                                }
+                            """, timeout=math_timeout)
+                            print("MathJax loaded successfully")
+                        except Exception as e:
+                            fallback = self.config.get('math.fallback', 'local')
+                            print(f"Warning: MathJax CDN timeout ({e})")
+                            if fallback != 'disabled':
+                                print(f"Continuing with {fallback} fallback...")
+                            else:
+                                print("No fallback enabled, continuing without math rendering")
                 
                 # PDF options for presentation format - let CSS handle margins
                 page.pdf(
@@ -877,7 +924,8 @@ class MarkdownToPDF:
             initial_slide_number=initial_slide_number,
             config=self.config,
             use_local_mathjax=_test_mode,
-            mock_mathjax_js=self.mock_mathjax_js
+            mock_mathjax_js=self.mock_mathjax_js,
+            local_mathjax_js=self.local_mathjax_js
         )
         
         # Save HTML

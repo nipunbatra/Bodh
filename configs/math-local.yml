@@ -1,0 +1,20 @@
+theme:
+  name: "modern"
+  
+math:
+  enabled: true
+  mode: "local"           # Use local MathJax instead of CDN
+  timeout: 2000           # Shorter timeout since no network needed
+  fallback: "unicode"     # Fallback to Unicode symbols if local fails
+
+slide_number:
+  enabled: true
+  format: "{current}/{total}"
+  position: "bottom-right"
+
+navigation:
+  enabled: false          # PDF doesn't need navigation
+  
+font:
+  family: "Inter"
+  size: 20

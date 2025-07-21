@@ -235,11 +235,11 @@ def main():
     
     args = parser.parse_args()
     
-    print(f"🚀 Starting Bodh Web UI...")
-    print(f"📍 Server: http://localhost:{args.port}")
-    print(f"🎨 Themes: {len(theme_loader.list_themes())} available")
-    print(f"📝 Ready to create beautiful presentations!")
-    print(f"⚡ Press Ctrl+C to stop")
+    print(f"Starting Bodh Web UI...")
+    print(f"Server: http://localhost:{args.port}")
+    print(f"Themes: {len(theme_loader.list_themes())} available")
+    print(f"Ready to create beautiful presentations!")
+    print(f"Press Ctrl+C to stop")
     
     try:
         app.run(
@@ -249,9 +249,9 @@ def main():
             use_reloader=not args.no_reload if args.debug else False
         )
     except KeyboardInterrupt:
-        print("\n👋 Thanks for using Bodh!")
+        print("\nThanks for using Bodh!")
     except Exception as e:
-        print(f"❌ Error starting server: {e}")
+        print(f"Error starting server: {e}")
 
 
 if __name__ == '__main__':
