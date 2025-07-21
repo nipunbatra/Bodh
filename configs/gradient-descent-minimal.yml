@@ -1,0 +1,33 @@
+theme:
+  name: "minimal"
+
+# No logo for minimal design
+logo:
+  path: null
+  position: null
+
+# Simple slide numbers
+slide_number:
+  enabled: true
+  format: "{current}"
+  position: "bottom-center"
+
+# Clean typography
+font:
+  family: "Inter"
+  size: 20
+
+# Playwright backend
+pdf:
+  engine: "playwright"
+
+# Math rendering
+math:
+  enabled: true
+  engine: "mathjax"
+
+# Minimal color scheme
+colors:
+  background: "#ffffff"
+  text: "#1a202c"
+  accent: "#4a5568"

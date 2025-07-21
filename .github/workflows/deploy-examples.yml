@@ -161,8 +161,8 @@ jobs:
         # pdflatex --version || echo "LaTeX not found in PATH"
         # which pdflatex || echo "pdflatex not in PATH"
         
-        # Generate ONLY the comprehensive gradient descent example with different renderers
-        echo "Generating gradient descent example with multiple renderers..."
+        # Generate ONLY the comprehensive gradient descent example with different themes & configs
+        echo "Generating gradient descent example with multiple themes and configurations..."
         python -c "
         from config import load_config
         from bodh import MarkdownToPDF
@@ -171,54 +171,55 @@ jobs:
         
         # Single example file - the comprehensive gradient descent
         example_file = 'examples/gradient-descent-complete.md'
-        config_file = 'configs/gradient-descent-complete.yml'
+        
+        # Different themes and configurations to showcase
+        configs = [
+            ('modern', 'Modern Theme - Clean professional design'),
+            ('minimal', 'Minimal Theme - Clean and simple'),
+            ('dark', 'Dark Theme - Dark background with light text'),
+            ('gradient', 'Gradient Theme - Colorful gradient background'),
+            ('academic', 'Academic Style - Traditional academic paper look'),
+            ('presentation', 'Presentation Style - Large fonts, no slide numbers')
+        ]
         
         # Create output directories
         os.makedirs('examples', exist_ok=True)
         os.makedirs('pdfs', exist_ok=True)
         
-        print('🎯 Generating Gradient Descent - Same Content, Different Renderers')
+        print('🎯 Same Content, Different Themes & Configurations')
+        print('=' * 60)
         
-        # 1. Playwright + MathJax CDN
-        print('📄 Renderer 1: Playwright + MathJax CDN...')
-        config = load_config(config_file)
-        config.config['pdf']['engine'] = 'playwright'
-        converter = MarkdownToPDF(config=config)
-        os.environ['BODH_MATHJAX_MODE'] = 'cdn'
-        
-        start = time.time()
-        html_output = converter.convert_to_html(example_file, 'examples/gradient-descent-mathjax-cdn.html')
-        pdf_output = converter.convert_to_pdf(example_file, 'pdfs/gradient-descent-mathjax-cdn.pdf')
-        cdn_time = time.time() - start
-        print(f'   ✅ Generated: {html_output}, {pdf_output} ({cdn_time:.2f}s)')
-        
-        # 2. Playwright + Local MathJax  
-        print('📄 Renderer 2: Playwright + Local MathJax...')
+        # Use local MathJax for reliability in CI
         os.environ['BODH_MATHJAX_MODE'] = 'local'
         
-        start = time.time()
-        html_output = converter.convert_to_html(example_file, 'examples/gradient-descent-local-mathjax.html')
-        pdf_output = converter.convert_to_pdf(example_file, 'pdfs/gradient-descent-local-mathjax.pdf')
-        local_time = time.time() - start
-        print(f'   ✅ Generated: {html_output}, {pdf_output} ({local_time:.2f}s)')
+        for theme, description in configs:
+            config_file = f'configs/gradient-descent-{theme}.yml'
+            print(f'\\n🎨 {description}...')
+            
+            try:
+                # Load theme-specific configuration
+                config = load_config(config_file)
+                
+                # Force Playwright for CI reliability (except academic which uses LaTeX)
+                if theme != 'academic':
+                    config.config['pdf']['engine'] = 'playwright'
+                
+                converter = MarkdownToPDF(config=config)
+                
+                start = time.time()
+                html_output = converter.convert_to_html(example_file, f'examples/gradient-descent-{theme}.html')
+                pdf_output = converter.convert_to_pdf(example_file, f'pdfs/gradient-descent-{theme}.pdf')
+                elapsed = time.time() - start
+                
+                print(f'   ✅ Generated: {html_output}, {pdf_output} ({elapsed:.2f}s)')
+                
+            except Exception as e:
+                print(f'   ❌ Failed: {e}')
         
-        # 3. LaTeX Direct (will skip if LaTeX not available)
-        print('📄 Renderer 3: LaTeX Direct...')
-        config.config['pdf']['engine'] = 'latex'
-        converter_latex = MarkdownToPDF(config=config)
-        
-        try:
-            start = time.time()
-            pdf_output = converter_latex.convert_to_pdf(example_file, 'pdfs/gradient-descent-latex.pdf')
-            latex_time = time.time() - start
-            print(f'   ✅ Generated: {pdf_output} ({latex_time:.2f}s)')
-            print(f'   ⚡ Performance: LaTeX {local_time/latex_time:.1f}x faster than Local MathJax')
-        except Exception as e:
-            print(f'   ⚠️  LaTeX Direct skipped: {e}')
-        
-        print('\\n🎉 Single example, multiple renderers complete!')
+        print('\\n🎉 Same content, multiple themes & configurations complete!')
+        print('📄 All variations show the power of different styling approaches')
         "
-        echo "Gradient descent generation completed!"
+        echo "Gradient descent theme variations completed!"
 
     - name: Post-generation detailed check
       run: |

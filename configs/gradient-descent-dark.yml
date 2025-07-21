@@ -1,0 +1,34 @@
+theme:
+  name: "dark"
+
+# Logo configuration
+logo:
+  path: "examples/sample-logo.svg"
+  position: "top-left" 
+  size: "medium"
+
+# Slide numbers
+slide_number:
+  enabled: true
+  format: "{current} of {total}"
+  position: "bottom-right"
+
+# Bold typography for dark theme
+font:
+  family: "Inter"
+  size: 22
+
+# Playwright backend
+pdf:
+  engine: "playwright"
+
+# Math rendering
+math:
+  enabled: true
+  engine: "mathjax"
+
+# Dark color scheme
+colors:
+  background: "#1a202c"
+  text: "#e2e8f0"
+  accent: "#63b3ed"

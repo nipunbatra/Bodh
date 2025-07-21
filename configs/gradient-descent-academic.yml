@@ -1,0 +1,35 @@
+theme:
+  name: "default"
+
+# Academic style logo
+logo:
+  path: "examples/sample-logo.svg"
+  position: "top-center" 
+  size: "small"
+
+# Academic slide numbers
+slide_number:
+  enabled: true
+  format: "Page {current} of {total}"
+  position: "bottom-center"
+
+# Academic typography
+font:
+  family: "Inter"
+  size: 14  # Smaller for more content
+
+# LaTeX backend for academic quality
+pdf:
+  engine: "latex"
+  latex_engine: "pdflatex"
+
+# Math rendering
+math:
+  enabled: true
+  engine: "latex"
+
+# Academic color scheme
+colors:
+  background: "#ffffff"
+  text: "#000000"
+  accent: "#8b0000"  # Dark red for academic look

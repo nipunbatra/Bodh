@@ -1,0 +1,32 @@
+theme:
+  name: "modern"
+
+# Presentation style logo
+logo:
+  path: "examples/sample-logo.svg"
+  position: "bottom-right" 
+  size: "large"
+
+# No slide numbers for clean presentation
+slide_number:
+  enabled: false
+
+# Large typography for presentations
+font:
+  family: "Inter"
+  size: 24  # Large for presentations
+
+# Playwright backend
+pdf:
+  engine: "playwright"
+
+# Math rendering
+math:
+  enabled: true
+  engine: "mathjax"
+
+# High contrast presentation colors
+colors:
+  background: "#ffffff"
+  text: "#2d3748"
+  accent: "#e53e3e"  # Bold red for emphasis

@@ -4,7 +4,7 @@
 
 Transform your markdown into stunning professional presentations with multiple backends and comprehensive feature support.
 
-## 🎯 **One Example, Multiple Renderers**
+## 🎯 **One Example, Multiple Themes & Configurations**
 
 **Single comprehensive gradient descent tutorial demonstrating ALL features:**
 
@@ -13,15 +13,18 @@ Transform your markdown into stunning professional presentations with multiple b
 - **Professional Design**: Tables, performance benchmarks, typography, branding
 - **Testing & Quality**: Unit tests, CI/CD examples, validation frameworks
 
-**Same content, different rendering engines:**
+**Same content, different themes and configurations:**
 
-| Renderer | HTML Preview | PDF Download | Features |
-|----------|-------------|--------------|----------|
-| **Playwright + MathJax CDN** | [View HTML](https://nipunbatra.github.io/Bodh/examples/gradient-descent-mathjax-cdn.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-mathjax-cdn.pdf) | Full-featured, CDN-based math |
-| **Playwright + Local MathJax** | [View HTML](https://nipunbatra.github.io/Bodh/examples/gradient-descent-local-mathjax.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-local-mathjax.pdf) | Fast offline rendering |
-| **LaTeX Direct** | - | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-latex.pdf) | Native LaTeX, fastest compilation |
+| Theme/Style | HTML Preview | PDF Download | Description |
+|-------------|-------------|--------------|-------------|
+| **Modern** | [View HTML](https://nipunbatra.github.io/Bodh/examples/gradient-descent-modern.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-modern.pdf) | Clean professional design, blue accents |
+| **Minimal** | [View HTML](https://nipunbatra.github.io/Bodh/examples/gradient-descent-minimal.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-minimal.pdf) | Clean and simple, no logo, minimal styling |
+| **Dark** | [View HTML](https://nipunbatra.github.io/Bodh/examples/gradient-descent-dark.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-dark.pdf) | Dark background, light text, bold styling |
+| **Gradient** | [View HTML](https://nipunbatra.github.io/Bodh/examples/gradient-descent-gradient.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-gradient.pdf) | Colorful gradient background, stylish design |
+| **Academic** | [View HTML](https://nipunbatra.github.io/Bodh/examples/gradient-descent-academic.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-academic.pdf) | Traditional academic paper style, LaTeX backend |
+| **Presentation** | [View HTML](https://nipunbatra.github.io/Bodh/examples/gradient-descent-presentation.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-presentation.pdf) | Large fonts, no slide numbers, bold colors |
 
-*Clean approach: One comprehensive example showcasing the power of different rendering backends*
+*Perfect demonstration: Same comprehensive content styled with different themes, configurations, and design approaches*
 
 ## ✨ Features
 
