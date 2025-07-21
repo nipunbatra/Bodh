@@ -13,26 +13,13 @@ website:
         href: index.qmd
       - text: "Examples"
         href: examples.qmd
+      - text: "Configurations" 
+        href: configurations.qmd
       - text: "Documentation"
         href: docs.qmd
-      - text: "Configurations"
-        href: configurations.qmd
     right:
       - icon: github
         href: https://github.com/nipunbatra/Bodh
-  sidebar:
-    - title: "Getting Started"
-      contents:
-        - index.qmd
-        - installation.qmd
-    - title: "Examples"
-      contents:
-        - examples.qmd
-        - configurations.qmd
-    - title: "Documentation"
-      contents:
-        - docs.qmd
-        - api.qmd
   page-footer:
     center: "Made with [Quarto](https://quarto.org) | Bodh (बोध) means knowledge in Hindi"
 

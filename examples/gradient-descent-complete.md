@@ -39,10 +39,6 @@ By the end of this tutorial, you will:
 
 ## Chapter 1: Mathematical Foundations
 
-:::: columns
-
-::: left
-
 ### Vector Calculus Foundations
 
 The **gradient** of a scalar function $f: \mathbb{R}^n \to \mathbb{R}$ is defined as:
@@ -59,10 +55,6 @@ $$\nabla f(x) = \begin{pmatrix}
 2. **Magnitude:** Rate of change in that direction  
 3. **Orthogonality:** Perpendicular to level curves
 
-:::
-
-::: right
-
 ### Optimization Theory
 
 For unconstrained optimization problems:
@@ -78,10 +70,6 @@ $$\nabla^2 f(x^*) \succ 0 \text{ (positive definite)}$$
 **Convexity Assumptions:**
 - **Convex function:** $f(\lambda x + (1-\lambda)y) \leq \lambda f(x) + (1-\lambda)f(y)$
 - **Strongly convex:** $f(y) \geq f(x) + \nabla f(x)^T(y-x) + \frac{\mu}{2}||y-x||^2$
-
-:::
-
-::::
 
 > **Mathematical Insight:** 
 > The gradient descent algorithm is a **first-order method** because it only uses gradient information (first derivatives). Second-order methods like Newton's method also use the Hessian matrix (second derivatives) for potentially faster convergence.
@@ -104,9 +92,9 @@ Where:
 
 ### Implementation Variants
 
-:::: columns
 
-::: left
+
+
 
 #### Batch Gradient Descent
 
@@ -200,9 +188,9 @@ def batch_gradient_descent(
     return x, loss_history, param_history
 ```
 
-:::
 
-::: right
+
+
 
 #### Stochastic Gradient Descent
 
@@ -287,9 +275,9 @@ def stochastic_gradient_descent(
     return w, loss_history
 ```
 
-:::
 
-::::
+
+
 
 ---
 
@@ -333,9 +321,9 @@ With parameters $a = 1, b = 100$ (highly non-convex, global minimum at $(1, 1)$)
 
 ## Chapter 4: Learning Rate Analysis and Adaptive Methods
 
-:::: columns
 
-::: left
+
+
 
 ### Learning Rate Sensitivity Analysis
 
@@ -388,9 +376,9 @@ def adaptive_learning_rate(
         return lambda t: initial_lr
 ```
 
-:::
 
-::: right
+
+
 
 ### Advanced Optimizer Implementations
 
@@ -478,9 +466,9 @@ class AdamOptimizer:
         return updated_params
 ```
 
-:::
 
-::::
+
+
 
 > **Implementation Note:** 
 > The bias correction terms $(1 - \beta_1^t)$ and $(1 - \beta_2^t)$ are crucial for proper initialization. Without them, the optimizer exhibits poor performance in the first few iterations due to biased moment estimates.
@@ -734,9 +722,9 @@ $$F(\theta)_{ij} = \mathbb{E}\left[\frac{\partial \log p(x|\theta)}{\partial \th
 
 ## Chapter 7: Production Systems and Scalability
 
-:::: columns
 
-::: left
+
+
 
 ### Distributed Gradient Descent
 
@@ -801,9 +789,9 @@ class DistributedTrainer:
         return loss.item()
 ```
 
-:::
 
-::: right
+
+
 
 ### Monitoring and Debugging
 
@@ -907,9 +895,9 @@ class TrainingLogger:
         wandb.log(grad_stats, step=step)
 ```
 
-:::
 
-::::
+
+
 
 ---
 
@@ -1114,9 +1102,9 @@ for some small tolerance $\epsilon > 0$.
 
 ## Implementation Details
 
-:::: columns
 
-::: left
+
+
 
 ### Python Implementation
 
@@ -1154,9 +1142,9 @@ def gradient_descent(f, grad_f, x0, alpha=0.01,
     return x, history
 ```
 
-:::
 
-::: right
+
+
 
 ### Key Parameters
 
@@ -1175,9 +1163,9 @@ def gradient_descent(f, grad_f, x0, alpha=0.01,
 - Function value change
 - Maximum iterations
 
-:::
 
-::::
+
+
 
 ---
 
