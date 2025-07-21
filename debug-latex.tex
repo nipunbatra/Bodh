@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage[landscape,margin=0.5in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+
+% Colors
+\definecolor{bgcolor}{RGB}{1.000,1.000,1.000}
+\definecolor{textcolor}{RGB}{0.176,0.216,0.282}
+\definecolor{accentcolor}{RGB}{0.106,0.682,0.882}
+
+% Page setup
+\pagecolor{bgcolor}
+\color{textcolor}
+\pagestyle{empty}
+
+% Commands
+\newcommand{\slidetitle}[1]{%
+  \begin{center}
+  \textcolor{accentcolor}{\huge\textbf{#1}}
+  \end{center}
+  \vspace{0.5cm}
+}
+
+% Math setup
+\everymath{\displaystyle}
+
+% List styling
+\setlist[itemize]{leftmargin=1cm,itemsep=0.3cm}
+\renewcommand{\labelitemi}{\textcolor{accentcolor}{\textbullet}}
+
+\begin{document}
+
+\slidetitle{Gradient Descent: Complete Tutorial}\n\n\textbf{\huge From Theory to Implementation}\\[0.5cm]
+Understanding optimization through comprehensive examples and visualizations\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 1/11}\n\end{flushright}\n\n\newpage\n\n\textbf{\huge Overview and Motivation}\\[0.5cm]
+\textbf{\Large What is Gradient Descent?}\\[0.3cm]
+Gradient descent is a \textbf{first-order iterative optimization algorithm} used to find the minimum of a function. It works by:
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\item \1
+\end{itemize}
+\textbf{\Large Why Does This Matter?}\\[0.3cm]
+\textbf{Applications in Machine Learning:}
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\item \1
+\end{itemize}\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 2/11}\n\end{flushright}\n\n\newpage\n\n\textbf{\huge Mathematical Foundation}\\[0.5cm]
+\textbf{\Large The Algorithm}\\[0.3cm]
+For a function $f(x)$, gradient descent updates parameters using:
+\\[\1\\]
+Where:
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\end{itemize}
+\textbf{\Large Convergence Conditions}\\[0.3cm]
+The algorithm converges when:
+\\[\1\\]
+for some small tolerance $\epsilon > 0$.\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 3/11}\n\end{flushright}\n\n\newpage\n\n\textbf{\huge Implementation Details}\\[0.5cm]
+:::: columns
+::: left
+\textbf{\Large Python Implementation}\\[0.3cm]
+\begin{lstlisting}
+\2
+\end{lstlisting}
+:::
+::: right
+\textbf{\Large Key Parameters}\\[0.3cm]
+\textbf{Learning Rate Selection:}
+\begin{center}
+\begin{tabular}{lll}
+\hline
+\textbf{Rate} & \textbf{Behavior} & \textbf{Risk} \\
+\hline
+Too High & Divergence & Overshooting \\
+Too Low & Slow & Never converges \\
+Optimal & Fast convergence & Balanced \\
+\hline
+\end{tabular}
+\end{center}\\
+\textbf{Convergence Criteria:}
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\item \1
+\end{itemize}
+:::
+::::\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 4/11}\n\end{flushright}\n\n\newpage\n\n\textbf{\huge Visual Understanding}\\[0.5cm]
+\textbf{\Large Learning Rate Effects}\\[0.3cm]
+Different learning rates dramatically affect convergence:
+\textbf{Optimal Learning Rate ( = 0.1):}
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\end{itemize}
+\textbf{High Learning Rate ( = 0.8):}
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\end{itemize}
+\textbf{Very High Learning Rate ( = 1.01):}
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\end{itemize}\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 5/11}\n\end{flushright}\n\n\newpage\n\n\textbf{\huge Advanced Techniques}\\[0.5cm]
+\textbf{\Large Momentum-Based Methods}\\[0.3cm]
+Standard gradient descent can be improved with momentum:
+\\[\1\\]
+\\[\1\\]
+Where $\beta$ is the momentum coefficient (typically 0.9).
+\textbf{\Large Adaptive Learning Rates}\\[0.3cm]
+\textbf{AdaGrad:} Adapts learning rate per parameter
+\\[\1\\]
+\textbf{Adam:} Combines momentum with adaptive learning rates
+\\[\1\\]
+\\[\1\\]\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 6/11}\n\end{flushright}\n\n\newpage\n\n\textbf{\huge Practical Applications}\\[0.5cm]
+\textbf{\Large Linear Regression Example}\\[0.3cm]
+For linear regression with cost function:
+\\[\1\\]
+The gradient is:
+\\[\1\\]
+\textbf{\Large Neural Network Training}\\[0.3cm]
+For a simple neural network:
+1. \textbf{Forward Pass:} Compute predictions
+2. \textbf{Backward Pass:} Compute gradients via backpropagation
+3. \textbf{Update:} Apply gradient descent to weights
+4. \textbf{Repeat:} Until convergence or max epochs\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 7/11}\n\end{flushright}\n\n\newpage\n\n\textbf{\huge Performance Analysis}\\[0.5cm]
+\textbf{\Large Convergence Comparison}\\[0.3cm]
+\begin{center}
+\begin{tabular}{lll}
+\hline
+\textbf{Method} & \textbf{Iterations to Converge} & \textbf{Final Error} \\
+\hline
+Gradient Descent & 1000 & 1e-6 \\
+Momentum & 400 & 1e-7 \\
+Adam & 200 & 1e-8 \\
+AdaGrad & 600 & 1e-6 \\
+\hline
+\end{tabular}
+\end{center}\\
+\textbf{\Large Computational Complexity}\\[0.3cm]
+\textbf{Time Complexity:} O(n  d  k)
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\end{itemize}
+\textbf{Space Complexity:} O(d)
+\begin{itemize}
+\item \1
+\item \1
+\end{itemize}\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 8/11}\n\end{flushright}\n\n\newpage\n\n\textbf{\huge Common Pitfalls and Solutions}\\[0.5cm]
+\textbf{\Large Learning Rate Issues}\\[0.3cm]
+\textbf{Problem:} Learning rate too high
+\begin{itemize}
+\item \1
+\item \1
+\end{itemize}
+\textbf{Problem:} Learning rate too low  
+\begin{itemize}
+\item \1
+\item \1
+\end{itemize}
+\textbf{\Large Local Minima}\\[0.3cm]
+\textbf{Problem:} Algorithm stuck in local minimum
+\begin{itemize}
+\item \1
+\item \1
+\end{itemize}
+  - Random restarts with different initializations
+  - Momentum to escape shallow minima
+  - Simulated annealing techniques\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 9/11}\n\end{flushright}\n\n\newpage\n\n\textbf{\huge Advanced Topics}\\[0.5cm]
+\textbf{\Large Stochastic Gradient Descent}\\[0.3cm]
+Instead of using full dataset, use random samples:
+\textbf{Advantages:}
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\end{itemize}
+\textbf{Disadvantages:}
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\end{itemize}
+\textbf{\Large Mini-Batch Gradient Descent}\\[0.3cm]
+Compromise between batch and stochastic:
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\end{itemize}\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 10/11}\n\end{flushright}\n\n\newpage\n\n\textbf{\huge Summary and Best Practices}\\[0.5cm]
+\textbf{\Large Key Takeaways}\\[0.3cm]
+1. \textbf{Learning rate is crucial} - Start with 0.01 and adjust
+2. \textbf{Monitor convergence} - Plot loss over iterations
+3. \textbf{Use momentum} - Usually improves convergence
+4. \textbf{Consider adaptive methods} - Adam works well in practice
+5. \textbf{Normalize features} - Improves convergence speed
+\textbf{\Large Implementation Checklist}\\[0.3cm]
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\item \1
+\item \1
+\end{itemize}
+\textbf{\Large Next Steps}\\[0.3cm]
+\textbf{Further Learning:}
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\item \1
+\end{itemize}
+\textbf{Practical Applications:}
+\begin{itemize}
+\item \1
+\item \1
+\item \1
+\item \1
+\end{itemize}\n\n\vfill\n\begin{flushright}\n\textcolor{gray}{\small 11/11}\n\end{flushright}\n\n\end{document}

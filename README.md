@@ -2,32 +2,51 @@
 
 **Bodh** (बोध) means "knowledge" or "understanding" in Hindi - the perfect name for a tool that helps you share your insights through beautiful presentations.
 
-Transform your markdown into stunning professional presentations with just a few clicks.
+Transform your markdown into stunning professional presentations with multiple backends and comprehensive feature support.
 
-## 🎯 **[Live Examples & Demo](https://nipunbatra.github.io/Bodh/)**
+## 🎯 **[Ultimate Showcase](./ultimate-showcase.html)**
 
-See Bodh in action with live HTML previews and downloadable PDFs showcasing all themes:
+**One comprehensive example demonstrating ALL features:**
 
-| Theme | HTML Preview | PDF Download |
-|-------|-------------|--------------|
-| **Modern** | [View HTML](https://nipunbatra.github.io/Bodh/examples/showcase-modern.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/showcase-modern.pdf) |
-| **Minimal** | [View HTML](https://nipunbatra.github.io/Bodh/examples/showcase-minimal.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/showcase-minimal.pdf) |
-| **Gradient** | [View HTML](https://nipunbatra.github.io/Bodh/examples/showcase-gradient.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/showcase-gradient.pdf) |
-| **Dark** | [View HTML](https://nipunbatra.github.io/Bodh/examples/showcase-dark.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/showcase-dark.pdf) |
+- **Machine Learning Content**: Gradient descent, neural networks, optimization algorithms
+- **Advanced Layouts**: Multi-column designs, mathematical equations, code syntax highlighting  
+- **Professional Design**: Tables, typography, branding, navigation
+- **Testing & Quality**: Unit tests, benchmarks, CI/CD examples
+- **Multiple Backends**: Playwright (full-featured) and LaTeX (fast) generation
 
-*Examples are automatically updated with each release*
+| Backend | Example | Features |
+|---------|---------|----------|
+| **Playwright** | [Ultimate Showcase PDF](./ultimate-showcase-playwright.pdf) | Full-featured, interactive, reliable |
+| **LaTeX Direct** | [LaTeX Version](./ultimate-showcase-latex.pdf) | Fast compilation, mathematical typesetting |
+| **HTML Preview** | [Interactive HTML](./ultimate-showcase.html) | Live preview, responsive design |
+
+*This single example replaces multiple scattered examples and demonstrates production-ready capabilities*
 
 ## ✨ Features
 
-- **8 Beautiful Themes** - Modern, minimal, gradient, dark, and more
-- **Configuration Presets** - Quick setup with predefined styles (Simple, Tech Talk, Academic, etc.)
-- **Live Preview** - See your slides as you type
-- **Slide Navigation** - Next/previous buttons and keyboard controls
-- **PDF Preview** - View your PDF before downloading
-- **Custom Fonts** - Choose from popular Google Fonts
-- **File Upload** - Drag and drop existing markdown files
-- **Responsive Design** - Works on all devices
-- **Professional Output** - High-quality PDF generation
+### 🚀 **Multiple Generation Backends**
+- **Playwright Backend**: Full-featured with MathJax, interactive elements, complex layouts
+- **LaTeX Direct**: Ultra-fast native LaTeX compilation (15x faster)
+- **Local MathJax**: Offline math rendering without CDN dependencies
+
+### 📋 **Content & Layout**
+- **Multi-column Layouts**: Professional side-by-side content organization
+- **Mathematical Notation**: LaTeX equations with MathJax or native LaTeX
+- **Code Syntax Highlighting**: Python, JavaScript, SQL, YAML with line numbers
+- **Tables & Data**: Performance benchmarks, comparison tables, data visualization
+- **Professional Typography**: Inter font family, optimized spacing, visual hierarchy
+
+### 🎨 **Design & Branding**
+- **Modern Themes**: Clean, professional styling for technical presentations
+- **Logo Integration**: Configurable positioning (bottom-right, top-right, etc.)
+- **Slide Numbers**: Customizable format and positioning
+- **Responsive Design**: Adapts to different screen sizes and orientations
+
+### 🔧 **Development & Testing**
+- **Comprehensive Test Suite**: 21 unit tests covering all functionality
+- **CI/CD Integration**: Automated testing and deployment
+- **Performance Monitoring**: Benchmark comparison between backends
+- **Error Handling**: Graceful fallbacks and detailed error reporting
 
 ## 🎨 Available Themes
 

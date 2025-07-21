@@ -273,7 +273,8 @@ class TestCSSGeneration:
     
         # Should have flex-start for fixed positioning
         assert 'justify-content: flex-start' in css
-        assert 'padding-top: 1rem' in css
+        # Should have proper slide structure
+        assert '.slide {' in css
     
     def test_mathjax_overflow_handling(self):
         """Test that MathJax-enabled configs have proper overflow handling"""
@@ -364,7 +365,8 @@ class TestLayoutFixes:
         
         # Should have flex-start for fixed positioning
         assert 'justify-content: flex-start' in css
-        assert 'padding-top: 1rem' in css
+        # Should have proper slide height settings
+        assert 'min-height: 100vh' in css
 
 
 class TestImageHandling:

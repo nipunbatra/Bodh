@@ -1,0 +1,41 @@
+theme:
+  name: "modern"
+
+# Logo configuration - bottom right
+logo:
+  path: "examples/sample-logo.svg"
+  position: "bottom-right" 
+  size: "small"
+
+# Slide numbers - top right as requested
+slide_number:
+  enabled: true
+  format: "{current}/{total}"
+  position: "top-right"
+
+# Font configuration
+font:
+  family: "Inter"
+  size: 18
+
+# LaTeX-optimized PDF generation
+pdf:
+  engine: "latex"
+  latex_engine: "pdflatex" 
+  latex_passes: 2
+  prefer_latex_for_math: true
+
+# Math rendering
+math:
+  enabled: true
+  engine: "latex"
+
+# Navigation
+navigation:
+  enabled: true
+  
+# Professional styling
+colors:
+  background: "#ffffff"
+  text: "#2d3748"
+  accent: "#2563eb"

@@ -1,0 +1,66 @@
+theme:
+  name: "modern"
+
+# Logo configuration - professional positioning
+logo:
+  path: "examples/sample-logo.svg"
+  position: "bottom-right" 
+  size: "small"
+
+# Slide numbers - top right for professional look
+slide_number:
+  enabled: true
+  format: "{current}/{total}"
+  position: "top-right"
+
+# Typography optimized for readability
+font:
+  family: "Inter"
+  size: 16  # Slightly smaller for dense content
+
+# Backend configuration - Playwright for reliability
+pdf:
+  engine: "playwright"
+  timeout: 30000  # Longer timeout for complex content
+  quality: "high"
+
+# Math rendering with MathJax
+math:
+  enabled: true
+  engine: "mathjax"
+  
+# Enhanced navigation
+navigation:
+  enabled: true
+  show_progress: true
+  keyboard_shortcuts: true
+  
+# Professional color scheme
+colors:
+  background: "#ffffff"
+  text: "#2d3748"
+  accent: "#2563eb"
+  code_background: "#f8f9fa"
+  
+# Content optimization
+content:
+  slide_separator: "---"
+  max_lines_per_slide: 50  # Allow more content for comprehensive example
+  
+# Syntax highlighting for code blocks
+syntax_highlighting:
+  enabled: true
+  theme: "github"
+  line_numbers: true
+  
+# Style enhancements
+style:
+  shadows: true
+  rounded_corners: true
+  animations: false  # Disable for PDF generation
+  
+# Performance optimizations
+performance:
+  mathjax_mode: "local"  # Use local MathJax for speed
+  image_optimization: true
+  css_minification: true

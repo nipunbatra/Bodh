@@ -109,11 +109,15 @@ class MarkdownToPDF:
         # Use config if provided, otherwise use individual parameters
         if config:
             self.config = config
-            self.theme_name = config.get('theme', 'default')
+            theme_config = config.get('theme', 'default')
+            if isinstance(theme_config, dict):
+                self.theme_name = theme_config.get('name', 'default')
+            else:
+                self.theme_name = theme_config
             self.font_family = config.get('font.family', 'Inter')
             self.font_size = config.get('font.size', 20)
-            self.logo_path = config.get('logo.source')
-            self.logo_position = config.get('logo.location', 'top-right')
+            self.logo_path = config.get('logo.path') or config.get('logo.source')
+            self.logo_position = config.get('logo.position') or config.get('logo.location', 'top-right')
             self.slide_separator = config.get('content.slide_separator', '---')
         else:
             self.config = PresentationConfig()
@@ -916,19 +920,10 @@ class MarkdownToPDF:
             try:
                 with open(tex_file, 'w', encoding='utf-8') as f:
                     f.write(latex_content)
-                # Debug: show part of the generated LaTeX
-                print("DEBUG: Generated LaTeX content (chars 1000-1500):")
-                print(repr(latex_content[1000:1500]))
-                print("DEBUG: Table content search:")
-                if "Quarter" in latex_content:
-                    start = latex_content.find("Quarter")
-                    print(repr(latex_content[start-50:start+200]))
             except UnicodeEncodeError:
                 # Fallback with error handling
                 with open(tex_file, 'w', encoding='utf-8', errors='replace') as f:
                     f.write(latex_content)
-                print("DEBUG: Generated LaTeX content (first 500 chars, with fallback):")
-                print(repr(latex_content[:500]))
             
             try:
                 # Run pdflatex
@@ -987,16 +982,16 @@ class MarkdownToPDF:
         theme = self.theme_data
         colors = theme.get('colors', {})
         
-        # Convert hex colors to LaTeX RGB
+        # Convert hex colors to LaTeX RGB (integer values 0-255)
         def hex_to_rgb(hex_color):
             hex_color = hex_color.lstrip('#')
             if len(hex_color) != 6:
                 return "0,0,0"
             try:
-                r = int(hex_color[0:2], 16) / 255
-                g = int(hex_color[2:4], 16) / 255
-                b = int(hex_color[4:6], 16) / 255
-                return f"{r:.3f},{g:.3f},{b:.3f}"
+                r = int(hex_color[0:2], 16)
+                g = int(hex_color[2:4], 16)
+                b = int(hex_color[4:6], 16)
+                return f"{r},{g},{b}"
             except ValueError:
                 return "0,0,0"
         
@@ -1026,6 +1021,7 @@ class MarkdownToPDF:
 \\usepackage{{listings}}
 \\usepackage{{graphicx}}
 \\usepackage{{fancyhdr}}
+\\usepackage{{multicol}}
 
 % Colors
 \\definecolor{{bgcolor}}{{RGB}}{{{bg_color}}}
@@ -1070,22 +1066,39 @@ class MarkdownToPDF:
             
             # Add slide
             if title:
-                latex_doc += f"\\slidetitle{{{title}}}\\n\\n"
+                latex_doc += f"\\slidetitle{{{title}}}\n\n"
             
             # Process content
-            content = '\\n'.join(content_lines)
+            content = '\n'.join(content_lines)
             content = self._convert_markdown_content_to_latex(content)
-            latex_doc += content + "\\n\\n"
+            latex_doc += content + "\n\n"
             
             # Add slide number
-            latex_doc += f"\\vfill\\n\\begin{{flushright}}\\n\\textcolor{{gray}}{{\\small {i+1}/{len(slides)}}}\\n\\end{{flushright}}\\n\\n"
+            latex_doc += f"\\vfill\n\\begin{{flushright}}\n\\textcolor{{gray}}{{\\small {i+1}/{len(slides)}}}\n\\end{{flushright}}\n\n"
             
             # Page break (except for last slide)
             if i < len(slides) - 1:
-                latex_doc += "\\newpage\\n\\n"
+                latex_doc += "\\newpage\n\n"
         
         latex_doc += "\\end{document}"
         return latex_doc
+    
+    def _convert_columns_to_latex(self, content: str) -> str:
+        """Convert multi-column layout syntax to LaTeX"""
+        import re
+        
+        # Handle the multi-column container
+        content = re.sub(r':::: columns\s*\n', r'\\begin{multicols}{2}\n', content)
+        content = re.sub(r'\n::::\s*\n', r'\n\\end{multicols}\n', content)
+        content = re.sub(r'\n::::\s*$', r'\n\\end{multicols}', content)
+        
+        # Handle column divisions
+        content = re.sub(r'::: left\s*\n', r'', content)  # Remove left marker
+        content = re.sub(r'\n:::\s*\n', r'\n\\columnbreak\n', content)  # Column break
+        content = re.sub(r'::: right\s*\n', r'', content)  # Remove right marker
+        content = re.sub(r'\n:::\s*$', r'', content)  # Remove final column marker
+        
+        return content
     
     def _convert_markdown_content_to_latex(self, content: str) -> str:
         """Convert markdown content to LaTeX"""
@@ -1093,6 +1106,9 @@ class MarkdownToPDF:
         
         # Handle Unicode characters first
         content = self._handle_unicode_for_latex(content)
+        
+        # Handle multi-column layouts FIRST
+        content = self._convert_columns_to_latex(content)
         
         # Handle math (already in LaTeX format, just fix display math)
         content = re.sub(r'\$\$(.+?)\$\$', r'\\\\[\\1\\\\]', content, flags=re.DOTALL)
@@ -1105,14 +1121,11 @@ class MarkdownToPDF:
         content = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', content)
         content = re.sub(r'\*([^*]+?)\*', r'\\textit{\1}', content)
         
-        # Tables BEFORE list processing to avoid interference  
-        print(f"DEBUG: Content type: {type(content)}")
-        print(f"DEBUG: Has actual newlines: {'\\n' in content}")
-        print(f"DEBUG: Lines in content: {len(content.split('\\n'))}")
+        # Tables BEFORE list processing to avoid interference
         content = self._convert_tables_to_latex(content)
         
         # Lists
-        content = re.sub(r'^- (.+)$', r'\\item \\1', content, flags=re.MULTILINE)
+        content = re.sub(r'^- (.+)$', r'\\item \1', content, flags=re.MULTILINE)
         
         # Wrap lists in itemize environment
         lines = content.split('\n')
@@ -1157,19 +1170,13 @@ class MarkdownToPDF:
         result_lines = []
         i = 0
         
-        print(f"DEBUG: Table function got {len(lines)} lines")
-        for j, line in enumerate(lines):
-            print(f"DEBUG: Line {j}: {repr(line)}")
-        
         while i < len(lines):
             line = lines[i].strip()
             
             # Check if this line looks like a table header (contains |)
             if '|' in line and line.strip():
-                print(f"DEBUG: Found potential table header at line {i}: {repr(line)}")
                 # Look ahead to see if next line is separator
                 if i + 1 < len(lines) and '---' in lines[i + 1] and '|' in lines[i + 1]:
-                    print(f"DEBUG: Found table separator at line {i+1}: {repr(lines[i + 1])}")
                     # This is a table
                     table_lines = [line]
                     i += 1  # Skip separator line

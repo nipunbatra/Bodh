@@ -32,6 +32,48 @@ jobs:
       with:
         version: 'pre-release'
 
+    - name: Setup TinyTeX for LaTeX support
+      run: |
+        echo "Installing TinyTeX for LaTeX Direct mode..."
+        wget -qO- "https://yihui.org/tinytex/install-unx.sh" | sh
+        echo "TinyTeX base installation completed"
+        
+        # Add TinyTeX to PATH
+        export PATH="$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
+        echo "$HOME/.TinyTeX/bin/x86_64-linux" >> $GITHUB_PATH
+        
+        # Install required LaTeX packages
+        echo "Installing required LaTeX packages..."
+        tlmgr install --verify-repo=none \
+          beamer \
+          pgf \
+          xcolor \
+          amsmath \
+          amsfonts \
+          amssymb \
+          geometry \
+          fancyhdr \
+          graphicx \
+          hyperref \
+          enumitem \
+          multicol \
+          booktabs \
+          array \
+          longtable \
+          colortbl \
+          xetex \
+          fontspec \
+          unicode-math \
+          lualatex-math \
+          luaotfload \
+          collection-fontsrecommended
+        
+        echo "TinyTeX setup completed successfully!"
+        
+        # Verify installation
+        pdflatex --version
+        echo "LaTeX installation verified"
+
     - name: Install dependencies
       run: |
         echo "Installing Python dependencies..."
@@ -45,8 +87,12 @@ jobs:
         echo "All dependencies installed successfully!"
         
     - name: Run comprehensive test suite
+      env:
+        PATH: "$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
       run: |
         echo "Running Bodh test suite..."
+        echo "LaTeX availability check..."
+        pdflatex --version || echo "LaTeX not available for tests"
         python tests/test_bodh.py
         echo "All tests passed!"
         
@@ -103,33 +149,47 @@ jobs:
       env:
         PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
         DISPLAY: ":99"
+        PATH: "$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
       run: |
         echo "Starting example generation..."
         # Start virtual display for headless browser
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-        python generate_examples.py
-        echo "Example generation script completed!"
+        
+        # Verify LaTeX is available
+        echo "Verifying LaTeX availability..."
+        pdflatex --version || echo "LaTeX not found in PATH"
+        which pdflatex || echo "pdflatex not in PATH"
+        
+        # Generate examples with multi-mode support
+        python generate_all_modes.py
+        echo "Multi-mode example generation completed!"
 
     - name: Post-generation detailed check
       run: |
         echo "Checking results after generation..."
-        echo "Docs directory structure:"
-        find docs/ -type f -exec ls -la {} \; 2>/dev/null || echo "No docs directory or files"
+        echo "Generated examples directory structure:"
+        find generated_examples/ -type f -exec ls -la {} \; 2>/dev/null || echo "No generated_examples directory or files"
         echo ""
         echo "Index.html content preview:"
-        head -20 docs/index.html 2>/dev/null || echo "No index.html found"
+        head -20 generated_examples/index.html 2>/dev/null || echo "No index.html found"
         echo ""
-        echo "Examples directory:"
-        ls -la docs/examples/ 2>/dev/null || echo "No examples directory"
+        echo "HTML + MathJax CDN examples:"
+        ls -la generated_examples/html_mathjax/ 2>/dev/null || echo "No html_mathjax directory"
         echo ""
-        echo "PDFs directory:"
-        ls -la docs/pdfs/ 2>/dev/null || echo "No pdfs directory"
+        echo "Local MathJax examples:"
+        ls -la generated_examples/local_mathjax/ 2>/dev/null || echo "No local_mathjax directory"
+        echo ""
+        echo "LaTeX Direct examples:"
+        ls -la generated_examples/latex_direct/ 2>/dev/null || echo "No latex_direct directory"
+        echo ""
+        echo "Performance reports:"
+        ls -la generated_examples/performance_reports/ 2>/dev/null || echo "No performance_reports directory"
         echo ""
         echo "File sizes:"
-        du -h docs/* 2>/dev/null || echo "No docs files to measure"
+        du -h generated_examples/* 2>/dev/null || echo "No generated_examples files to measure"
         echo ""
         echo "Total files generated:"
-        find docs/ -type f | wc -l 2>/dev/null || echo "0"
+        find generated_examples/ -type f | wc -l 2>/dev/null || echo "0"
 
     - name: Build Quarto site
       run: |
@@ -140,13 +200,15 @@ jobs:
     - name: Copy examples to Quarto output
       run: |
         echo "Copying generated examples to Quarto site..."
-        mkdir -p _site/examples _site/pdfs
-        cp -r docs/examples/* _site/examples/ 2>/dev/null || echo "No examples to copy"
-        cp -r docs/pdfs/* _site/pdfs/ 2>/dev/null || echo "No PDFs to copy"
+        mkdir -p _site/generated_examples
+        cp -r generated_examples/* _site/generated_examples/ 2>/dev/null || echo "No generated examples to copy"
         
         echo "Final verification:"
-        ls -la _site/examples/ || echo "No examples directory"
-        ls -la _site/pdfs/ || echo "No pdfs directory"
+        ls -la _site/generated_examples/ || echo "No generated examples directory"
+        echo "Multi-mode examples:"
+        ls -la _site/generated_examples/html_mathjax/ || echo "No html_mathjax directory"
+        ls -la _site/generated_examples/local_mathjax/ || echo "No local_mathjax directory"
+        ls -la _site/generated_examples/latex_direct/ || echo "No latex_direct directory"
         echo "Total files in _site:"
         find _site/ -type f | wc -l
 
