@@ -12,6 +12,9 @@ from jinja2 import Template
 import json
 import base64
 import yaml
+import tempfile
+import subprocess
+import shutil
 from config import PresentationConfig, load_config, create_sample_config
 from font_manager import FontManager
 from playwright.sync_api import sync_playwright
@@ -140,6 +143,9 @@ class MarkdownToPDF:
         self.template = self._get_html_template()
         self.mock_mathjax_js = self._get_mock_mathjax_js()
         self.local_mathjax_js = self._get_local_mathjax_js()
+        
+        # Check LaTeX availability
+        self.latex_available = self._check_latex_availability()
 
     def _get_mock_mathjax_js(self):
         """Reads the mock MathJax JS file for testing"""
@@ -156,6 +162,15 @@ class MarkdownToPDF:
             with open(local_js_path, 'r') as f:
                 return f.read()
         return ""
+    
+    def _check_latex_availability(self) -> bool:
+        """Check if LaTeX is available on the system"""
+        try:
+            result = subprocess.run(['pdflatex', '--version'], 
+                                  capture_output=True, text=True, timeout=5)
+            return result.returncode == 0
+        except (subprocess.TimeoutExpired, FileNotFoundError):
+            return False
 
     def _encode_image(self, image_path, base_dir=None):
         """Encode image to base64 for embedding"""
@@ -713,6 +728,13 @@ class MarkdownToPDF:
         if not os.path.exists(markdown_file):
             raise FileNotFoundError(f"Markdown file not found: {markdown_file}")
         
+        # Check if LaTeX mode is enabled and available
+        pdf_engine = self.config.get('pdf.engine', 'playwright')
+        if pdf_engine == 'latex' and self.latex_available:
+            return self._convert_to_pdf_latex(markdown_file, output_file)
+        elif pdf_engine == 'latex' and not self.latex_available:
+            print("Warning: LaTeX mode requested but LaTeX not available, falling back to Playwright")
+        
         # Read markdown content
         with open(markdown_file, 'r', encoding='utf-8') as f:
             md_content = f.read()
@@ -870,6 +892,229 @@ class MarkdownToPDF:
                 raise Exception(f"xhtml2pdf backend selected but not available: {e}")
         
         return output_file
+    
+    def _convert_to_pdf_latex(self, markdown_file, output_file=None):
+        """Convert markdown to PDF using LaTeX backend"""
+        # Read markdown content
+        with open(markdown_file, 'r', encoding='utf-8') as f:
+            md_content = f.read()
+        
+        # Convert markdown to LaTeX
+        latex_content = self._markdown_to_latex(md_content)
+        
+        # Compile with LaTeX
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            tex_file = temp_path / "presentation.tex"
+            
+            # Write LaTeX file
+            with open(tex_file, 'w', encoding='utf-8') as f:
+                f.write(latex_content)
+            
+            try:
+                # Run pdflatex
+                latex_engine = self.config.get('pdf.latex_engine', 'pdflatex')
+                passes = self.config.get('pdf.latex_passes', 2)
+                
+                for pass_num in range(passes):
+                    result = subprocess.run([
+                        latex_engine,
+                        '-interaction=nonstopmode',
+                        '-output-directory', str(temp_path),
+                        str(tex_file)
+                    ], capture_output=True, text=True, timeout=30)
+                    
+                    print(f"LaTeX pass {pass_num + 1} returncode: {result.returncode}")
+                    
+                    # Check if LaTeX actually failed (no PDF output) vs just warnings
+                    if result.returncode != 0:
+                        # LaTeX can return non-zero but still generate PDF with warnings
+                        # Check if "Output written" appears in stdout indicating successful PDF generation
+                        if "Output written" not in result.stdout:
+                            print(f"LaTeX compilation failed on pass {pass_num + 1}")
+                            print("STDOUT:", result.stdout[-500:])
+                            print("STDERR:", result.stderr[-500:])
+                            return False
+                        else:
+                            print(f"LaTeX pass {pass_num + 1} completed with warnings (return code {result.returncode})")
+                    else:
+                        print(f"LaTeX pass {pass_num + 1} completed successfully")
+                
+                # Copy output PDF
+                generated_pdf = temp_path / "presentation.pdf"
+                if generated_pdf.exists():
+                    if output_file is None:
+                        output_file = Path(markdown_file).stem + ".pdf"
+                    
+                    shutil.copy2(generated_pdf, output_file)
+                    print(f"Generated: {output_file} (using {latex_engine})")
+                    return True
+                else:
+                    print("LaTeX compilation succeeded but no PDF generated")
+                    return False
+                    
+            except subprocess.TimeoutExpired:
+                print("LaTeX compilation timed out")
+                return False
+            except Exception as e:
+                print(f"LaTeX compilation error: {e}")
+                return False
+    
+    def _markdown_to_latex(self, md_content: str) -> str:
+        """Convert markdown content to LaTeX document"""
+        # Get theme colors
+        theme = self.theme_data
+        colors = theme.get('colors', {})
+        
+        # Convert hex colors to LaTeX RGB
+        def hex_to_rgb(hex_color):
+            hex_color = hex_color.lstrip('#')
+            if len(hex_color) != 6:
+                return "0,0,0"
+            try:
+                r = int(hex_color[0:2], 16) / 255
+                g = int(hex_color[2:4], 16) / 255
+                b = int(hex_color[4:6], 16) / 255
+                return f"{r:.3f},{g:.3f},{b:.3f}"
+            except ValueError:
+                return "0,0,0"
+        
+        bg_color = hex_to_rgb(colors.get('background', '#ffffff'))
+        text_color = hex_to_rgb(colors.get('text', '#000000'))
+        accent_color = hex_to_rgb(colors.get('accent', '#2563eb'))
+        
+        # Split into slides
+        slides = md_content.split('---')
+        slides = [slide.strip() for slide in slides if slide.strip()]
+        
+        # Generate LaTeX document
+        latex_doc = f"""\\documentclass[11pt]{{article}}
+
+% Packages
+\\usepackage[landscape,margin=0.5in]{{geometry}}
+\\usepackage[utf8]{{inputenc}}
+\\usepackage[T1]{{fontenc}}
+\\usepackage{{xcolor}}
+\\usepackage{{amsmath}}
+\\usepackage{{amsfonts}}
+\\usepackage{{amssymb}}
+\\usepackage{{enumitem}}
+\\usepackage{{listings}}
+\\usepackage{{graphicx}}
+\\usepackage{{fancyhdr}}
+
+% Colors
+\\definecolor{{bgcolor}}{{RGB}}{{{bg_color}}}
+\\definecolor{{textcolor}}{{RGB}}{{{text_color}}}
+\\definecolor{{accentcolor}}{{RGB}}{{{accent_color}}}
+
+% Page setup
+\\pagecolor{{bgcolor}}
+\\color{{textcolor}}
+\\pagestyle{{empty}}
+
+% Commands
+\\newcommand{{\\slidetitle}}[1]{{%
+  \\begin{{center}}
+  \\textcolor{{accentcolor}}{{\\huge\\textbf{{#1}}}}
+  \\end{{center}}
+  \\vspace{{0.5cm}}
+}}
+
+% Math setup
+\\everymath{{\\displaystyle}}
+
+% List styling
+\\setlist[itemize]{{leftmargin=1cm,itemsep=0.3cm}}
+\\renewcommand{{\\labelitemi}}{{\\textcolor{{accentcolor}}{{\\textbullet}}}}
+
+\\begin{{document}}
+
+"""
+        
+        for i, slide in enumerate(slides):
+            # Extract title and content
+            lines = slide.split('\n')
+            title = None
+            content_lines = []
+            
+            for line in lines:
+                if line.startswith('# '):
+                    title = line[2:].strip()
+                elif line.strip():
+                    content_lines.append(line)
+            
+            # Add slide
+            if title:
+                latex_doc += f"\\slidetitle{{{title}}}\\n\\n"
+            
+            # Process content
+            content = '\\n'.join(content_lines)
+            content = self._convert_markdown_content_to_latex(content)
+            latex_doc += content + "\\n\\n"
+            
+            # Add slide number
+            latex_doc += f"\\vfill\\n\\begin{{flushright}}\\n\\textcolor{{gray}}{{\\small {i+1}/{len(slides)}}}\\n\\end{{flushright}}\\n\\n"
+            
+            # Page break (except for last slide)
+            if i < len(slides) - 1:
+                latex_doc += "\\newpage\\n\\n"
+        
+        latex_doc += "\\end{document}"
+        return latex_doc
+    
+    def _convert_markdown_content_to_latex(self, content: str) -> str:
+        """Convert markdown content to LaTeX"""
+        import re
+        
+        # Handle math (already in LaTeX format, just fix display math)
+        content = re.sub(r'\$\$(.+?)\$\$', r'\\\\[\\1\\\\]', content, flags=re.DOTALL)
+        
+        # Headers
+        content = re.sub(r'^### (.+)$', r'\\textbf{\\Large \\1}\\\\[0.3cm]', content, flags=re.MULTILINE)
+        content = re.sub(r'^## (.+)$', r'\\textbf{\\huge \\1}\\\\[0.5cm]', content, flags=re.MULTILINE)
+        
+        # Bold and italic - fix escaping
+        content = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\\1}', content)
+        content = re.sub(r'\*([^*]+?)\*', r'\\textit{\\1}', content)
+        
+        # Lists
+        content = re.sub(r'^- (.+)$', r'\\item \\1', content, flags=re.MULTILINE)
+        
+        # Wrap lists in itemize environment
+        lines = content.split('\n')
+        in_list = False
+        result_lines = []
+        
+        for line in lines:
+            if line.strip().startswith('\\item'):
+                if not in_list:
+                    result_lines.append('\\begin{itemize}')
+                    in_list = True
+                result_lines.append(line)
+            else:
+                if in_list:
+                    result_lines.append('\\end{itemize}')
+                    in_list = False
+                result_lines.append(line)
+        
+        if in_list:
+            result_lines.append('\\end{itemize}')
+        
+        content = '\n'.join(result_lines)
+        
+        # Code blocks
+        content = re.sub(r'```(\w+)?\n(.+?)\n```', 
+                        r'\\begin{lstlisting}\n\\2\n\\end{lstlisting}', 
+                        content, flags=re.DOTALL)
+        
+        # Inline code
+        content = re.sub(r'`(.+?)`', r'\\texttt{\\1}', content)
+        
+        # Paragraphs
+        content = re.sub(r'\n\n', r'\\\\\n', content)
+        
+        return content
     
     def convert_to_html(self, markdown_file, output_file=None, _test_mode=False):
         """Convert markdown file to HTML presentation"""

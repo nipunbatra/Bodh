@@ -118,8 +118,8 @@ class ComprehensiveGenerator:
             
             # Generate based on mode
             if mode == 'latex_direct' and self.check_dependencies()['latex']:
-                # Use LaTeX directly (need to implement LaTeX backend)
-                success = self._generate_latex_direct(md_file, pdf_output)
+                # Use LaTeX backend through the main bodh.py converter
+                success = converter.convert_to_pdf(str(md_file), str(pdf_output))
                 html_generated = False
             else:
                 # Use standard Playwright approach
@@ -158,116 +158,7 @@ class ComprehensiveGenerator:
                 'file': md_file.name
             }
     
-    def _generate_latex_direct(self, md_file: Path, pdf_output: Path) -> bool:
-        """Generate PDF using direct LaTeX compilation"""
-        # For now, use the simple LaTeX approach from our test
-        # This is a placeholder - would need full LaTeX backend implementation
-        
-        # Read markdown
-        with open(md_file, 'r', encoding='utf-8') as f:
-            md_content = f.read()
-        
-        # Simple conversion to LaTeX (basic implementation)
-        latex_content = self._convert_markdown_to_latex(md_content)
-        
-        # Compile with LaTeX
-        with tempfile.TemporaryDirectory() as temp_dir:
-            temp_path = Path(temp_dir)
-            tex_file = temp_path / "presentation.tex"
-            
-            with open(tex_file, 'w', encoding='utf-8') as f:
-                f.write(latex_content)
-            
-            try:
-                result = subprocess.run([
-                    'pdflatex', 
-                    '-interaction=nonstopmode',
-                    '-output-directory', str(temp_path),
-                    str(tex_file)
-                ], capture_output=True, text=True, timeout=30)
-                
-                if result.returncode == 0:
-                    generated_pdf = temp_path / "presentation.pdf"
-                    if generated_pdf.exists():
-                        shutil.copy2(generated_pdf, pdf_output)
-                        return True
-                
-            except subprocess.TimeoutExpired:
-                pass
-        
-        return False
     
-    def _convert_markdown_to_latex(self, md_content: str) -> str:
-        """Basic markdown to LaTeX conversion"""
-        # This is a simplified version - would need full implementation
-        
-        # Split into slides
-        slides = md_content.split('---')
-        
-        latex_doc = r"""
-\documentclass[11pt]{article}
-\usepackage[landscape,margin=0.5in]{geometry}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{xcolor}
-\usepackage{enumitem}
-
-\pagestyle{empty}
-
-\definecolor{accentcolor}{RGB}{37,99,235}
-
-\newcommand{\slidetitle}[1]{%
-  \begin{center}
-  \textcolor{accentcolor}{\huge\textbf{#1}}
-  \end{center}
-  \vspace{0.5cm}
-}
-
-\begin{document}
-"""
-        
-        for i, slide in enumerate(slides):
-            slide = slide.strip()
-            if not slide:
-                continue
-            
-            # Extract title
-            lines = slide.split('\n')
-            title_line = None
-            content_lines = []
-            
-            for line in lines:
-                if line.startswith('# '):
-                    title_line = line[2:].strip()
-                else:
-                    content_lines.append(line)
-            
-            if title_line:
-                latex_doc += f"\\slidetitle{{{title_line}}}\n\n"
-            
-            # Basic content conversion
-            content = '\n'.join(content_lines)
-            
-            # Convert basic markdown
-            content = content.replace('**', '\\textbf{').replace('**', '}')
-            content = content.replace('*', '\\textit{').replace('*', '}')
-            
-            # Convert lists
-            import re
-            content = re.sub(r'^- (.+)$', r'\\item \1', content, flags=re.MULTILINE)
-            
-            # Wrap lists
-            if '\\item' in content:
-                content = '\\begin{itemize}\n' + content + '\n\\end{itemize}'
-            
-            latex_doc += content + '\n\n'
-            
-            if i < len(slides) - 1:  # Not last slide
-                latex_doc += '\\newpage\n\n'
-        
-        latex_doc += '\\end{document}'
-        return latex_doc
     
     def generate_all_examples(self) -> None:
         """Generate all examples in all available modes"""
@@ -404,31 +295,73 @@ class ComprehensiveGenerator:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bodh - All Generation Modes Comparison</title>
+    <title>Bodh - Multi-Mode Generation Comparison</title>
     <style>
         body { font-family: Inter, sans-serif; margin: 2rem; line-height: 1.6; }
         .container { max-width: 1200px; margin: 0 auto; }
-        .mode-section { margin: 2rem 0; padding: 1.5rem; border: 1px solid #ddd; border-radius: 8px; }
-        .mode-title { color: #2563eb; font-size: 1.5em; margin-bottom: 1rem; }
-        .example-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
-        .example-card { padding: 1rem; border: 1px solid #eee; border-radius: 6px; }
-        .example-title { font-weight: 600; margin-bottom: 0.5rem; }
-        .example-links a { margin-right: 1rem; text-decoration: none; padding: 0.3rem 0.8rem; border-radius: 4px; }
+        .header { text-align: center; margin-bottom: 3rem; }
+        .performance-summary { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .examples-section { margin: 2rem 0; }
+        .example-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; }
+        .example-card { 
+            padding: 1.5rem; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .example-title { 
+            font-weight: 600; 
+            font-size: 1.1em; 
+            margin-bottom: 1rem; 
+            color: #2563eb;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+        .mode-versions { margin-bottom: 1rem; }
+        .mode-version { 
+            margin: 0.5rem 0; 
+            padding: 0.5rem 0; 
+            border-bottom: 1px dotted #e5e7eb;
+        }
+        .mode-version:last-child { border-bottom: none; }
+        .mode-name { 
+            font-weight: 500; 
+            color: #374151; 
+            margin-bottom: 0.3rem;
+        }
+        .version-links { margin-bottom: 0.3rem; }
+        .version-links a { 
+            margin-right: 0.8rem; 
+            text-decoration: none; 
+            padding: 0.3rem 0.6rem; 
+            border-radius: 4px; 
+            font-size: 0.9em;
+        }
         .html-link { background: #e7f3ff; color: #0066cc; }
         .pdf-link { background: #ffe7e7; color: #cc0000; }
-        .performance-badge { font-size: 0.8em; padding: 0.2rem 0.5rem; border-radius: 3px; margin-left: 0.5rem; }
+        .unavailable { color: #999; font-style: italic; }
+        .performance-info { 
+            font-size: 0.85em; 
+            color: #6b7280; 
+        }
+        .performance-badge { 
+            font-size: 0.8em; 
+            padding: 0.2rem 0.4rem; 
+            border-radius: 3px; 
+            margin-left: 0.5rem; 
+        }
         .fast { background: #e7ffe7; color: #006600; }
         .medium { background: #fff3cd; color: #856404; }
         .slow { background: #ffe7e7; color: #cc0000; }
-        .header { text-align: center; margin-bottom: 3rem; }
-        .performance-summary { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .mode-legend { margin: 1rem 0; font-size: 0.9em; color: #6b7280; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 Bodh Presentation Generation</h1>
-            <p>Comprehensive comparison of all generation modes</p>
+            <h1>🚀 Bodh Multi-Mode Generation</h1>
+            <p>Each example generated with all available modes for performance comparison</p>
         </div>
         
         <div class="performance-summary">
@@ -445,6 +378,7 @@ class ComprehensiveGenerator:
                         mode_perf[mode_key] = []
                     mode_perf[mode_key].append(result['duration'])
         
+        # Show performance comparison
         for mode_key, mode_info in self.modes.items():
             if mode_key in mode_perf:
                 avg_time = sum(mode_perf[mode_key]) / len(mode_perf[mode_key])
@@ -455,57 +389,96 @@ class ComprehensiveGenerator:
                 <span class="performance-badge {badge_class}">{len(mode_perf[mode_key])} files</span></p>
                 """
         
+        # Add speedup analysis
+        if 'latex_direct' in mode_perf and 'html_mathjax' in mode_perf:
+            latex_avg = sum(mode_perf['latex_direct']) / len(mode_perf['latex_direct'])
+            mathjax_avg = sum(mode_perf['html_mathjax']) / len(mode_perf['html_mathjax'])
+            speedup = mathjax_avg / latex_avg
+            index_content += f"""
+            <p><strong>⚡ LaTeX is {speedup:.1f}x faster than MathJax CDN</strong></p>
+            """
+        
         index_content += """
             </div>
+            <div class="mode-legend">
+                🟢 Fast (&lt;2s) | 🟡 Medium (2-5s) | 🔴 Slow (&gt;5s)
+            </div>
         </div>
-"""
         
-        # Add sections for each mode
-        for mode_key, mode_info in self.modes.items():
-            index_content += f"""
-        <div class="mode-section">
-            <h2 class="mode-title">{mode_info['name']}</h2>
-            <p>{mode_info['description']}</p>
+        <div class="examples-section">
+            <h2>📄 Examples with All Modes</h2>
             <div class="example-grid">
 """
+        
+        # Generate example cards - one per example with all modes
+        all_files = set()
+        for filename in self.results.keys():
+            all_files.add(filename)
+        
+        for filename in sorted(all_files):
+            stem = Path(filename).stem
+            file_results = self.results.get(filename, {})
             
-            for filename, file_results in self.results.items():
-                if mode_key in file_results and file_results[mode_key]['success']:
-                    result = file_results[mode_key]
-                    stem = Path(filename).stem
-                    
-                    perf_class = 'fast' if result['duration'] < 2 else 'medium' if result['duration'] < 5 else 'slow'
-                    
-                    index_content += f"""
+            index_content += f"""
                 <div class="example-card">
                     <div class="example-title">{stem}</div>
-                    <div class="example-links">
+                    <div class="mode-versions">
 """
-                    
-                    if result.get('html_generated'):
-                        index_content += f'<a href="{mode_key}/{stem}.html" class="html-link">HTML</a>'
-                    
-                    if result.get('pdf_generated'):
-                        index_content += f'<a href="{mode_key}/{stem}.pdf" class="pdf-link">PDF</a>'
+            
+            # Show each mode for this example
+            for mode_key, mode_info in self.modes.items():
+                if mode_key in file_results:
+                    result = file_results[mode_key]
                     
                     index_content += f"""
-                    </div>
-                    <div>Generated in {result['duration']:.2f}s 
-                    <span class="performance-badge {perf_class}">
-                        {result['pdf_size']} bytes
-                    </span>
-                    </div>
-                </div>
+                        <div class="mode-version">
+                            <div class="mode-name">{mode_info['name']}</div>
+                            <div class="version-links">
+"""
+                    
+                    if result['success']:
+                        if result.get('html_generated'):
+                            index_content += f'<a href="{mode_key}/{stem}.html" class="html-link">HTML</a>'
+                        
+                        if result.get('pdf_generated'):
+                            index_content += f'<a href="{mode_key}/{stem}.pdf" class="pdf-link">PDF</a>'
+                        
+                        perf_class = 'fast' if result['duration'] < 2 else 'medium' if result['duration'] < 5 else 'slow'
+                        
+                        index_content += f"""
+                            </div>
+                            <div class="performance-info">
+                                Generated in {result['duration']:.2f}s
+                                <span class="performance-badge {perf_class}">
+                                    {result['pdf_size']:,} bytes
+                                </span>
+                            </div>
+"""
+                    else:
+                        index_content += """
+                                <span class="unavailable">Failed to generate</span>
+                            </div>
+                            <div class="performance-info">
+                                <span class="unavailable">Generation failed</span>
+                            </div>
+"""
+                    
+                    index_content += """
+                        </div>
 """
             
             index_content += """
-            </div>
-        </div>
+                    </div>
+                </div>
 """
         
         index_content += """
+            </div>
+        </div>
+        
         <div style="margin-top: 3rem; text-align: center; color: #666;">
             <p>Generated with Bodh - Beautiful Markdown Presentations</p>
+            <p><small>Each example shows all available generation modes for direct comparison</small></p>
         </div>
     </div>
 </body>
