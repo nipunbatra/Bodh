@@ -895,9 +895,14 @@ class MarkdownToPDF:
     
     def _convert_to_pdf_latex(self, markdown_file, output_file=None):
         """Convert markdown to PDF using LaTeX backend"""
-        # Read markdown content
-        with open(markdown_file, 'r', encoding='utf-8') as f:
-            md_content = f.read()
+        # Read markdown content with error handling
+        try:
+            with open(markdown_file, 'r', encoding='utf-8') as f:
+                md_content = f.read()
+        except UnicodeDecodeError:
+            # Fallback to reading with error handling
+            with open(markdown_file, 'r', encoding='utf-8', errors='replace') as f:
+                md_content = f.read()
         
         # Convert markdown to LaTeX
         latex_content = self._markdown_to_latex(md_content)
@@ -907,9 +912,23 @@ class MarkdownToPDF:
             temp_path = Path(temp_dir)
             tex_file = temp_path / "presentation.tex"
             
-            # Write LaTeX file
-            with open(tex_file, 'w', encoding='utf-8') as f:
-                f.write(latex_content)
+            # Write LaTeX file with error handling
+            try:
+                with open(tex_file, 'w', encoding='utf-8') as f:
+                    f.write(latex_content)
+                # Debug: show part of the generated LaTeX
+                print("DEBUG: Generated LaTeX content (chars 1000-1500):")
+                print(repr(latex_content[1000:1500]))
+                print("DEBUG: Table content search:")
+                if "Quarter" in latex_content:
+                    start = latex_content.find("Quarter")
+                    print(repr(latex_content[start-50:start+200]))
+            except UnicodeEncodeError:
+                # Fallback with error handling
+                with open(tex_file, 'w', encoding='utf-8', errors='replace') as f:
+                    f.write(latex_content)
+                print("DEBUG: Generated LaTeX content (first 500 chars, with fallback):")
+                print(repr(latex_content[:500]))
             
             try:
                 # Run pdflatex
@@ -922,7 +941,7 @@ class MarkdownToPDF:
                         '-interaction=nonstopmode',
                         '-output-directory', str(temp_path),
                         str(tex_file)
-                    ], capture_output=True, text=True, timeout=30)
+                    ], capture_output=True, text=True, timeout=30, encoding='utf-8', errors='replace')
                     
                     print(f"LaTeX pass {pass_num + 1} returncode: {result.returncode}")
                     
@@ -958,6 +977,8 @@ class MarkdownToPDF:
                 return False
             except Exception as e:
                 print(f"LaTeX compilation error: {e}")
+                import traceback
+                traceback.print_exc()
                 return False
     
     def _markdown_to_latex(self, md_content: str) -> str:
@@ -983,8 +1004,11 @@ class MarkdownToPDF:
         text_color = hex_to_rgb(colors.get('text', '#000000'))
         accent_color = hex_to_rgb(colors.get('accent', '#2563eb'))
         
-        # Split into slides
-        slides = md_content.split('---')
+        # Split into slides - but only on standalone slide separators, not table separators
+        import re
+        # Split on '---' that are on their own line (slide separators)
+        # but not on '---' inside table rows like |---------|
+        slides = re.split(r'\n---\n', md_content)
         slides = [slide.strip() for slide in slides if slide.strip()]
         
         # Generate LaTeX document
@@ -1067,16 +1091,25 @@ class MarkdownToPDF:
         """Convert markdown content to LaTeX"""
         import re
         
+        # Handle Unicode characters first
+        content = self._handle_unicode_for_latex(content)
+        
         # Handle math (already in LaTeX format, just fix display math)
         content = re.sub(r'\$\$(.+?)\$\$', r'\\\\[\\1\\\\]', content, flags=re.DOTALL)
         
         # Headers
-        content = re.sub(r'^### (.+)$', r'\\textbf{\\Large \\1}\\\\[0.3cm]', content, flags=re.MULTILINE)
-        content = re.sub(r'^## (.+)$', r'\\textbf{\\huge \\1}\\\\[0.5cm]', content, flags=re.MULTILINE)
+        content = re.sub(r'^### (.+)$', r'\\textbf{\\Large \1}\\\\[0.3cm]', content, flags=re.MULTILINE)
+        content = re.sub(r'^## (.+)$', r'\\textbf{\\huge \1}\\\\[0.5cm]', content, flags=re.MULTILINE)
         
         # Bold and italic - fix escaping
-        content = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\\1}', content)
-        content = re.sub(r'\*([^*]+?)\*', r'\\textit{\\1}', content)
+        content = re.sub(r'\*\*(.+?)\*\*', r'\\textbf{\1}', content)
+        content = re.sub(r'\*([^*]+?)\*', r'\\textit{\1}', content)
+        
+        # Tables BEFORE list processing to avoid interference  
+        print(f"DEBUG: Content type: {type(content)}")
+        print(f"DEBUG: Has actual newlines: {'\\n' in content}")
+        print(f"DEBUG: Lines in content: {len(content.split('\\n'))}")
+        content = self._convert_tables_to_latex(content)
         
         # Lists
         content = re.sub(r'^- (.+)$', r'\\item \\1', content, flags=re.MULTILINE)
@@ -1113,6 +1146,145 @@ class MarkdownToPDF:
         
         # Paragraphs
         content = re.sub(r'\n\n', r'\\\\\n', content)
+        
+        return content
+    
+    def _convert_tables_to_latex(self, content: str) -> str:
+        """Convert markdown tables to LaTeX tables"""
+        import re
+        
+        lines = content.split('\n')
+        result_lines = []
+        i = 0
+        
+        print(f"DEBUG: Table function got {len(lines)} lines")
+        for j, line in enumerate(lines):
+            print(f"DEBUG: Line {j}: {repr(line)}")
+        
+        while i < len(lines):
+            line = lines[i].strip()
+            
+            # Check if this line looks like a table header (contains |)
+            if '|' in line and line.strip():
+                print(f"DEBUG: Found potential table header at line {i}: {repr(line)}")
+                # Look ahead to see if next line is separator
+                if i + 1 < len(lines) and '---' in lines[i + 1] and '|' in lines[i + 1]:
+                    print(f"DEBUG: Found table separator at line {i+1}: {repr(lines[i + 1])}")
+                    # This is a table
+                    table_lines = [line]
+                    i += 1  # Skip separator line
+                    i += 1  # Move to first data row
+                    
+                    # Collect all table data rows
+                    while i < len(lines) and '|' in lines[i]:
+                        table_lines.append(lines[i].strip())
+                        i += 1
+                    
+                    # Convert table to LaTeX
+                    latex_table = self._markdown_table_to_latex(table_lines)
+                    result_lines.append(latex_table)
+                    continue
+            
+            result_lines.append(lines[i])
+            i += 1
+        
+        return '\n'.join(result_lines)
+    
+    def _markdown_table_to_latex(self, table_lines):
+        """Convert a markdown table to LaTeX table"""
+        if not table_lines:
+            return ""
+        
+        # Parse the first row to get column count
+        header_row = table_lines[0]
+        columns = [col.strip() for col in header_row.split('|') if col.strip()]
+        col_count = len(columns)
+        
+        # Create LaTeX table
+        latex = "\\begin{center}\n"
+        latex += "\\begin{tabular}{" + "l" * col_count + "}\n"
+        latex += "\\hline\n"
+        
+        # Add header row
+        header_cells = []
+        for col in columns:
+            # Remove markdown formatting from headers
+            col = col.replace('**', '').replace('*', '')
+            header_cells.append(f"\\textbf{{{col}}}")
+        latex += " & ".join(header_cells) + " \\\\\n"
+        latex += "\\hline\n"
+        
+        # Add data rows
+        for row_line in table_lines[1:]:
+            cells = [cell.strip() for cell in row_line.split('|') if cell.strip()]
+            if len(cells) == col_count:
+                # Clean cells of markdown formatting
+                clean_cells = []
+                for cell in cells:
+                    cell = cell.replace('**', '').replace('*', '')
+                    clean_cells.append(cell)
+                latex += " & ".join(clean_cells) + " \\\\\n"
+        
+        latex += "\\hline\n"
+        latex += "\\end{tabular}\n"
+        latex += "\\end{center}\n"
+        
+        return latex
+    
+    def _handle_unicode_for_latex(self, content: str) -> str:
+        """Handle Unicode characters for LaTeX compatibility"""
+        # Common emoji replacements
+        emoji_replacements = {
+            '🚀': '\\textbf{[Rocket]}',
+            '🎨': '\\textbf{[Art]}',
+            '📝': '\\textbf{[Note]}',
+            '🌟': '\\textbf{[Star]}',
+            '⚡': '\\textbf{[Lightning]}',
+            '🔧': '\\textbf{[Tool]}',
+            '📊': '\\textbf{[Chart]}',
+            '💾': '\\textbf{[Save]}',
+            '🔍': '\\textbf{[Search]}',
+            '📄': '\\textbf{[Document]}',
+            '✅': '\\checkmark',
+            '❌': '\\times',
+            '🟢': '\\textcolor{green}{\\bullet}',
+            '🟡': '\\textcolor{yellow}{\\bullet}',
+            '🔴': '\\textcolor{red}{\\bullet}',
+            '💻': '\\textbf{[Computer]}',
+            '🌐': '\\textbf{[Web]}',
+            '📱': '\\textbf{[Mobile]}',
+            '🎯': '\\textbf{[Target]}',
+            '🏆': '\\textbf{[Trophy]}',
+            '📈': '\\textbf{[Growth]}',
+            '🎉': '\\textbf{[Celebration]}',
+        }
+        
+        # Replace emojis
+        for emoji, replacement in emoji_replacements.items():
+            content = content.replace(emoji, replacement)
+        
+        # Handle Hindi text (बोध) and other special characters
+        content = content.replace('बोध', 'Bodh')
+        
+        # Handle other problematic Unicode characters
+        # Replace smart quotes
+        content = content.replace('"', '"')
+        content = content.replace('"', '"')
+        content = content.replace(''', "'")
+        content = content.replace(''', "'")
+        
+        # Handle em dashes and en dashes
+        content = content.replace('—', '---')
+        content = content.replace('–', '--')
+        
+        # Remove or replace other problematic Unicode characters
+        # This is a fallback for any remaining Unicode issues
+        try:
+            content.encode('ascii')
+        except UnicodeEncodeError:
+            # If there are still Unicode characters, replace them with safe equivalents
+            import unicodedata
+            content = unicodedata.normalize('NFKD', content).encode('ascii', 'ignore').decode('ascii')
         
         return content
     

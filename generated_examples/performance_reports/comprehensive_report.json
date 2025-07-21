@@ -4,28 +4,38 @@
       "name": "HTML + MathJax CDN",
       "description": "Standard web-based generation with MathJax from CDN",
       "successful": 7,
-      "avg_duration": 9.776962620871407,
-      "min_duration": 9.582982063293457,
-      "max_duration": 10.429201126098633,
+      "avg_duration": 9.72206085068839,
+      "min_duration": 9.57137680053711,
+      "max_duration": 10.156568050384521,
       "avg_pdf_size": 177364.42857142858,
-      "total_duration": 68.43873834609985
+      "total_duration": 68.05442595481873
     },
     "local_mathjax": {
       "name": "HTML + Local MathJax",
       "description": "Fast local rendering without network dependency",
       "successful": 7,
-      "avg_duration": 2.0679660865238736,
-      "min_duration": 2.034097194671631,
-      "max_duration": 2.124962091445923,
+      "avg_duration": 2.0641487325940813,
+      "min_duration": 2.035933017730713,
+      "max_duration": 2.126667022705078,
       "avg_pdf_size": 171422.42857142858,
-      "total_duration": 14.475762605667114
+      "total_duration": 14.44904112815857
+    },
+    "latex_direct": {
+      "name": "LaTeX Direct",
+      "description": "Native LaTeX compilation (fastest and highest quality)",
+      "successful": 4,
+      "avg_duration": 0.4954466223716736,
+      "min_duration": 0.47937631607055664,
+      "max_duration": 0.5153770446777344,
+      "avg_pdf_size": 64432.0,
+      "total_duration": 1.9817864894866943
     }
   },
   "detailed_results": {
     "multi-column-demo.md": {
       "html_mathjax": {
         "success": true,
-        "duration": 10.429201126098633,
+        "duration": 10.156568050384521,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2195382,
@@ -35,7 +45,7 @@
       },
       "local_mathjax": {
         "success": true,
-        "duration": 2.0817410945892334,
+        "duration": 2.035933017730713,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2199014,
@@ -44,12 +54,12 @@
         "file": "multi-column-demo.md"
       },
       "latex_direct": {
-        "success": false,
-        "duration": 0.21233892440795898,
+        "success": true,
+        "duration": 0.4884910583496094,
         "html_generated": false,
-        "pdf_generated": false,
+        "pdf_generated": true,
         "html_size": 0,
-        "pdf_size": 0,
+        "pdf_size": 45758,
         "mode": "latex_direct",
         "file": "multi-column-demo.md"
       }
@@ -57,7 +67,7 @@
     "showcase.md": {
       "html_mathjax": {
         "success": true,
-        "duration": 9.602240085601807,
+        "duration": 9.574093103408813,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2197345,
@@ -67,7 +77,7 @@
       },
       "local_mathjax": {
         "success": true,
-        "duration": 2.0516791343688965,
+        "duration": 2.060025930404663,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2200977,
@@ -77,7 +87,7 @@
       },
       "latex_direct": {
         "success": false,
-        "duration": 0.174713134765625,
+        "duration": 0.25548791885375977,
         "html_generated": false,
         "pdf_generated": false,
         "html_size": 0,
@@ -89,7 +99,7 @@
     "comprehensive.md": {
       "html_mathjax": {
         "success": true,
-        "duration": 10.033447027206421,
+        "duration": 9.991436004638672,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2205697,
@@ -99,7 +109,7 @@
       },
       "local_mathjax": {
         "success": true,
-        "duration": 2.124962091445923,
+        "duration": 2.126667022705078,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2209329,
@@ -109,7 +119,7 @@
       },
       "latex_direct": {
         "success": false,
-        "duration": 0.16928577423095703,
+        "duration": 0.25278615951538086,
         "html_generated": false,
         "pdf_generated": false,
         "html_size": 0,
@@ -121,7 +131,7 @@
     "advanced-features.md": {
       "html_mathjax": {
         "success": true,
-        "duration": 9.586313009262085,
+        "duration": 9.57370924949646,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2197365,
@@ -131,7 +141,7 @@
       },
       "local_mathjax": {
         "success": true,
-        "duration": 2.062822103500366,
+        "duration": 2.0619070529937744,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2200997,
@@ -140,12 +150,12 @@
         "file": "advanced-features.md"
       },
       "latex_direct": {
-        "success": false,
-        "duration": 0.1716921329498291,
+        "success": true,
+        "duration": 0.49854207038879395,
         "html_generated": false,
-        "pdf_generated": false,
+        "pdf_generated": true,
         "html_size": 0,
-        "pdf_size": 0,
+        "pdf_size": 60315,
         "mode": "latex_direct",
         "file": "advanced-features.md"
       }
@@ -153,7 +163,7 @@
     "overlay-demo.md": {
       "html_mathjax": {
         "success": true,
-        "duration": 9.596748113632202,
+        "duration": 9.604061841964722,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2195809,
@@ -163,7 +173,7 @@
       },
       "local_mathjax": {
         "success": true,
-        "duration": 2.034097194671631,
+        "duration": 2.0525050163269043,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2199441,
@@ -172,9 +182,12 @@
         "file": "overlay-demo.md"
       },
       "latex_direct": {
-        "success": false,
-        "duration": 0.2004849910736084,
-        "error": "'utf-8' codec can't decode byte 0xe2 in position 3026: invalid continuation byte",
+        "success": true,
+        "duration": 0.47937631607055664,
+        "html_generated": false,
+        "pdf_generated": true,
+        "html_size": 0,
+        "pdf_size": 46323,
         "mode": "latex_direct",
         "file": "overlay-demo.md"
       }
@@ -182,7 +195,7 @@
     "feature-showcase.md": {
       "html_mathjax": {
         "success": true,
-        "duration": 9.607806921005249,
+        "duration": 9.583180904388428,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2199901,
@@ -192,7 +205,7 @@
       },
       "local_mathjax": {
         "success": true,
-        "duration": 2.072035074234009,
+        "duration": 2.0607762336730957,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2203533,
@@ -202,7 +215,7 @@
       },
       "latex_direct": {
         "success": false,
-        "duration": 0.18305587768554688,
+        "duration": 0.26152801513671875,
         "html_generated": false,
         "pdf_generated": false,
         "html_size": 0,
@@ -214,7 +227,7 @@
     "math-demo.md": {
       "html_mathjax": {
         "success": true,
-        "duration": 9.582982063293457,
+        "duration": 9.57137680053711,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2196730,
@@ -224,7 +237,7 @@
       },
       "local_mathjax": {
         "success": true,
-        "duration": 2.0484259128570557,
+        "duration": 2.051226854324341,
         "html_generated": true,
         "pdf_generated": true,
         "html_size": 2200362,
@@ -233,16 +246,16 @@
         "file": "math-demo.md"
       },
       "latex_direct": {
-        "success": false,
-        "duration": 0.1774430274963379,
+        "success": true,
+        "duration": 0.5153770446777344,
         "html_generated": false,
-        "pdf_generated": false,
+        "pdf_generated": true,
         "html_size": 0,
-        "pdf_size": 0,
+        "pdf_size": 105332,
         "mode": "latex_direct",
         "file": "math-demo.md"
       }
     }
   },
-  "generation_timestamp": 1753059124.543875
+  "generation_timestamp": 1753061689.105976
 }
