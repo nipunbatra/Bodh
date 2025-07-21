@@ -15,8 +15,8 @@ website:
         href: examples.qmd
       - text: "Documentation"
         href: docs.qmd
-      - text: "Themes"
-        href: themes.qmd
+      - text: "Configurations"
+        href: configurations.qmd
     right:
       - icon: github
         href: https://github.com/nipunbatra/Bodh
@@ -28,14 +28,13 @@ website:
     - title: "Examples"
       contents:
         - examples.qmd
-        - themes.qmd
         - configurations.qmd
     - title: "Documentation"
       contents:
         - docs.qmd
         - api.qmd
   page-footer:
-    center: "Made with ❤️ using [Quarto](https://quarto.org) | Bodh (बोध) means knowledge in Hindi"
+    center: "Made with [Quarto](https://quarto.org) | Bodh (बोध) means knowledge in Hindi"
 
 format:
   html:

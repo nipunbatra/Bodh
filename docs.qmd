@@ -3,7 +3,7 @@ title: "Documentation"
 subtitle: "Complete guide to using Bodh"
 ---
 
-## 📖 User Guide
+## User Guide
 
 ### Basic Usage
 
@@ -71,9 +71,7 @@ overlays:
   transition: "fade"
 ```
 
-## 🎨 Themes
-
-### Available Themes
+## Available Themes
 
 | Theme | Description | Best For |
 |-------|-------------|----------|
@@ -91,7 +89,7 @@ overlays:
 
 Create your own theme by copying an existing theme file from `themes/` directory and modifying the colors, fonts, and layout settings.
 
-## 🔧 Advanced Features
+## Advanced Features
 
 ### Multi-Column Layouts
 
@@ -167,7 +165,7 @@ style:
     color: "accent"
 ```
 
-## 🖼️ Images and Media
+## Images and Media
 
 ### Image Syntax
 
@@ -193,7 +191,7 @@ style:
 - **Logos**: Any image format, automatically optimized
 - **Code**: Syntax highlighting for 100+ languages
 
-## 📱 Web Interface
+## Web Interface
 
 Start the web interface for live editing:
 
@@ -207,7 +205,7 @@ Features:
 - **Configuration editor** - Modify settings visually
 - **Download options** - Generate HTML or PDF
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -232,13 +230,13 @@ Features:
 - **Many images**: Optimize image sizes before embedding
 - **Complex layouts**: Test with simple content first
 
-## 🆘 Getting Help
+## Getting Help
 
-- 📚 Browse [Examples](examples.qmd) for inspiration
-- 🎨 Try different [Themes](themes.qmd)
-- 🐛 Report bugs on [GitHub](https://github.com/nipunbatra/Bodh/issues)
-- 💬 Ask questions in GitHub Discussions
+- Browse [Examples](examples.qmd) for inspiration
+- See theme variations in our [Examples](examples.qmd)
+- Report bugs on [GitHub](https://github.com/nipunbatra/Bodh/issues)
+- Ask questions in GitHub Discussions
 
 ---
 
-*Happy presenting! 🎉*
+*Happy presenting!*
