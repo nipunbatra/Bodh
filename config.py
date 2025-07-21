@@ -93,6 +93,12 @@ class PresentationConfig:
                 'inline_delimiters': [['$', '$'], ['\\(', '\\)']],
                 'display_delimiters': [['$$', '$$'], ['\\[', '\\]']],
                 'local_path': 'static/mathjax/mathjax-local.js'
+            },
+            'pdf': {
+                'engine': 'playwright',  # playwright, latex
+                'latex_engine': 'pdflatex',  # pdflatex, xelatex, lualatex
+                'latex_passes': 2,  # number of LaTeX compilation passes
+                'prefer_latex_for_math': True  # use LaTeX when math is detected
             }
         }
     

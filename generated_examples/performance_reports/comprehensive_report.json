@@ -1,0 +1,248 @@
+{
+  "mode_stats": {
+    "html_mathjax": {
+      "name": "HTML + MathJax CDN",
+      "description": "Standard web-based generation with MathJax from CDN",
+      "successful": 7,
+      "avg_duration": 9.776962620871407,
+      "min_duration": 9.582982063293457,
+      "max_duration": 10.429201126098633,
+      "avg_pdf_size": 177364.42857142858,
+      "total_duration": 68.43873834609985
+    },
+    "local_mathjax": {
+      "name": "HTML + Local MathJax",
+      "description": "Fast local rendering without network dependency",
+      "successful": 7,
+      "avg_duration": 2.0679660865238736,
+      "min_duration": 2.034097194671631,
+      "max_duration": 2.124962091445923,
+      "avg_pdf_size": 171422.42857142858,
+      "total_duration": 14.475762605667114
+    }
+  },
+  "detailed_results": {
+    "multi-column-demo.md": {
+      "html_mathjax": {
+        "success": true,
+        "duration": 10.429201126098633,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2195382,
+        "pdf_size": 122965,
+        "mode": "html_mathjax",
+        "file": "multi-column-demo.md"
+      },
+      "local_mathjax": {
+        "success": true,
+        "duration": 2.0817410945892334,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2199014,
+        "pdf_size": 123283,
+        "mode": "local_mathjax",
+        "file": "multi-column-demo.md"
+      },
+      "latex_direct": {
+        "success": false,
+        "duration": 0.21233892440795898,
+        "html_generated": false,
+        "pdf_generated": false,
+        "html_size": 0,
+        "pdf_size": 0,
+        "mode": "latex_direct",
+        "file": "multi-column-demo.md"
+      }
+    },
+    "showcase.md": {
+      "html_mathjax": {
+        "success": true,
+        "duration": 9.602240085601807,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2197345,
+        "pdf_size": 213247,
+        "mode": "html_mathjax",
+        "file": "showcase.md"
+      },
+      "local_mathjax": {
+        "success": true,
+        "duration": 2.0516791343688965,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2200977,
+        "pdf_size": 212226,
+        "mode": "local_mathjax",
+        "file": "showcase.md"
+      },
+      "latex_direct": {
+        "success": false,
+        "duration": 0.174713134765625,
+        "html_generated": false,
+        "pdf_generated": false,
+        "html_size": 0,
+        "pdf_size": 0,
+        "mode": "latex_direct",
+        "file": "showcase.md"
+      }
+    },
+    "comprehensive.md": {
+      "html_mathjax": {
+        "success": true,
+        "duration": 10.033447027206421,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2205697,
+        "pdf_size": 304420,
+        "mode": "html_mathjax",
+        "file": "comprehensive.md"
+      },
+      "local_mathjax": {
+        "success": true,
+        "duration": 2.124962091445923,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2209329,
+        "pdf_size": 282562,
+        "mode": "local_mathjax",
+        "file": "comprehensive.md"
+      },
+      "latex_direct": {
+        "success": false,
+        "duration": 0.16928577423095703,
+        "html_generated": false,
+        "pdf_generated": false,
+        "html_size": 0,
+        "pdf_size": 0,
+        "mode": "latex_direct",
+        "file": "comprehensive.md"
+      }
+    },
+    "advanced-features.md": {
+      "html_mathjax": {
+        "success": true,
+        "duration": 9.586313009262085,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2197365,
+        "pdf_size": 144023,
+        "mode": "html_mathjax",
+        "file": "advanced-features.md"
+      },
+      "local_mathjax": {
+        "success": true,
+        "duration": 2.062822103500366,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2200997,
+        "pdf_size": 144023,
+        "mode": "local_mathjax",
+        "file": "advanced-features.md"
+      },
+      "latex_direct": {
+        "success": false,
+        "duration": 0.1716921329498291,
+        "html_generated": false,
+        "pdf_generated": false,
+        "html_size": 0,
+        "pdf_size": 0,
+        "mode": "latex_direct",
+        "file": "advanced-features.md"
+      }
+    },
+    "overlay-demo.md": {
+      "html_mathjax": {
+        "success": true,
+        "duration": 9.596748113632202,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2195809,
+        "pdf_size": 122913,
+        "mode": "html_mathjax",
+        "file": "overlay-demo.md"
+      },
+      "local_mathjax": {
+        "success": true,
+        "duration": 2.034097194671631,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2199441,
+        "pdf_size": 122913,
+        "mode": "local_mathjax",
+        "file": "overlay-demo.md"
+      },
+      "latex_direct": {
+        "success": false,
+        "duration": 0.2004849910736084,
+        "error": "'utf-8' codec can't decode byte 0xe2 in position 3026: invalid continuation byte",
+        "mode": "latex_direct",
+        "file": "overlay-demo.md"
+      }
+    },
+    "feature-showcase.md": {
+      "html_mathjax": {
+        "success": true,
+        "duration": 9.607806921005249,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2199901,
+        "pdf_size": 211549,
+        "mode": "html_mathjax",
+        "file": "feature-showcase.md"
+      },
+      "local_mathjax": {
+        "success": true,
+        "duration": 2.072035074234009,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2203533,
+        "pdf_size": 211549,
+        "mode": "local_mathjax",
+        "file": "feature-showcase.md"
+      },
+      "latex_direct": {
+        "success": false,
+        "duration": 0.18305587768554688,
+        "html_generated": false,
+        "pdf_generated": false,
+        "html_size": 0,
+        "pdf_size": 0,
+        "mode": "latex_direct",
+        "file": "feature-showcase.md"
+      }
+    },
+    "math-demo.md": {
+      "html_mathjax": {
+        "success": true,
+        "duration": 9.582982063293457,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2196730,
+        "pdf_size": 122434,
+        "mode": "html_mathjax",
+        "file": "math-demo.md"
+      },
+      "local_mathjax": {
+        "success": true,
+        "duration": 2.0484259128570557,
+        "html_generated": true,
+        "pdf_generated": true,
+        "html_size": 2200362,
+        "pdf_size": 103401,
+        "mode": "local_mathjax",
+        "file": "math-demo.md"
+      },
+      "latex_direct": {
+        "success": false,
+        "duration": 0.1774430274963379,
+        "html_generated": false,
+        "pdf_generated": false,
+        "html_size": 0,
+        "pdf_size": 0,
+        "mode": "latex_direct",
+        "file": "math-demo.md"
+      }
+    }
+  },
+  "generation_timestamp": 1753059124.543875
+}
