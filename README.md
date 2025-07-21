@@ -4,23 +4,24 @@
 
 Transform your markdown into stunning professional presentations with multiple backends and comprehensive feature support.
 
-## 🎯 **[Ultimate Showcase](./ultimate-showcase.html)**
+## 🎯 **One Example, Multiple Renderers**
 
-**One comprehensive example demonstrating ALL features:**
+**Single comprehensive gradient descent tutorial demonstrating ALL features:**
 
-- **Machine Learning Content**: Gradient descent, neural networks, optimization algorithms
+- **Machine Learning Content**: Gradient descent theory, neural networks, optimization algorithms
 - **Advanced Layouts**: Multi-column designs, mathematical equations, code syntax highlighting  
-- **Professional Design**: Tables, typography, branding, navigation
-- **Testing & Quality**: Unit tests, benchmarks, CI/CD examples
-- **Multiple Backends**: Playwright (full-featured) and LaTeX (fast) generation
+- **Professional Design**: Tables, performance benchmarks, typography, branding
+- **Testing & Quality**: Unit tests, CI/CD examples, validation frameworks
 
-| Backend | Example | Features |
-|---------|---------|----------|
-| **Playwright** | [Ultimate Showcase PDF](./ultimate-showcase-playwright.pdf) | Full-featured, interactive, reliable |
-| **LaTeX Direct** | [LaTeX Version](./ultimate-showcase-latex.pdf) | Fast compilation, mathematical typesetting |
-| **HTML Preview** | [Interactive HTML](./ultimate-showcase.html) | Live preview, responsive design |
+**Same content, different rendering engines:**
 
-*This single example replaces multiple scattered examples and demonstrates production-ready capabilities*
+| Renderer | HTML Preview | PDF Download | Features |
+|----------|-------------|--------------|----------|
+| **Playwright + MathJax CDN** | [View HTML](https://nipunbatra.github.io/Bodh/examples/gradient-descent-mathjax-cdn.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-mathjax-cdn.pdf) | Full-featured, CDN-based math |
+| **Playwright + Local MathJax** | [View HTML](https://nipunbatra.github.io/Bodh/examples/gradient-descent-local-mathjax.html) | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-local-mathjax.pdf) | Fast offline rendering |
+| **LaTeX Direct** | - | [Download PDF](https://nipunbatra.github.io/Bodh/pdfs/gradient-descent-latex.pdf) | Native LaTeX, fastest compilation |
+
+*Clean approach: One comprehensive example showcasing the power of different rendering backends*
 
 ## ✨ Features
 

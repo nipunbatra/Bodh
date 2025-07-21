@@ -161,66 +161,77 @@ jobs:
         # pdflatex --version || echo "LaTeX not found in PATH"
         # which pdflatex || echo "pdflatex not in PATH"
         
-        # Generate examples (will skip LaTeX Direct mode without LaTeX)
-        python generate_all_modes.py
-        echo "Multi-mode example generation completed!"
-        
-        # Generate themed showcase files for backward compatibility
-        echo "Generating themed showcase files for website compatibility..."
-        python generate_examples.py
-        echo "Themed showcase generation completed!"
-        
-        # Generate the ultimate showcase in root directory for easy access
-        echo "Generating ultimate showcase for website..."
+        # Generate ONLY the comprehensive gradient descent example with different renderers
+        echo "Generating gradient descent example with multiple renderers..."
         python -c "
         from config import load_config
         from bodh import MarkdownToPDF
         import os
+        import time
         
-        # Generate ultimate showcase with Playwright backend
-        config = load_config('configs/ultimate-showcase.yml')
-        config.config['pdf']['engine'] = 'playwright'  # Force Playwright for CI
+        # Single example file - the comprehensive gradient descent
+        example_file = 'examples/gradient-descent-complete.md'
+        config_file = 'configs/gradient-descent-complete.yml'
+        
+        # Create output directories
+        os.makedirs('examples', exist_ok=True)
+        os.makedirs('pdfs', exist_ok=True)
+        
+        print('🎯 Generating Gradient Descent - Same Content, Different Renderers')
+        
+        # 1. Playwright + MathJax CDN
+        print('📄 Renderer 1: Playwright + MathJax CDN...')
+        config = load_config(config_file)
+        config.config['pdf']['engine'] = 'playwright'
         converter = MarkdownToPDF(config=config)
+        os.environ['BODH_MATHJAX_MODE'] = 'cdn'
         
-        # Use local MathJax for reliability in CI
+        start = time.time()
+        html_output = converter.convert_to_html(example_file, 'examples/gradient-descent-mathjax-cdn.html')
+        pdf_output = converter.convert_to_pdf(example_file, 'pdfs/gradient-descent-mathjax-cdn.pdf')
+        cdn_time = time.time() - start
+        print(f'   ✅ Generated: {html_output}, {pdf_output} ({cdn_time:.2f}s)')
+        
+        # 2. Playwright + Local MathJax  
+        print('📄 Renderer 2: Playwright + Local MathJax...')
         os.environ['BODH_MATHJAX_MODE'] = 'local'
         
+        start = time.time()
+        html_output = converter.convert_to_html(example_file, 'examples/gradient-descent-local-mathjax.html')
+        pdf_output = converter.convert_to_pdf(example_file, 'pdfs/gradient-descent-local-mathjax.pdf')
+        local_time = time.time() - start
+        print(f'   ✅ Generated: {html_output}, {pdf_output} ({local_time:.2f}s)')
+        
+        # 3. LaTeX Direct (will skip if LaTeX not available)
+        print('📄 Renderer 3: LaTeX Direct...')
+        config.config['pdf']['engine'] = 'latex'
+        converter_latex = MarkdownToPDF(config=config)
+        
         try:
-            # Generate HTML and PDF versions
-            html_output = converter.convert_to_html('examples/ultimate-showcase.md', 'ultimate-showcase.html')
-            pdf_output = converter.convert_to_pdf('examples/ultimate-showcase.md', 'ultimate-showcase-playwright.pdf')
-            print(f'✅ Generated ultimate showcase: {html_output}, {pdf_output}')
+            start = time.time()
+            pdf_output = converter_latex.convert_to_pdf(example_file, 'pdfs/gradient-descent-latex.pdf')
+            latex_time = time.time() - start
+            print(f'   ✅ Generated: {pdf_output} ({latex_time:.2f}s)')
+            print(f'   ⚡ Performance: LaTeX {local_time/latex_time:.1f}x faster than Local MathJax')
         except Exception as e:
-            print(f'❌ Ultimate showcase generation failed: {e}')
+            print(f'   ⚠️  LaTeX Direct skipped: {e}')
+        
+        print('\\n🎉 Single example, multiple renderers complete!')
         "
-        echo "Ultimate showcase generation completed!"
+        echo "Gradient descent generation completed!"
 
     - name: Post-generation detailed check
       run: |
-        echo "Checking results after generation..."
-        echo "Generated examples directory structure:"
-        find generated_examples/ -type f -exec ls -la {} \; 2>/dev/null || echo "No generated_examples directory or files"
+        echo "Checking gradient descent generation results..."
+        echo "HTML examples (same content, different renderers):"
+        ls -la examples/gradient-descent-* 2>/dev/null || echo "No HTML files generated"
         echo ""
-        echo "Index.html content preview:"
-        head -20 generated_examples/index.html 2>/dev/null || echo "No index.html found"
+        echo "PDF examples (same content, different renderers):"
+        ls -la pdfs/gradient-descent-* 2>/dev/null || echo "No PDF files generated"
         echo ""
-        echo "HTML + MathJax CDN examples:"
-        ls -la generated_examples/html_mathjax/ 2>/dev/null || echo "No html_mathjax directory"
-        echo ""
-        echo "Local MathJax examples:"
-        ls -la generated_examples/local_mathjax/ 2>/dev/null || echo "No local_mathjax directory"
-        echo ""
-        echo "LaTeX Direct examples:"
-        ls -la generated_examples/latex_direct/ 2>/dev/null || echo "No latex_direct directory"
-        echo ""
-        echo "Performance reports:"
-        ls -la generated_examples/performance_reports/ 2>/dev/null || echo "No performance_reports directory"
-        echo ""
-        echo "File sizes:"
-        du -h generated_examples/* 2>/dev/null || echo "No generated_examples files to measure"
-        echo ""
-        echo "Total files generated:"
-        find generated_examples/ -type f | wc -l 2>/dev/null || echo "0"
+        echo "File sizes comparison:"
+        du -h examples/gradient-descent-* 2>/dev/null || echo "No HTML files to measure"
+        du -h pdfs/gradient-descent-* 2>/dev/null || echo "No PDF files to measure"
 
     - name: Build Quarto site
       run: |
@@ -228,64 +239,27 @@ jobs:
         quarto render
         echo "Quarto site built successfully!"
         
-    - name: Copy examples to Quarto output
+    - name: Copy gradient descent examples to Quarto output
       run: |
-        echo "Copying generated examples to Quarto site..."
+        echo "Copying gradient descent examples to Quarto site..."
         
-        # Create directory structure for website
+        # Create clean directory structure for website
         mkdir -p _site/examples _site/pdfs
         
-        # Copy HTML files to examples directory
-        if [ -d "generated_examples/html_mathjax" ]; then
-          cp generated_examples/html_mathjax/*.html _site/examples/ 2>/dev/null || echo "No HTML files from generated_examples"
+        # Copy ONLY the gradient descent examples (clean approach)
+        if [ -d "examples" ]; then
+          cp examples/gradient-descent-*.html _site/examples/ 2>/dev/null || echo "No gradient descent HTML files"
         fi
         
-        # Copy themed showcase files from docs/examples (for backward compatibility)
-        if [ -d "docs/examples" ]; then
-          cp docs/examples/*.html _site/examples/ 2>/dev/null || echo "No themed HTML files to copy"
+        if [ -d "pdfs" ]; then
+          cp pdfs/gradient-descent-*.pdf _site/pdfs/ 2>/dev/null || echo "No gradient descent PDF files"
         fi
         
-        # Copy PDF files to pdfs directory (from all modes)
-        if [ -d "generated_examples/html_mathjax" ]; then
-          cp generated_examples/html_mathjax/*.pdf _site/pdfs/ 2>/dev/null || echo "No PDF files from html_mathjax"
-        fi
-        if [ -d "generated_examples/local_mathjax" ]; then
-          cp generated_examples/local_mathjax/*.pdf _site/pdfs/ 2>/dev/null || echo "No PDF files from local_mathjax"
-        fi
-        if [ -d "generated_examples/latex_direct" ]; then
-          cp generated_examples/latex_direct/*.pdf _site/pdfs/ 2>/dev/null || echo "No PDF files from latex_direct"
-        fi
-        
-        # Copy themed showcase PDFs from docs/pdfs (for backward compatibility)
-        if [ -d "docs/pdfs" ]; then
-          cp docs/pdfs/*.pdf _site/pdfs/ 2>/dev/null || echo "No themed PDF files to copy"
-        fi
-        
-        # Copy the ultimate showcase files to root for direct access
-        if [ -f "ultimate-showcase.html" ]; then
-          cp ultimate-showcase.html _site/ 2>/dev/null || echo "No ultimate-showcase.html"
-        fi
-        if [ -f "ultimate-showcase-playwright.pdf" ]; then
-          cp ultimate-showcase-playwright.pdf _site/ 2>/dev/null || echo "No ultimate-showcase-playwright.pdf"
-        fi
-        if [ -f "ultimate-showcase-latex.pdf" ]; then
-          cp ultimate-showcase-latex.pdf _site/ 2>/dev/null || echo "No ultimate-showcase-latex.pdf"
-        fi
-        
-        # Also keep the generated_examples structure for advanced users
-        mkdir -p _site/generated_examples
-        cp -r generated_examples/* _site/generated_examples/ 2>/dev/null || echo "No generated examples to copy"
-        
-        echo "Final verification:"
-        echo "Examples directory:"
-        ls -la _site/examples/ || echo "No examples directory"
-        echo "PDFs directory:"
-        ls -la _site/pdfs/ || echo "No pdfs directory"
-        echo "Root showcase files:"
-        ls -la _site/ultimate-showcase* || echo "No ultimate showcase files"
-        echo "Check for themed files:"
-        ls -la _site/examples/showcase-* || echo "No themed showcase files found"
-        ls -la _site/pdfs/showcase-* || echo "No themed PDF files found"
+        echo "Final verification - Single Example, Multiple Renderers:"
+        echo "HTML examples (same content, different renderers):"
+        ls -la _site/examples/gradient-descent-* || echo "No gradient descent HTML files"
+        echo "PDF examples (same content, different renderers):"
+        ls -la _site/pdfs/gradient-descent-* || echo "No gradient descent PDF files"
         echo "Total files in _site:"
         find _site/ -type f | wc -l
 
