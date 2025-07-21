@@ -32,47 +32,48 @@ jobs:
       with:
         version: 'pre-release'
 
-    - name: Setup TinyTeX for LaTeX support
-      run: |
-        echo "Installing TinyTeX for LaTeX Direct mode..."
-        wget -qO- "https://yihui.org/tinytex/install-unx.sh" | sh
-        echo "TinyTeX base installation completed"
-        
-        # Add TinyTeX to PATH
-        export PATH="$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
-        echo "$HOME/.TinyTeX/bin/x86_64-linux" >> $GITHUB_PATH
-        
-        # Install required LaTeX packages
-        echo "Installing required LaTeX packages..."
-        tlmgr install --verify-repo=none \
-          beamer \
-          pgf \
-          xcolor \
-          amsmath \
-          amsfonts \
-          amssymb \
-          geometry \
-          fancyhdr \
-          graphicx \
-          hyperref \
-          enumitem \
-          multicol \
-          booktabs \
-          array \
-          longtable \
-          colortbl \
-          xetex \
-          fontspec \
-          unicode-math \
-          lualatex-math \
-          luaotfload \
-          collection-fontsrecommended
-        
-        echo "TinyTeX setup completed successfully!"
-        
-        # Verify installation
-        pdflatex --version
-        echo "LaTeX installation verified"
+    # TODO: Re-enable TinyTeX setup once LaTeX dependencies are resolved
+    # - name: Setup TinyTeX for LaTeX support
+    #   run: |
+    #     echo "Installing TinyTeX for LaTeX Direct mode..."
+    #     wget -qO- "https://yihui.org/tinytex/install-unx.sh" | sh
+    #     echo "TinyTeX base installation completed"
+    #     
+    #     # Add TinyTeX to PATH
+    #     export PATH="$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
+    #     echo "$HOME/.TinyTeX/bin/x86_64-linux" >> $GITHUB_PATH
+    #     
+    #     # Install required LaTeX packages
+    #     echo "Installing required LaTeX packages..."
+    #     tlmgr install --verify-repo=none \
+    #       beamer \
+    #       pgf \
+    #       xcolor \
+    #       amsmath \
+    #       amsfonts \
+    #       amssymb \
+    #       geometry \
+    #       fancyhdr \
+    #       graphicx \
+    #       hyperref \
+    #       enumitem \
+    #       multicol \
+    #       booktabs \
+    #       array \
+    #       longtable \
+    #       colortbl \
+    #       xetex \
+    #       fontspec \
+    #       unicode-math \
+    #       lualatex-math \
+    #       luaotfload \
+    #       collection-fontsrecommended
+    #     
+    #     echo "TinyTeX setup completed successfully!"
+    #     
+    #     # Verify installation
+    #     pdflatex --version
+    #     echo "LaTeX installation verified"
 
     - name: Install dependencies
       run: |
@@ -87,12 +88,12 @@ jobs:
         echo "All dependencies installed successfully!"
         
     - name: Run comprehensive test suite
-      env:
-        PATH: "$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
+      # env:
+      #   PATH: "$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
       run: |
         echo "Running Bodh test suite..."
-        echo "LaTeX availability check..."
-        pdflatex --version || echo "LaTeX not available for tests"
+        # echo "LaTeX availability check..."
+        # pdflatex --version || echo "LaTeX not available for tests"
         python tests/test_bodh.py
         echo "All tests passed!"
         
@@ -149,20 +150,20 @@ jobs:
       env:
         PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
         DISPLAY: ":99"
-        PATH: "$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
+        # PATH: "$HOME/.TinyTeX/bin/x86_64-linux:$PATH"
       run: |
         echo "Starting example generation..."
         # Start virtual display for headless browser
         Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
         
-        # Verify LaTeX is available
-        echo "Verifying LaTeX availability..."
-        pdflatex --version || echo "LaTeX not found in PATH"
-        which pdflatex || echo "pdflatex not in PATH"
+        # TODO: Re-enable LaTeX verification once TinyTeX is working
+        # echo "Verifying LaTeX availability..."
+        # pdflatex --version || echo "LaTeX not found in PATH"
+        # which pdflatex || echo "pdflatex not in PATH"
         
-        # Generate examples with multi-mode support
+        # Generate examples (will skip LaTeX Direct mode without LaTeX)
         python generate_all_modes.py
-        echo "Multi-mode example generation completed!"
+        echo "Example generation completed!"
 
     - name: Post-generation detailed check
       run: |
