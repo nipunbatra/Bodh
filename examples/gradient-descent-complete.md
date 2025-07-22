@@ -25,6 +25,8 @@
 > - Python programming (NumPy, matplotlib)
 > - Basic machine learning concepts
 
+---
+
 ### Learning Outcomes
 
 By the end of this tutorial, you will:
@@ -55,6 +57,8 @@ $$\nabla f(x) = \begin{pmatrix}
 2. **Magnitude:** Rate of change in that direction  
 3. **Orthogonality:** Perpendicular to level curves
 
+---
+
 ### Optimization Theory
 
 For unconstrained optimization problems:
@@ -67,7 +71,10 @@ $$\nabla f(x^*) = 0$$
 **Sufficient Conditions (Second-Order):**
 $$\nabla^2 f(x^*) \succ 0 \text{ (positive definite)}$$
 
-**Convexity Assumptions:**
+---
+
+### Convexity Assumptions
+
 - **Convex function:** $f(\lambda x + (1-\lambda)y) \leq \lambda f(x) + (1-\lambda)f(y)$
 - **Strongly convex:** $f(y) \geq f(x) + \nabla f(x)^T(y-x) + \frac{\mu}{2}||y-x||^2$
 
@@ -90,11 +97,15 @@ Where:
 - $\nabla f(x_k)$ is the gradient at current point
 - $k$ is the iteration counter
 
-### Implementation Variants
+---
+
+## Implementation Variants
 
 
 
 
+
+---
 
 #### Batch Gradient Descent
 
@@ -188,11 +199,9 @@ def batch_gradient_descent(
     return x, loss_history, param_history
 ```
 
+---
 
-
-
-
-#### Stochastic Gradient Descent
+### Stochastic Gradient Descent
 
 ```python
 def stochastic_gradient_descent(
@@ -275,10 +284,6 @@ def stochastic_gradient_descent(
     return w, loss_history
 ```
 
-
-
-
-
 ---
 
 ## Chapter 3: Comprehensive Performance Analysis
@@ -324,6 +329,8 @@ With parameters $a = 1, b = 100$ (highly non-convex, global minimum at $(1, 1)$)
 
 
 
+
+---
 
 ### Learning Rate Sensitivity Analysis
 
@@ -376,9 +383,7 @@ def adaptive_learning_rate(
         return lambda t: initial_lr
 ```
 
-
-
-
+---
 
 ### Advanced Optimizer Implementations
 
@@ -466,9 +471,7 @@ class AdamOptimizer:
         return updated_params
 ```
 
-
-
-
+---
 
 > **Implementation Note:** 
 > The bias correction terms $(1 - \beta_1^t)$ and $(1 - \beta_2^t)$ are crucial for proper initialization. Without them, the optimizer exhibits poor performance in the first few iterations due to biased moment estimates.
@@ -645,6 +648,8 @@ class LinearRegressionGD:
                 self.bias = updated[-1]
         
         return self
+
+---
     
     def predict(self, X: np.ndarray) -> np.ndarray:
         """Make predictions on new data."""
@@ -657,6 +662,8 @@ class LinearRegressionGD:
         ss_tot = np.sum((y - np.mean(y)) ** 2)
         return 1 - (ss_res / ss_tot)
 ```
+
+---
 
 ### Experimental Results
 
@@ -709,6 +716,8 @@ def l_bfgs_optimization(f, grad_f, x0, max_iter=1000):
     return result.x, result.fun, result.nit
 ```
 
+---
+
 ### Natural Gradient Descent
 
 For probability distributions, the **natural gradient** uses the Fisher information matrix:
@@ -725,6 +734,8 @@ $$F(\theta)_{ij} = \mathbb{E}\left[\frac{\partial \log p(x|\theta)}{\partial \th
 
 
 
+
+---
 
 ### Distributed Gradient Descent
 
@@ -789,9 +800,7 @@ class DistributedTrainer:
         return loss.item()
 ```
 
-
-
-
+---
 
 ### Monitoring and Debugging
 
@@ -842,6 +851,8 @@ def clip_gradients(parameters, max_norm=1.0, norm_type=2):
     
     return total_norm.item()
 ```
+
+---
 
 **Comprehensive Logging:**
 
@@ -894,10 +905,6 @@ class TrainingLogger:
         
         wandb.log(grad_stats, step=step)
 ```
-
-
-
-
 
 ---
 
@@ -1026,6 +1033,8 @@ if __name__ == '__main__':
 
 ## Conclusion and Summary
 
+---
+
 ### Key Insights and Best Practices
 
 1. **Algorithm Selection Matters**
@@ -1102,9 +1111,7 @@ for some small tolerance $\epsilon > 0$.
 
 ## Implementation Details
 
-
-
-
+---
 
 ### Python Implementation
 
@@ -1142,9 +1149,7 @@ def gradient_descent(f, grad_f, x0, alpha=0.01,
     return x, history
 ```
 
-
-
-
+---
 
 ### Key Parameters
 
@@ -1162,10 +1167,6 @@ def gradient_descent(f, grad_f, x0, alpha=0.01,
 - Parameter change
 - Function value change
 - Maximum iterations
-
-
-
-
 
 ---
 
@@ -1203,6 +1204,8 @@ $$x_{k+1} = x_k - v_{k+1}$$
 
 Where $\beta$ is the momentum coefficient (typically 0.9).
 
+---
+
 ### Adaptive Learning Rates
 
 **AdaGrad:** Adapts learning rate per parameter
@@ -1224,6 +1227,8 @@ $$J(\theta) = \frac{1}{2m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})^2$$
 The gradient is:
 $$\frac{\partial J}{\partial \theta_j} = \frac{1}{m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)}) x_j^{(i)}$$
 
+---
+
 ### Neural Network Training
 
 For a simple neural network:
@@ -1237,6 +1242,8 @@ For a simple neural network:
 
 ## Performance Analysis
 
+---
+
 ### Convergence Comparison
 
 | Method | Iterations to Converge | Final Error |
@@ -1245,6 +1252,8 @@ For a simple neural network:
 | Momentum | 400 | 1e-7 |
 | Adam | 200 | 1e-8 |
 | AdaGrad | 600 | 1e-6 |
+
+---
 
 ### Computational Complexity
 
@@ -1261,6 +1270,8 @@ For a simple neural network:
 
 ## Common Pitfalls and Solutions
 
+---
+
 ### Learning Rate Issues
 
 **Problem:** Learning rate too high
@@ -1270,6 +1281,8 @@ For a simple neural network:
 **Problem:** Learning rate too low  
 - **Symptom:** Very slow convergence
 - **Solution:** Increase learning rate gradually
+
+---
 
 ### Local Minima
 
@@ -1284,6 +1297,8 @@ For a simple neural network:
 
 ## Advanced Topics
 
+---
+
 ### Stochastic Gradient Descent
 
 Instead of using full dataset, use random samples:
@@ -1297,6 +1312,8 @@ Instead of using full dataset, use random samples:
 - Noisy gradient estimates
 - May not converge exactly
 - Requires careful tuning
+
+---
 
 ### Mini-Batch Gradient Descent
 
@@ -1317,6 +1334,8 @@ Compromise between batch and stochastic:
 4. **Consider adaptive methods** - Adam works well in practice
 5. **Normalize features** - Improves convergence speed
 
+---
+
 ### Implementation Checklist
 
 - [ ] Verify gradient computation (numerical gradients)
@@ -1324,6 +1343,8 @@ Compromise between batch and stochastic:
 - [ ] Set reasonable stopping criteria
 - [ ] Monitor for divergence
 - [ ] Save optimization history for analysis
+
+---
 
 ### Next Steps
 
