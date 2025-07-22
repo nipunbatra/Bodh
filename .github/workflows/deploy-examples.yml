@@ -169,8 +169,23 @@ jobs:
         import os
         import time
         
+        # Generate features showcase first
+        print('🌟 Building Features Showcase...')
+        try:
+            config = load_config('configs/features-showcase.yml')
+            converter = MarkdownToPDF(config=config)
+            
+            start = time.time()
+            html_output = converter.convert_to_html('examples/features-showcase.md', 'examples/features-showcase.html')
+            pdf_output = converter.convert_to_pdf('examples/features-showcase.md', 'pdfs/features-showcase.pdf')
+            elapsed = time.time() - start
+            
+            print(f'   ✅ Generated: {html_output}, {pdf_output} ({elapsed:.2f}s)')
+        except Exception as e:
+            print(f'   ❌ Failed: {e}')
+        
         # Single example file - the comprehensive gradient descent
-        example_file = 'examples/gradient-descent-complete.md'
+        example_file = 'examples/gradient-descent.md'
         
         # Different themes and configurations to showcase
         configs = [
