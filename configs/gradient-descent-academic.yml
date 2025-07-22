@@ -10,7 +10,7 @@ logo:
 # Academic slide numbers
 slide_number:
   enabled: true
-  format: "Page {current} of {total}"
+  format: "{current}/{total}"
   position: "bottom-center"
 
 # Academic typography
@@ -33,3 +33,11 @@ colors:
   background: "#ffffff"
   text: "#000000"
   accent: "#8b0000"  # Dark red for academic look
+
+# Clean navigation - only arrows and slide numbers
+navigation:
+  enabled: true
+  show_arrows: true
+  show_dots: false
+  show_progress: false
+  keyboard_shortcuts: true

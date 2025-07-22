@@ -9,7 +9,7 @@ logo:
 # Simple slide numbers
 slide_number:
   enabled: true
-  format: "{current}"
+  format: "{current}/{total}"
   position: "bottom-center"
 
 # Clean typography
@@ -31,3 +31,11 @@ colors:
   background: "#ffffff"
   text: "#1a202c"
   accent: "#4a5568"
+
+# Clean navigation - only arrows and slide numbers
+navigation:
+  enabled: true
+  show_arrows: true
+  show_dots: false
+  show_progress: false
+  keyboard_shortcuts: true

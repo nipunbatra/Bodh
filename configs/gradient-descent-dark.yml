@@ -10,7 +10,7 @@ logo:
 # Slide numbers
 slide_number:
   enabled: true
-  format: "{current} of {total}"
+  format: "{current}/{total}"
   position: "bottom-right"
 
 # Bold typography for dark theme
@@ -32,3 +32,11 @@ colors:
   background: "#1a202c"
   text: "#e2e8f0"
   accent: "#63b3ed"
+
+# Clean navigation - only arrows and slide numbers
+navigation:
+  enabled: true
+  show_arrows: true
+  show_dots: false
+  show_progress: false
+  keyboard_shortcuts: true

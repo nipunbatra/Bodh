@@ -32,3 +32,11 @@ colors:
   background: "#ffffff"
   text: "#2d3748"
   accent: "#2563eb"
+
+# Clean navigation - only arrows and slide numbers
+navigation:
+  enabled: true
+  show_arrows: true
+  show_dots: false
+  show_progress: false
+  keyboard_shortcuts: true
