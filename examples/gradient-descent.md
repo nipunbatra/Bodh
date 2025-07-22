@@ -14,7 +14,7 @@ $z = f(x,y) = x^{2} + y^{2}$
 $$\nabla f(x, y) = \begin{bmatrix}
 \frac{\partial f(x, y)}{\partial x}\\
 \frac{\partial f(x, y)}{\partial y}
-\end{bmatrix} = \begin{bmatrix} 2x\\2y
+\end{bmatrix} = \begin{bmatrix} 2x \\ 2y
 \end{bmatrix}$$
 
 ---
@@ -52,7 +52,7 @@ $$\nabla f(x, y) = \begin{bmatrix}
 
 1. **Initialize** $\theta$ to some random value
 2. **Compute** the gradient of the cost function at $\theta$: $\nabla f(\theta)$
-3. **For Iteration** $i$ ($i = 1,2,\ldots$) or until convergence:
+3. **For Iteration** $i$ (where $i = 1,2,\ldots$) or until convergence:
    - $\theta_{i} \gets \theta_{i-1} - \alpha \nabla f(\theta_{i-1})$
 
 ---
@@ -266,7 +266,9 @@ For $X \in \mathbb{R}^{N \times D}$:
 
 **Total complexity**: $\mathcal{O}(D^2N + D^3)$
 
-### Gradient Descent
+---
+
+## Gradient Descent Complexity
 
 **Vectorized update**: $\theta = \theta - \alpha X^T(X\theta - y)$
 
@@ -278,9 +280,19 @@ For $X \in \mathbb{R}^{N \times D}$:
 
 **Alternative form**: $\mathcal{O}(NDt)$ per iteration
 
-### When to Use Which?
-- **Normal Equation**: Good when $D$ is small
-- **Gradient Descent**: Better when $D$ is large or $N$ is large
+---
+
+## When to Use Which Algorithm?
+
+### Normal Equation
+- **Good when**: $D$ is small
+- **Advantages**: Direct solution, no iterations
+- **Disadvantages**: $\mathcal{O}(D^3)$ matrix inversion
+
+### Gradient Descent  
+- **Good when**: $D$ is large or $N$ is large
+- **Advantages**: Scales well, iterative improvement
+- **Disadvantages**: Requires tuning, local minima
 
 ---
 

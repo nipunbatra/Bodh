@@ -16,7 +16,7 @@ slide_number:
 # Bold typography for dark theme
 font:
   family: "Inter"
-  size: 22
+  size: 20
 
 # Playwright backend
 pdf:
