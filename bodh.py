@@ -529,7 +529,7 @@ class MarkdownToPDF:
     {% if enable_navigation %}
     <div class="slide-nav">
         {% if show_arrows %}
-        <button class="nav-btn" id="prev-btn" onclick="previousSlide()">←</button>
+        <button class="nav-btn" id="prev-btn" onclick="previousSlide()"><</button>
         {% endif %}
         
         {% if show_slide_numbers %}
@@ -547,7 +547,7 @@ class MarkdownToPDF:
         {% endif %}
         
         {% if show_arrows %}
-        <button class="nav-btn" id="next-btn" onclick="nextSlide()">→</button>
+        <button class="nav-btn" id="next-btn" onclick="nextSlide()">></button>
         {% endif %}
     </div>
     {% endif %}

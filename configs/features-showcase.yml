@@ -1,0 +1,41 @@
+theme:
+  name: "modern"
+
+# Logo configuration
+logo:
+  path: "examples/sample-logo.svg"
+  position: "bottom-right" 
+  size: "small"
+
+# Slide numbers
+slide_number:
+  enabled: true
+  format: "{current}/{total}"
+  position: "bottom-right"
+
+# Clean typography
+font:
+  family: "Inter"
+  size: 20
+
+# Playwright backend for best quality
+pdf:
+  engine: "playwright"
+
+# Math rendering
+math:
+  enabled: true
+  engine: "mathjax"
+
+# Clean color scheme
+colors:
+  background: "#ffffff"
+  text: "#2d3748"
+  accent: "#2563eb"
+
+# Navigation
+navigation:
+  enabled: true
+  show_arrows: true
+  show_dots: false
+  show_progress: true

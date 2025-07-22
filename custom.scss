@@ -78,3 +78,75 @@ table {
   margin-top: 3rem;
   padding: 2rem 0;
 }
+
+// Examples grid styling
+.examples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.example-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  
+  h3 {
+    margin-top: 0;
+    color: #212529;
+  }
+  
+  .btn {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+// Compact examples for simpler layout
+.compact-examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.example-item {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: center;
+  
+  strong {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #212529;
+  }
+  
+  a {
+    font-size: 0.9rem;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Home examples section
+.home-examples {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  text-align: center;
+  
+  strong {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+}

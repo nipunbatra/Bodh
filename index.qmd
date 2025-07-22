@@ -11,43 +11,16 @@ subtitle: "Transform your knowledge into stunning presentations"
 Transform your markdown into stunning professional presentations with just a few clicks.
 :::
 
-## Live Demo - Single Example, Multiple Styles
+## Live Examples
 
-**Comprehensive Gradient Descent Tutorial** demonstrating all features with different themes and configurations:
+**See all features in action** - From basic capabilities to comprehensive tutorials:
 
-:::{.examples-grid}
-
-::: {.example-card}
-### Modern Theme
-Clean, professional design with Inter fonts  
-[View HTML](examples/gradient-descent-modern.html){.btn .btn-primary}
-[Download PDF](pdfs/gradient-descent-modern.pdf){.btn .btn-secondary}
+::: {.home-examples}
+**[Features Showcase](examples/features-showcase.html)** - Quick intro to all capabilities  
+**[Gradient Descent Tutorial](examples.qmd)** - Complete ML tutorial in 6 different themes  
 :::
 
-::: {.example-card}
-### Minimal Theme  
-Ultra-clean design, no logo, generous whitespace  
-[View HTML](examples/gradient-descent-minimal.html){.btn .btn-primary}
-[Download PDF](pdfs/gradient-descent-minimal.pdf){.btn .btn-secondary}
-:::
-
-::: {.example-card}
-### Dark Theme
-Professional dark theme with light text  
-[View HTML](examples/gradient-descent-dark.html){.btn .btn-primary}
-[Download PDF](pdfs/gradient-descent-dark.pdf){.btn .btn-secondary}
-:::
-
-::: {.example-card}
-### Academic Style
-LaTeX backend, academic formatting, small fonts  
-[View HTML](examples/gradient-descent-academic.html){.btn .btn-primary}
-[Download PDF](pdfs/gradient-descent-academic.pdf){.btn .btn-secondary}
-:::
-
-:::
-
-*Same comprehensive content, infinite styling possibilities*
+*[View all examples →](examples.qmd)*
 
 ## Features
 

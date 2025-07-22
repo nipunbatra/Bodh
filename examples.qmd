@@ -1,159 +1,106 @@
 ---
-title: "Live Examples"
-subtitle: "One comprehensive example, infinite possibilities"
+title: "Examples"
+subtitle: "Feature showcase and comprehensive tutorial"
 ---
 
-## Single Example, Multiple Configurations
+## 1. Features Showcase
 
-**Gradient Descent Tutorial** - One comprehensive presentation demonstrating ALL features, rendered with different themes, configurations, fonts, layouts, and styling options.
+**Introduction to all Bodh capabilities** - Perfect for understanding what's possible before diving into the full tutorial.
 
-### Same Content, Different Themes
+:::{.compact-examples}
 
-:::{.examples-grid}
-
-::: {.example-card}
-### Modern Theme
-**Clean, professional design**  
-Perfect for business presentations and client meetings.
-[View HTML](examples/gradient-descent-modern.html){.btn .btn-primary}
-[Download PDF](pdfs/gradient-descent-modern.pdf){.btn .btn-secondary}
-:::
-
-::: {.example-card}
-### Minimal Theme  
-**Ultra-clean with generous whitespace**  
-Ideal for design-focused presentations and portfolios.
-[View HTML](examples/gradient-descent-minimal.html){.btn .btn-primary}
-[Download PDF](pdfs/gradient-descent-minimal.pdf){.btn .btn-secondary}
-:::
-
-::: {.example-card}
-### Dark Theme
-**Professional dark theme**  
-Great for tech presentations and code demos.
-[View HTML](examples/gradient-descent-dark.html){.btn .btn-primary}
-[Download PDF](pdfs/gradient-descent-dark.pdf){.btn .btn-secondary}
-:::
-
-::: {.example-card}
-### Gradient Theme
-**Reveal.js inspired gradients**  
-Eye-catching backgrounds perfect for conferences.
-[View HTML](examples/gradient-descent-gradient.html){.btn .btn-primary}
-[Download PDF](pdfs/gradient-descent-gradient.pdf){.btn .btn-secondary}
+::: {.example-item}
+**Features Demo**  
+Multi-columns, math, lists, code, tables, images  
+[View HTML](examples/features-showcase.html) | [PDF](pdfs/features-showcase.pdf)
 :::
 
 :::
 
-### Same Content, Different Configurations
+## 2. Complete Tutorial: Gradient Descent
 
-:::{.examples-grid}
+**Comprehensive ML tutorial** demonstrating ALL features with real figures and mathematical content.
 
-::: {.example-card}
-### Academic Style
-**Traditional academic paper look**  
-LaTeX backend, small fonts, academic formatting.
-[View HTML](examples/gradient-descent-academic.html){.btn .btn-primary}
-[Download PDF](pdfs/gradient-descent-academic.pdf){.btn .btn-secondary}
+:::{.compact-examples}
+
+::: {.example-item}
+**Modern Theme**  
+Professional, clean design  
+[View HTML](examples/gradient-descent-modern.html) | [PDF](pdfs/gradient-descent-modern.pdf)
 :::
 
-::: {.example-card}
-### Presentation Style  
-**Large fonts, bold colors**  
-No slide numbers, large typography for presentations.
-[View HTML](examples/gradient-descent-presentation.html){.btn .btn-primary}
-[Download PDF](pdfs/gradient-descent-presentation.pdf){.btn .btn-secondary}
+::: {.example-item}
+**Minimal Theme**  
+Ultra-clean, no logo  
+[View HTML](examples/gradient-descent-minimal.html) | [PDF](pdfs/gradient-descent-minimal.pdf)
+:::
+
+::: {.example-item}
+**Dark Theme**  
+Professional dark theme  
+[View HTML](examples/gradient-descent-dark.html) | [PDF](pdfs/gradient-descent-dark.pdf)
+:::
+
+::: {.example-item}
+**Gradient Theme**  
+Colorful backgrounds  
+[View HTML](examples/gradient-descent-gradient.html) | [PDF](pdfs/gradient-descent-gradient.pdf)
+:::
+
+::: {.example-item}
+**Academic Style**  
+LaTeX backend, formal  
+[View HTML](examples/gradient-descent-academic.html) | [PDF](pdfs/gradient-descent-academic.pdf)
+:::
+
+::: {.example-item}
+**Presentation Style**  
+Large fonts, bold colors  
+[View HTML](examples/gradient-descent-presentation.html) | [PDF](pdfs/gradient-descent-presentation.pdf)
 :::
 
 :::
 
-:::
+## Content Overview
 
-## What You'll See
+### Features Showcase Includes:
+- **Multi-column layouts** with side-by-side content
+- **Inline vs display mathematics** with LaTeX
+- **Various list types** (bullets, numbers, mixed)
+- **Code highlighting** for multiple languages  
+- **Tables and data** presentation
+- **Images and figures** with flexible sizing
+- **Typography** and special characters
 
-Each variation uses the **same comprehensive gradient descent content** including:
+### Gradient Descent Tutorial Includes:
+- **Mathematical foundations** with complex equations
+- **Algorithm implementations** in Python
+- **Performance analysis** with benchmark tables
+- **Real visualizations** (contour plots, learning curves)
+- **Multi-column comparisons** of optimization methods
+- **Professional formatting** across all themes
 
-- **Machine Learning Theory**: Mathematical foundations, optimization algorithms
-- **Multi-column Layouts**: Side-by-side content organization
-- **LaTeX Mathematics**: Complex equations with MathJax rendering
-- **Code Examples**: Python implementations with syntax highlighting
-- **Performance Tables**: Benchmark comparisons and data visualization
-- **Professional Design**: Typography, spacing, branding elements
+## Theme Comparison
 
-## Configuration Variations Demonstrated
+**Same content, different themes** - See how configuration changes the entire presentation feel:
 
-### Typography & Fonts
-- **Academic**: Small fonts (14px) for dense content
-- **Presentation**: Large fonts (24px) for visibility
-- **Modern**: Medium fonts (18px) for balance
+| Theme | Best For | Key Features |
+|-------|----------|--------------|
+| **Modern** | Business | Clean typography, professional blue |
+| **Minimal** | Portfolio | Maximum whitespace, elegant |
+| **Dark** | Tech talks | Easy on eyes, orange accents |
+| **Gradient** | Conferences | Eye-catching backgrounds |
+| **Academic** | Research | Small fonts, LaTeX backend |
+| **Presentation** | Live talks | Large fonts, bold colors |
 
-### Logo Positioning
-- **Modern**: Bottom-right placement
-- **Minimal**: No logo for clean look  
-- **Academic**: Top-center for formal presentations
-- **Gradient**: Bottom-left for balance
+## Quick Start
 
-### Slide Numbers
-- **Academic**: "Page X of Y" format, bottom-center
-- **Modern**: "Slide X" format, top-right
-- **Minimal**: Simple numbers, bottom-right
-- **Presentation**: Disabled for clean look
-
-### Backend Engines
-- **Academic**: LaTeX backend for academic quality (ultra-fast)
-- **Others**: Playwright backend with MathJax for interactive features
-
-## How to Use These Examples
-
-1. **Click "View HTML"** to see the interactive presentation with navigation
-2. **Use arrow keys** or click navigation buttons to browse slides  
-3. **Click "Download PDF"** to see the print-ready version
-4. **Compare configurations**: See how the same content looks with different styling
-
-## Key Benefits
-
-- **Same Content**: No confusion from different examples
-- **Clear Comparisons**: Easy to see the impact of configuration changes
-- **Real Use Case**: Complete ML tutorial demonstrates all features
-- **Consistent Quality**: All variations maintain professional standards
-
-## Theme Details
-
-Each theme creates a unique presentation experience with the same gradient descent content:
-
-### Modern Theme
-**Professional and clean** - Perfect for business presentations with contemporary feel. Clean typography with Inter font, professional blue color scheme, subtle shadows and spacing.
-
-### Minimal Theme  
-**Ultra-clean with generous whitespace** - Ideal for design-focused presentations and portfolios. Maximum whitespace for clarity, elegant typography, minimal distractions.
-
-### Dark Theme
-**Professional dark theme** - Excellent for tech presentations, code demos, and evening talks. Easy on the eyes in dark environments, orange accents for emphasis.
-
-### Gradient Theme
-**Reveal.js inspired with beautiful gradients** - Eye-catching backgrounds perfect for conferences and tech talks. Stunning gradient backgrounds, high contrast text for readability.
-
-### Academic Style
-**Traditional academic paper look** - LaTeX backend with small fonts for dense content. Perfect for research presentations, academic conferences.
-
-### Presentation Style
-**Large fonts, bold colors** - No slide numbers, large typography optimized for live presentations. Bold red accents, high contrast.
-
-## Choosing the Right Configuration
-
-### For Business Presentations
-- **Modern**: Professional meetings, client presentations
-- **Minimal**: Design reviews, clean corporate slides
-
-### For Technical Content
-- **Dark**: Code demos, developer talks, evening presentations
-- **Academic**: Research presentations, technical papers
-- **Gradient**: Tech conferences, startup pitches
-
-### For Live Presentations
-- **Presentation**: Large fonts, no slide numbers, bold colors
-- **Modern**: Professional balance of readability and style
+1. **Start with Features Showcase** to see all capabilities
+2. **Browse Gradient Descent themes** to see styling options  
+3. **Use arrow keys or < > buttons** to navigate
+4. **Compare HTML vs PDF** versions
+5. **Pick your favorite theme** for your own content
 
 ---
 
-*Same comprehensive content, infinite styling possibilities through configuration.*
+*Two examples that demonstrate everything Bodh can do.*
